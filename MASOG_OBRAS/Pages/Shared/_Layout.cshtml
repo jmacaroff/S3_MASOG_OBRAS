@@ -1,0 +1,37 @@
+﻿<!-- Me base en el siguiente link para tener mas organizado el Admin LTE3 en Razor Pages-->
+<!-- https://www.codewithmukesh.com/blog/integrating-adminlte-with-aspnet-core/ -->
+
+<!-- Este tambien es muy util -->
+<!-- https://dotnettec.com/how-to-integrate-adminlte-with-asp-net-core-3-1/ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewData["Title"] - MASOG_OBRAS</title>
+    <partial name="_Styles" />
+
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!--Intruce el menu de navegación superior-->
+        <partial name="_TopNavigation" />
+
+        <!--Intruce el menu de navegación principal-->
+        <partial name="_Sidebar" />
+
+        <div class="content-wrapper" style="padding: 20px;min-height:530.031px;background:white!important;">
+            @RenderBody()
+        </div>
+
+        <partial name="_Footer" />
+    </div>
+    <!--Intruce los Scripts-->
+    <partial name="_Scripts" />
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,178 @@
+﻿@using static MASOG_OBRAS.Helpers.HtmlHelperExtensions;
+
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a class="brand-link" asp-page="/Index">
+        <img src="~/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">MASOG</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a class="d-block" asp-page="/Index">Juan Perez</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+                <!-- Compras y Proveedores-->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link @Html.ActiveClass("/Index")">
+                        <i class="fas fa-cart-plus"></i>
+                        <p>
+                            Compras
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a asp-page="/Index" class="nav-link @Html.ActiveClass("/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Compras</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ordenes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Facturas</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Proveedores-->
+                <li class="nav-item">
+                    <a asp-page="/Privacy" class="nav-link @Html.ActiveClass("/Privacy")">
+                        <i class="far fa-handshake"></i>
+                        <p>
+                            Proveedores
+                        </p>
+                    </a>
+                </li>
+
+                <!-- Inventarios -->
+                <li class="nav-item has-treeview">
+                    <!-- menu-open -->
+                    <a href="#" class="nav-link @Html.ActiveClass("/Inventarios/Productos/Index")">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>
+                            Inventarios
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-page="/Inventarios/Productos/Index" class="nav-link @Html.ActiveClass("/Inventarios/Productos/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Productos</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Envios</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Recepciones</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Ventas -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cash-register"></i>
+                        <p>
+                            Ventas
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Presupuesto</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Factura</p>
+                            </a>
+                        </li>
+                    </ul>
+                <li />
+
+                <!-- Clientes -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p> Clientes </p>
+                    </a>
+                </li>
+
+                <!-- Proyectos -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-hammer"></i>
+                        <p>
+                            Proyectos
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Proyectos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Req.Obras</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            New
+                            <span class="right badge badge-danger">New</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
