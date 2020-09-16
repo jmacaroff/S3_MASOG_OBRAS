@@ -1,0 +1,66 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Proveedores.Proveedores.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor[0].RazonSocial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor[0].CUIT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor[0].Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor[0].Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor[0].Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor[0].Observacion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Proveedor) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RazonSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CUIT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacion)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

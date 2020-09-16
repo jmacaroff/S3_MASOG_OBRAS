@@ -10,30 +10,30 @@ namespace EFDataAccessLibrary.Models.Inventarios
     public class Producto
     {
         [Required(ErrorMessage = "Este campo es requerido")]
-        [DisplayName("Id : ")]
+        [DisplayName("ID")]
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column("producto_id",TypeName = "varchar(6)")]
+        [RegularExpression(@"^[a-zA-Z0-9]{1,6}$", ErrorMessage = "Sólo se aceptan 6 caracteres alfanuméricos.")]
         public string Id { get; set; }
 
 
-        [DisplayName("Descripcion : ")]
-        [Required(ErrorMessage = "Este campo es requerido")]
-        [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Solo se permiten Letras")]
+        [DisplayName("Descripción")]
+        [Required(ErrorMessage = "Se requiere una descipción.")]
         public string Descripcion { get; set; }
 
 
-        [DisplayName("Precio : ")]
-        [Required(ErrorMessage = "Se requiere un precio")]
-        [RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '")]
+        [DisplayName("Precio")]
+        [Required(ErrorMessage = "Se requiere un precio.")]
+        [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Precio { get; set; }
 
 
-
+        [DisplayName("Observación")]
         public string Observacion { get; set; }
 
 
-        [DisplayName("Activo : ")]
+        [DisplayName("Activo")]
         [Required]
         public bool Activo { get; set; }
     }
