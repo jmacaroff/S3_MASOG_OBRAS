@@ -21,7 +21,7 @@ namespace EFDataAccessLibrary.Models.Clientes
 
         [DisplayName("DNI")]
         [Required(ErrorMessage = "Este campo es requerido.")]
-        [RegularExpression(@"\d{11}$", ErrorMessage = "Número incorrecto.")]
+        [RegularExpression(@"\d{8}$", ErrorMessage = "Número incorrecto.")]
         public double DNI { get; set; }
 
         [DisplayName("Dirección")]
