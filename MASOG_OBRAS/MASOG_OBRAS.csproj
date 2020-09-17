@@ -35,5 +35,9 @@
     <ProjectReference Include="..\EFDataAccessLibrary\EFDataAccessLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Clientes\" />
+  </ItemGroup>
+
 </Project>
 

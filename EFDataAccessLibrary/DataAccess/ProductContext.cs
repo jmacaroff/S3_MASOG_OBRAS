@@ -1,4 +1,5 @@
-﻿using EFDataAccessLibrary.Models.Inventarios;
+﻿using EFDataAccessLibrary.Models.Clientes;
+using EFDataAccessLibrary.Models.Inventarios;
 using EFDataAccessLibrary.Models.Proveedores;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,6 +13,8 @@ namespace EFDataAccessLibrary.DataAccess
         public ProductContext(DbContextOptions option) : base(option) {  }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
+
+        public DbSet<Cliente> Clientes { get; set; }
     }
 
 }

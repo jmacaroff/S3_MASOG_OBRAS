@@ -20,9 +20,9 @@ namespace EFDataAccessLibrary.Models.Proveedores
         public string RazonSocial { get; set; }
 
 
-        [DisplayName("CUIT")]
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [RegularExpression(@"\d{11}$", ErrorMessage = "Número incorrecto.")]
+            [DisplayName("CUIT")]
+            [Required(ErrorMessage = "Este campo es requerido.")]
+            [RegularExpression(@"\d{11}$", ErrorMessage = "Número incorrecto.")]
         public double CUIT { get; set; }
 
         [DisplayName("Dirección")]
