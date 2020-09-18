@@ -39,6 +39,9 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             return Page();
         }
 
+        // No se valida al editar que los datos originales se conserven y se reemplace el precio por ejemplo
+        public string MessageError { get; set; }
+
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -54,7 +57,15 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             {
                 if (!ProductoExists(Producto.Id))
                 {
-                    return NotFound();
+                    ModelState.AddModelError(string.Empty, MessageError);
+                    return Page();
+                    //return NotFound();
+                }
+                if (!ProductoDescripcionExists(Producto.Descripcion))
+                {
+                    ModelState.AddModelError(string.Empty, MessageError);
+                    return Page();
+                    //return NotFound();
                 }
                 else
                 {
@@ -65,9 +76,16 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             return RedirectToPage("./Index");
         }
 
+
         private bool ProductoExists(string id)
         {
+            this.MessageError = "ID ya registrada";
             return _context.Productos.Any(e => e.Id == id);
+        }
+        private bool ProductoDescripcionExists(string descripcion)
+        {
+            this.MessageError = "Descripcion ya registrada";
+            return _context.Productos.Any(e => e.Descripcion == descripcion);
         }
     }
 }

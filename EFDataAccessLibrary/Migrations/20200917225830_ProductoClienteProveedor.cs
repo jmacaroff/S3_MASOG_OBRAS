@@ -46,7 +46,7 @@ namespace EFDataAccessLibrary.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RazonSocial = table.Column<string>(nullable: false),
                     CUIT = table.Column<double>(nullable: false),
-                    Direccion = table.Column<string>(nullable: false),
+                    Direccion = table.Column<string>(nullable: true),
                     Telefono = table.Column<double>(nullable: true),
                     Correo = table.Column<string>(nullable: true),
                     Observacion = table.Column<string>(nullable: true)

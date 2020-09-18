@@ -27,6 +27,14 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
         [BindProperty]
         public Proveedor Proveedor { get; set; }
 
+        public string MessageError { get; set; }
+
+        private bool ExistCuit(double cuit)
+        {
+            Proveedor proveedor = _context.Proveedores.Where(p => p.CUIT == cuit).FirstOrDefault<Proveedor>();
+            return proveedor != null;
+        }
+
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -35,7 +43,12 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             {
                 return Page();
             }
-
+            if (ExistCuit(Proveedor.CUIT))
+            {
+                this.MessageError = "CUIT ya registrado";
+                ModelState.AddModelError(string.Empty, MessageError);
+                return Page();
+            }
             _context.Proveedores.Add(Proveedor);
             await _context.SaveChangesAsync();
 

@@ -21,43 +21,51 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         }
 
         public IActionResult OnGet()
-        {
+        {            
             return Page();
         }
 
         [BindProperty]
         public Producto Producto { get; set; }
 
+        [BindProperty]
+        public string MessageError { get; set; }
+
+        private bool ExistProduct(string id)
+        {
+            Producto producto = _context.Productos.Find(id);
+            return producto != null;
+        }
+
+        private bool ExistDescription(string description)
+        {
+            Producto producto = _context.Productos.Where(p => p.Descripcion == description).FirstOrDefault<Producto>();
+            return producto != null;
+        }
+
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            Producto existeProductoId = await _context.Productos.SingleOrDefaultAsync(
-                m => m.Id == Producto.Id);
-            Producto existeProductoDescripcion = await _context.Productos.SingleOrDefaultAsync(
-                m => m.Descripcion == Producto.Descripcion);
-            if (existeProductoId != null)
-            {
-                // El producto ya existe.
-                // Entonces.
-                ModelState.AddModelError(string.Empty, "El producto ya existe.");
-            }
-            else
-            {
-                if (existeProductoDescripcion != null)
-                {
-                    ModelState.AddModelError(string.Empty, "La descripcion ya existe.");
-                }
-            }
-
             if (!ModelState.IsValid)
+            {                
+                return Page();
+            }
+            if (ExistProduct(Producto.Id))
             {
+                this.MessageError = "ID ya registrada";
+                ModelState.AddModelError(string.Empty, MessageError);
+                return Page();
+            }
+            if (ExistDescription(Producto.Descripcion))
+            {
+                this.MessageError = "Descripcion ya registrada";
+                ModelState.AddModelError(string.Empty, MessageError);
                 return Page();
             }
             _context.Productos.Add(Producto);
             await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            return Redirect("./Index");
         }
     }
 }
