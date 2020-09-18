@@ -43,10 +43,6 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
             _context.Attach(Producto).State = EntityState.Modified;
 

@@ -18,10 +18,37 @@ namespace EFDataAccessLibrary.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Clientes.Cliente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Correo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("DNI")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Direccion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Telefono")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clientes");
+                });
+
             modelBuilder.Entity("EFDataAccessLibrary.Models.Inventarios.Producto", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("producto_id")
                         .HasColumnType("varchar(6)");
 
                     b.Property<bool>("Activo")
@@ -45,7 +72,9 @@ namespace EFDataAccessLibrary.Migrations
             modelBuilder.Entity("EFDataAccessLibrary.Models.Proveedores.Proveedor", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("CUIT")
                         .HasColumnType("float");

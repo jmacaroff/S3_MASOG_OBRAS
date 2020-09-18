@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
+using Microsoft.EntityFrameworkCore;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Productos
 {
@@ -31,11 +32,28 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            Producto existeProductoId = await _context.Productos.SingleOrDefaultAsync(
+                m => m.Id == Producto.Id);
+            Producto existeProductoDescripcion = await _context.Productos.SingleOrDefaultAsync(
+                m => m.Descripcion == Producto.Descripcion);
+            if (existeProductoId != null)
+            {
+                // El producto ya existe.
+                // Entonces.
+                ModelState.AddModelError(string.Empty, "El producto ya existe.");
+            }
+            else
+            {
+                if (existeProductoDescripcion != null)
+                {
+                    ModelState.AddModelError(string.Empty, "La descripcion ya existe.");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
             _context.Productos.Add(Producto);
             await _context.SaveChangesAsync();
 

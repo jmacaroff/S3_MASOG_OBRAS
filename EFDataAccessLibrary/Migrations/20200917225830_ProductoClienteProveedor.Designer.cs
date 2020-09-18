@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFDataAccessLibrary.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20200917173305_AddClientesToDb")]
-    partial class AddClientesToDb
+    [Migration("20200917225830_ProductoClienteProveedor")]
+    partial class ProductoClienteProveedor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,9 @@ namespace EFDataAccessLibrary.Migrations
             modelBuilder.Entity("EFDataAccessLibrary.Models.Clientes.Cliente", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Correo")
                         .HasColumnType("nvarchar(max)");
@@ -32,7 +34,6 @@ namespace EFDataAccessLibrary.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Direccion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -50,7 +51,6 @@ namespace EFDataAccessLibrary.Migrations
             modelBuilder.Entity("EFDataAccessLibrary.Models.Inventarios.Producto", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("producto_id")
                         .HasColumnType("varchar(6)");
 
                     b.Property<bool>("Activo")
@@ -74,7 +74,9 @@ namespace EFDataAccessLibrary.Migrations
             modelBuilder.Entity("EFDataAccessLibrary.Models.Proveedores.Proveedor", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("CUIT")
                         .HasColumnType("float");

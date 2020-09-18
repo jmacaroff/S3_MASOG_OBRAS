@@ -12,7 +12,7 @@ namespace EFDataAccessLibrary.Models.Inventarios
         [Required(ErrorMessage = "Este campo es requerido")]
         [DisplayName("ID")]
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column("producto_id",TypeName = "varchar(6)")]
+        [Column(TypeName = "varchar(6)")]
         [RegularExpression(@"^[a-zA-Z0-9]{1,6}$", ErrorMessage = "Sólo se aceptan 6 caracteres alfanuméricos.")]
         public string Id { get; set; }
 
