@@ -1,60 +1,92 @@
 ﻿@page
 @model MASOG_OBRAS.Pages.Inventarios.Productos.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Index"; }
 
-<h1>Index</h1>
+<h1>Lista de Productos</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Producto</a>
 </p>
+<form action="Productos/Details" method="get">
+    <div class="form-group row align-items-end">
+        <div class="col-2">
+            <label for="inputId">Buscar por ID</label>
+            <input type="text" class="form-control" id="inputId" name="id" required>
+        </div>
+        <div class="col-10">
+            <button type="submit" value="Search" class="btn btn-primary">Buscar</button>
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Producto[0].Id)
+                Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Producto[0].Descripcion)
+                Descripcion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Producto[0].Precio)
+                Precio
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Producto[0].Observacion)
+                Observacion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Producto[0].Activo)
+                Activo
             </th>
-            <th></th>
+            <th>
+                Operaciones
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Producto) {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.Id)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observacion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Activo)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Productos)
+        {
+<tr>
+    <th>
+        @Html.DisplayFor(modelItem => item.Id)
+    </th>
+    <td>
+        @Html.DisplayFor(modelItem => item.Descripcion)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Precio)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Observacion)
+    </td>
+    <td>
+
+        @if (item.Activo)
+        {
+            <span class="span-activo">Activo</span>
+        }
+        else
+        {
+            <span class="span-no-activo">No activo</span>
+        }
+    </td>
+    <td>
+        <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+        <a asp-page="./Details" asp-route-id="@item.Id">Ver detalle</a> |
+        <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+    </td>
+</tr>}
     </tbody>
 </table>
+<div class="row justify-content-end">
+    <div class="col-1">
+        @if (Model.HasPrevious())
+        {
+    <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage -1)">Anterior</a>}
+    </div>
+    <div class="col-1">
+        @if (Model.HasNext())
+        {
+    <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Siguiente</a>}
+    </div>
+</div>
