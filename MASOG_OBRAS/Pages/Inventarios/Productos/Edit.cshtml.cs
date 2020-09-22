@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Productos
 {
-    public class EditModel : PageModel
+    public class EditModel : BaseEditPage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -46,41 +47,23 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            if (ExistDescription(Producto.Descripcion, Producto.Id))
+            {
+                MessageError = "Descripcion ya registrada";
+                return Page();
+            }
             _context.Attach(Producto).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductoExists(Producto.Id))
-                {
-                    ModelState.AddModelError(string.Empty, MessageError);
-                    return Page();
-                    //return NotFound();
-                }
-                if (!ProductoDescripcionExists(Producto.Descripcion))
-                {
-                    ModelState.AddModelError(string.Empty, MessageError);
-                    return Page();
-                    //return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            return await this.UpdateValue(_context);
         }
 
-
-        private bool ProductoExists(string id)
+        private bool ExistDescription(string description, string id)
         {
-            this.MessageError = "ID ya registrada";
-            return _context.Productos.Any(e => e.Id == id);
+            Producto producto = _context.Productos.Where(p => p.Descripcion == description && p.Id != id).FirstOrDefault<Producto>();
+            return producto != null;
         }
         private bool ProductoDescripcionExists(string descripcion)
         {

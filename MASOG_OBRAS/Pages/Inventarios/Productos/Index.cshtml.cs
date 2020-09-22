@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Productos
 {
-    public class IndexModel : PageModel
+
+    public class IndexModel : BaseIndexPage<Producto>
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -19,11 +21,21 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             _context = context;
         }
 
-        public IList<Producto> Producto { get;set; }
-
-        public async Task OnGetAsync()
+        [BindProperty]
+        public string ProductoId { get; set; }
+        public IList<Producto> Productos { get;set; }
+         
+        public async Task OnGetAsync(int pageNumber,int pageSize)
         {
-            Producto = await _context.Productos.ToListAsync();
+            pageNumber = pageNumber == 0 ? 1 : pageNumber;
+            pageSize = pageSize == 0 ? 10 : pageSize;
+            this.CurrentPage = pageNumber;
+            Init(await _context.Productos.ToListAsync(),pageNumber, pageSize);
+            Productos = LoadPage();
+        }
+        public string GetProductId()
+        {
+            return ProductoId;
         }
     }
 }

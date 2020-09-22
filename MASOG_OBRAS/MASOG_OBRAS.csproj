@@ -17,6 +17,7 @@
     <None Include="wwwroot\css\alt\adminlte.pages.min.css.map" />
     <None Include="wwwroot\css\alt\adminlte.plugins.css.map" />
     <None Include="wwwroot\css\alt\adminlte.plugins.min.css.map" />
+    <None Include="wwwroot\css\main.css" />
     <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 

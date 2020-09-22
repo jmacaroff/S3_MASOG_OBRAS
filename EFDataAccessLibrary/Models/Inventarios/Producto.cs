@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EFDataAccessLibrary.Models.Inventarios
 {
-    public class Producto
+    public class Producto : BaseModel
     {
         [Required(ErrorMessage = "Este campo es requerido")]
         [DisplayName("ID")]
