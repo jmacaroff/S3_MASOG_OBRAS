@@ -26,7 +26,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         }
 
         public IActionResult OnGet()
-        {
+        {            
             return Page();
         }
 
@@ -36,7 +36,19 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {                
+                return Page();
+            }
+            if (ExistProduct(Producto.Id))
             {
+                this.MessageError = "ID ya registrada";
+                ModelState.AddModelError(string.Empty, MessageError);
+                return Page();
+            }
+            if (ExistDescription(Producto.Descripcion))
+            {
+                this.MessageError = "Descripcion ya registrada";
+                ModelState.AddModelError(string.Empty, MessageError);
                 return Page();
             }
             if (ExistProduct(Producto.Id))

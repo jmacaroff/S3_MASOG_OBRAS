@@ -3,7 +3,7 @@
 
 @{ ViewData["Title"] = "Edit"; }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>Producto</h4>
 <hr />
@@ -30,23 +30,23 @@
                 <input asp-for="Producto.Observacion" class="form-control" />
                 <span asp-validation-for="Producto.Observacion" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check">             
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Producto.Activo" /> @Html.DisplayNameFor(model => model.Producto.Activo)
+                    <input class="form-check-input" asp-for="Producto.Activo" />@Html.DisplayNameFor(model => model.Producto.Activo)
                 </label>
             </div>
             @if (Model.MessageError != null)
             {
 <div class="alert alert-warning" role="alert">@Model.MessageError</div>}
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Volver al listado</a>
 </div>
 
 @section Scripts {

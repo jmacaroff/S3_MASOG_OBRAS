@@ -26,7 +26,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
+    with font-awesome or any other icon font library -->
                 <!-- Compras y Proveedores-->
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link @Html.ActiveClass("/Index")">
@@ -61,8 +61,8 @@
 
                 <!-- Proveedores-->
                 <li class="nav-item">
-                    <a asp-page="/Privacy" class="nav-link @Html.ActiveClass("/Privacy")">
-                        <i class="far fa-handshake"></i>
+                    <a asp-page="/Proveedores/Proveedores/Index" class="nav-link @Html.ActiveClass("/Proveedores/Proveedores/Index")">
+                        <i class="nav-icon far fa-handshake"></i>
                         <p>
                             Proveedores
                         </p>
@@ -129,12 +129,13 @@
                 <li />
 
                 <!-- Clientes -->
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a asp-page="/Clientes/Index" class="nav-link @Html.ActiveClass("/Clientes/Index")">
                         <i class="nav-icon fas fa-address-book"></i>
                         <p> Clientes </p>
                     </a>
                 </li>
+               
 
                 <!-- Proyectos -->
                 <li class="nav-item has-treeview">
