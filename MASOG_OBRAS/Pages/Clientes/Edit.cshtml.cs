@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Clientes
 {
-    public class EditModel : PageModel
+    public class EditModel : BaseEditPage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -49,29 +50,7 @@ namespace MASOG_OBRAS.Pages.Clientes
             }
 
             _context.Attach(Cliente).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClienteExists(Cliente.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool ClienteExists(int id)
-        {
-            return _context.Clientes.Any(e => e.Id == id);
+            return await UpdateValue(_context);
         }
     }
 }

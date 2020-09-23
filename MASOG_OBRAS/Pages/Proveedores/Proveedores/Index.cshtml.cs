@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Proveedores;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BaseIndexPage<Proveedor>
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -19,11 +20,16 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             _context = context;
         }
 
-        public IList<Proveedor> Proveedor { get;set; }
+        public IList<Proveedor> Proveedores { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNumber, int pageSize)
         {
-            Proveedor = await _context.Proveedores.ToListAsync();
+            pageNumber = pageNumber == 0 ? 1 : pageNumber;
+            pageSize = pageSize == 0 ? 10 : pageSize;
+            this.CurrentPage = pageNumber;
+            Init(await _context.Proveedores.ToListAsync(), pageNumber, pageSize);
+            Proveedores = LoadPage();
         }
+
     }
 }

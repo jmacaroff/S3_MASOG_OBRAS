@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Proveedores;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BaseCreatePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -27,13 +28,6 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
         [BindProperty]
         public Proveedor Proveedor { get; set; }
 
-        public string MessageError { get; set; }
-
-        private bool ExistCuit(double cuit)
-        {
-            Proveedor proveedor = _context.Proveedores.Where(p => p.CUIT == cuit).FirstOrDefault<Proveedor>();
-            return proveedor != null;
-        }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -46,13 +40,17 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             if (ExistCuit(Proveedor.CUIT))
             {
                 this.MessageError = "CUIT ya registrado";
-                ModelState.AddModelError(string.Empty, MessageError);
-                return Page();
+                return null;
             }
             _context.Proveedores.Add(Proveedor);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            return await AddNewValue(_context); ;
         }
+
+        private bool ExistCuit(double cuit)
+        {
+            Proveedor proveedor = _context.Proveedores.Where(p => p.CUIT == cuit).FirstOrDefault<Proveedor>();
+            return proveedor != null;
+        }
+
     }
 }

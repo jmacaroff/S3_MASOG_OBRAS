@@ -39,10 +39,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             }
             return Page();
         }
-
-        // No se valida al editar que los datos originales se conserven y se reemplace el precio por ejemplo
-        public string MessageError { get; set; }
-
+  
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -51,24 +48,11 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             {
                 return Page();
             }
-            if (ExistDescription(Producto.Descripcion, Producto.Id))
-            {
-                MessageError = "Descripcion ya registrada";
-                return Page();
-            }
+
             _context.Attach(Producto).State = EntityState.Modified;
-            return await this.UpdateValue(_context);
+
+            return await UpdateValue(_context);
         }
 
-        private bool ExistDescription(string description, string id)
-        {
-            Producto producto = _context.Productos.Where(p => p.Descripcion == description && p.Id != id).FirstOrDefault<Producto>();
-            return producto != null;
-        }
-        private bool ProductoDescripcionExists(string descripcion)
-        {
-            this.MessageError = "Descripcion ya registrada";
-            return _context.Productos.Any(e => e.Descripcion == descripcion);
-        }
     }
 }

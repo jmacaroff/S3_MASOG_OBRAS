@@ -8,53 +8,80 @@
 <h1>Clientes</h1>
 
 <p>
-    <a asp-page="Create">Agregar Cliente</a>
+    <a asp-page="Create" class="btn btn-primary">Agregar Cliente</a>
 </p>
+
+<!-- Campo de Busqueda Nombre -->
+<form action="./Proveedores/Details" method="get">
+    <div class="form-group row align-items-end">
+        <div class="col-2">
+            <label for="inputid">Buscar por Nombre</label>
+            <input type="text" class="form-control" id="inputcuit" name="cuit" required>
+        </div>
+        <div class="col-10">
+            <button type="submit" value="Search" class="btn btn-primary">Buscar</button>
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente[0].Nombre)
+                @Html.DisplayNameFor(model => model.Clientes[0].Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente[0].DNI)
+                @Html.DisplayNameFor(model => model.Clientes[0].DNI)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente[0].Direccion)
+                @Html.DisplayNameFor(model => model.Clientes[0].Direccion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente[0].Telefono)
+                @Html.DisplayNameFor(model => model.Clientes[0].Telefono)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente[0].Correo)
+                @Html.DisplayNameFor(model => model.Clientes[0].Correo)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Cliente) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Clientes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<div class="row justify-content-end">
+    <div class="col-1">
+        @if (Model.HasPrevious())
+        {
+            <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage -1)">Anterior</a>}
+    </div>
+    <div class="col-1">
+        @if (Model.HasNext())
+        {
+            <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Siguiente</a>}
+    </div>
+</div>

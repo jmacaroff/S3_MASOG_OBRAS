@@ -36,30 +36,18 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {                
+            {
                 return Page();
             }
             if (ExistProduct(Producto.Id))
             {
-                this.MessageError = "ID ya registrada";
-                ModelState.AddModelError(string.Empty, MessageError);
-                return Page();
+                this.MessageError = "Producto ya registrado";
+                return null;
             }
             if (ExistDescription(Producto.Descripcion))
             {
                 this.MessageError = "Descripcion ya registrada";
-                ModelState.AddModelError(string.Empty, MessageError);
-                return Page();
-            }
-            if (ExistProduct(Producto.Id))
-            {
-                MessageError = "ID ya registrada";
-                return Page();
-            }
-            if (ExistDescription(Producto.Descripcion))
-            {
-                MessageError = "Descripcion ya registrada";
-                return Page();
+                return null;
             }
             _context.Productos.Add(Producto);
             return await AddNewValue(_context);

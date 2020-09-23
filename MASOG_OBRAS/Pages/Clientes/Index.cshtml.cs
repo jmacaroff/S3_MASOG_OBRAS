@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Clientes
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BaseIndexPage<Cliente>
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -19,11 +20,15 @@ namespace MASOG_OBRAS.Pages.Clientes
             _context = context;
         }
 
-        public IList<Cliente> Cliente { get;set; }
+        public IList<Cliente> Clientes { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNumber, int pageSize)
         {
-            Cliente = await _context.Clientes.ToListAsync();
+            pageNumber = pageNumber == 0 ? 1 : pageNumber;
+            pageSize = pageSize == 0 ? 10 : pageSize;
+            this.CurrentPage = pageNumber;
+            Init(await _context.Clientes.ToListAsync(), pageNumber, pageSize);
+            Clientes = LoadPage();
         }
     }
 }

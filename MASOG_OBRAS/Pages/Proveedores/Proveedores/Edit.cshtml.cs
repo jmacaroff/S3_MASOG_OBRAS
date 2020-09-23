@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Proveedores;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
 {
-    public class EditModel : PageModel
+    public class EditModel : BaseEditPage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -49,29 +50,7 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             }
 
             _context.Attach(Proveedor).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProveedorExists(Proveedor.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool ProveedorExists(int id)
-        {
-            return _context.Proveedores.Any(e => e.Id == id);
+            return await UpdateValue(_context);
         }
     }
 }

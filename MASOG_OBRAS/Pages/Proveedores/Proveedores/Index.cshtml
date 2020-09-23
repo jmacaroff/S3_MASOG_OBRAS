@@ -8,59 +8,86 @@
 <h1>Proveedores</h1>
 
 <p>
-    <a asp-page="Create">Agregar proveedor</a>
+    <a asp-page="Create" class="btn btn-primary">Agregar proveedor</a>
 </p>
+<!-- Campo de Busqueda CUIT -->
+<form action="./Proveedores/Details" method="get">
+    <div class="form-group row align-items-end">
+        <div class="col-2">
+            <label for="inputid">Buscar por CUIT</label>
+            <input type="text" class="form-control" id="inputcuit" name="cuit" required>
+        </div>
+        <div class="col-10">
+            <button type="submit" value="Search" class="btn btn-primary">Buscar</button>
+        </div>
+    </div>
+</form>
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor[0].RazonSocial)
+                @Html.DisplayNameFor(model => model.Proveedores[0].RazonSocial)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor[0].CUIT)
+                @Html.DisplayNameFor(model => model.Proveedores[0].CUIT)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor[0].Direccion)
+                @Html.DisplayNameFor(model => model.Proveedores[0].Direccion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor[0].Telefono)
+                @Html.DisplayNameFor(model => model.Proveedores[0].Telefono)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor[0].Correo)
+                @Html.DisplayNameFor(model => model.Proveedores[0].Correo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor[0].Observacion)
+                @Html.DisplayNameFor(model => model.Proveedores[0].Observacion)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Proveedor) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RazonSocial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CUIT)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observacion)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Proveedores)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RazonSocial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CUIT)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<div class="row justify-content-end">
+    <div class="col-1">
+        @if (Model.HasPrevious())
+        {
+            <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage -1)">Anterior</a>}
+    </div>
+    <div class="col-1">
+        @if (Model.HasNext())
+        {
+            <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Siguiente</a>}
+    </div>
+</div>
