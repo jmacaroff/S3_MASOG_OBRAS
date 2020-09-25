@@ -35,9 +35,14 @@
                     <input class="form-check-input" asp-for="Producto.Activo" />@Html.DisplayNameFor(model => model.Producto.Activo)
                 </label>
             </div>
+
+            @* Mensaje que muestra el error en la validación. *@
+
             @if (Model.MessageError != null)
             {
-                <div class="alert alert-warning" role="alert">@Model.MessageError</div>}
+                <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+            }
+
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>

@@ -1,0 +1,81 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Inventarios.Depositos.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Depósitos</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Nuevo depósito</a>
+</p>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por ID o Descripción:&nbsp;
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Depositos[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Depositos[0].Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Depositos[0].Direccion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Depositos)
+        {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.Id)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Depositos.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Depositos.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Depositos.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Depositos.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>

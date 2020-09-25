@@ -48,10 +48,20 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             {
                 return Page();
             }
+            if (ExistDescription(Producto.Descripcion, Producto.Id))
+            {
+                this.MessageError = "Descripción ya registrada.";
+                return null;
+            }
 
             _context.Attach(Producto).State = EntityState.Modified;
-
             return await UpdateValue(_context);
+        }
+
+        private bool ExistDescription(string description, string ID)
+        {
+            Producto producto = _context.Productos.Where(p => p.Descripcion == description && p.Id != ID).FirstOrDefault<Producto>();
+            return producto != null;
         }
 
     }

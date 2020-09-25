@@ -42,6 +42,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Clientes[0].Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Clientes[0].Nombre)
             </th>
             <th>
@@ -62,28 +65,31 @@
     <tbody>
         @foreach (var item in Model.Clientes)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DNI)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Direccion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefono)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Correo)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-                </td>
-            </tr>
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.Id)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.DNI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

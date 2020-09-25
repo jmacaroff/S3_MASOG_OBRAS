@@ -39,6 +39,14 @@
                 <input asp-for="Cliente.Correo" class="form-control" />
                 <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
             </div>
+
+            @* Mensaje que muestra el error en la validación. *@
+
+            @if (Model.MessageError != null)
+            {
+                <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+            }
+
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>

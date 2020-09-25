@@ -37,6 +37,11 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             {
                 return Page();
             }
+            if (ExistRazonSocial(Proveedor.RazonSocial))
+            {
+                this.MessageError = "Cliente ya registrado.";
+                return null;
+            }
             if (ExistCuit(Proveedor.CUIT))
             {
                 this.MessageError = "CUIT ya registrado";
@@ -46,6 +51,11 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             return await AddNewValue(_context); ;
         }
 
+        private bool ExistRazonSocial(string nombre)
+        {
+            Proveedor proveedor = _context.Proveedores.Where(p => p.RazonSocial == nombre).FirstOrDefault<Proveedor>();
+            return proveedor != null;
+        }
         private bool ExistCuit(double cuit)
         {
             Proveedor proveedor = _context.Proveedores.Where(p => p.CUIT == cuit).FirstOrDefault<Proveedor>();

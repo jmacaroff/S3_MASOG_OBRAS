@@ -48,9 +48,29 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             {
                 return Page();
             }
+            if (ExistRazonSocial(Proveedor.RazonSocial, Proveedor.Id))
+            {
+                this.MessageError = "Cliente ya registrado.";
+                return null;
+            }
+            if (ExistCuit(Proveedor.CUIT, Proveedor.Id))
+            {
+                this.MessageError = "CUIT ya registrado";
+                return null;
+            }
 
             _context.Attach(Proveedor).State = EntityState.Modified;
             return await UpdateValue(_context);
+        }
+        private bool ExistRazonSocial(string nombre, int ID)
+        {
+            Proveedor proveedor = _context.Proveedores.Where(p => p.RazonSocial == nombre && p.Id != ID).FirstOrDefault<Proveedor>();
+            return proveedor != null;
+        }
+        private bool ExistCuit(double cuit, int ID)
+        {
+            Proveedor proveedor = _context.Proveedores.Where(p => p.CUIT == cuit && p.Id != ID).FirstOrDefault<Proveedor>();
+            return proveedor != null;
         }
     }
 }

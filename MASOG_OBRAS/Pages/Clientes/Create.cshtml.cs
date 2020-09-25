@@ -28,19 +28,6 @@ namespace MASOG_OBRAS.Pages.Clientes
         [BindProperty]
         public Cliente Cliente { get; set; }
 
-        private bool ExistNombre(string nombre)
-        {
-            Cliente producto = _context.Clientes.Where(p => p.Nombre == nombre).FirstOrDefault<Cliente>();
-            return producto != null;
-        }
-
-        private bool ExistDNI(double dni)
-        {
-            Cliente cliente = _context.Clientes.Where(p => p.DNI == dni).FirstOrDefault<Cliente>();
-            return cliente != null;
-        }
-
-
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -51,16 +38,28 @@ namespace MASOG_OBRAS.Pages.Clientes
             }
             if (ExistNombre(Cliente.Nombre))
             {
-                this.MessageError = "Cliente ya registrado";
+                this.MessageError = "Cliente ya registrado.";
                 return null;
             }
             if (ExistDNI(Cliente.DNI))
             {
-                this.MessageError = "DNI ya registrado";
+                this.MessageError = "DNI ya registrado.";
                 return null;
             }
             _context.Clientes.Add(Cliente);
             return await AddNewValue(_context);
+        }
+
+        private bool ExistNombre(string nombre)
+        {
+            Cliente cliente = _context.Clientes.Where(p => p.Nombre == nombre).FirstOrDefault<Cliente>();
+            return cliente != null;
+        }
+
+        private bool ExistDNI(double dni)
+        {
+            Cliente cliente = _context.Clientes.Where(p => p.DNI == dni).FirstOrDefault<Cliente>();
+            return cliente != null;
         }
     }
 }

@@ -45,6 +45,8 @@
                 <span asp-validation-for="Proveedor.Observacion" class="text-danger"></span>
             </div>
 
+            @* Mensaje que muestra el error en la validación. *@
+
             @if (Model.MessageError != null)
             {
                 <div class="alert alert-warning" role="alert">@Model.MessageError</div>

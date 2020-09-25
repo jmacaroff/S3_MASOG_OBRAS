@@ -13,11 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.Models;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Inventarios.Productos
+namespace MASOG_OBRAS.Pages.Inventarios.Depositos
 {
     public class CreateModel : BaseCreatePage
     {
-      
+
         private readonly ProductContext _context;
 
         public CreateModel(ProductContext context)
@@ -26,12 +26,12 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
         }
 
         public IActionResult OnGet()
-        {            
+        {
             return Page();
         }
 
         [BindProperty]
-        public Producto Producto { get; set; }
+        public Deposito Deposito { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -39,31 +39,31 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             {
                 return Page();
             }
-            if (ExistProduct(Producto.Id))
+            if (ExistDeposito(Deposito.Id))
             {
-                this.MessageError = "Producto ya registrado.";
+                this.MessageError = "Depósito ya registrado.";
                 return null;
             }
-            if (ExistDescription(Producto.Descripcion))
+            if (ExistDescription(Deposito.Descripcion))
             {
                 this.MessageError = "Descripción ya registrada.";
                 return null;
             }
-            _context.Productos.Add(Producto);
+
+            _context.Depositos.Add(Deposito);
             return await AddNewValue(_context);
         }
 
-        private bool ExistProduct(string id)
+        private bool ExistDeposito(string id)
         {
-            Producto producto = _context.Productos.Find(id);
-            return producto != null;
+            Deposito deposito = _context.Depositos.Find(id);
+            return deposito != null;
         }
 
         private bool ExistDescription(string description)
         {
-            Producto producto = _context.Productos.Where(p => p.Descripcion == description).FirstOrDefault<Producto>();
-            return producto != null;
+            Deposito deposito = _context.Depositos.Where(d => d.Descripcion == description).FirstOrDefault<Deposito>();
+            return deposito != null;
         }
-
     }
 }

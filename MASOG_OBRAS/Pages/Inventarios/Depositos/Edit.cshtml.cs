@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
-using EFDataAccessLibrary.Models.Clientes;
+using EFDataAccessLibrary.Models.Inventarios;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Clientes
+namespace MASOG_OBRAS.Pages.Inventarios.Depositos
 {
     public class EditModel : BaseEditPage
     {
@@ -22,18 +22,18 @@ namespace MASOG_OBRAS.Pages.Clientes
         }
 
         [BindProperty]
-        public Cliente Cliente { get; set; }
+        public Deposito Deposito { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Cliente = await _context.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            Deposito = await _context.Depositos.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Cliente == null)
+            if (Deposito == null)
             {
                 return NotFound();
             }
@@ -48,31 +48,20 @@ namespace MASOG_OBRAS.Pages.Clientes
             {
                 return Page();
             }
-            if (ExistNombre(Cliente.Nombre, Cliente.Id))
+            if (ExistDescription(Deposito.Descripcion, Deposito.Id))
             {
-                this.MessageError = "Cliente ya registrado.";
-                return null;
-            }
-            if (ExistDNI(Cliente.DNI, Cliente.Id))
-            {
-                this.MessageError = "DNI ya registrado.";
+                this.MessageError = "Descripción ya registrada.";
                 return null;
             }
 
-            _context.Attach(Cliente).State = EntityState.Modified;
+            _context.Attach(Deposito).State = EntityState.Modified;
             return await UpdateValue(_context);
         }
 
-        private bool ExistNombre(string nombre, int ID)
+        private bool ExistDescription(string description, string ID)
         {
-            Cliente cliente = _context.Clientes.Where(p => p.Nombre == nombre && p.Id != ID).FirstOrDefault<Cliente>();
-            return cliente != null;
-        }
-
-        private bool ExistDNI(double dni, int ID)
-        {
-            Cliente cliente = _context.Clientes.Where(p => p.DNI == dni && p.Id != ID).FirstOrDefault<Cliente>();
-            return cliente != null;
+            Deposito deposito = _context.Depositos.Where(d => d.Descripcion == description && d.Id != ID).FirstOrDefault<Deposito>();
+            return deposito != null;
         }
     }
 }
