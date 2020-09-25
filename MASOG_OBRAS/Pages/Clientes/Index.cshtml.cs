@@ -20,15 +20,57 @@ namespace MASOG_OBRAS.Pages.Clientes
             _context = context;
         }
 
-        public IList<Cliente> Clientes { get;set; }
+        // public IList<Cliente> Clientes { get;set; }
 
-        public async Task OnGetAsync(int pageNumber, int pageSize)
+        public PaginatedList<Cliente> Clientes { get; set; }
+
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+
+        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
-            pageNumber = pageNumber == 0 ? 1 : pageNumber;
-            pageSize = pageSize == 0 ? 10 : pageSize;
-            this.CurrentPage = pageNumber;
-            Init(await _context.Clientes.ToListAsync(), pageNumber, pageSize);
-            Clientes = LoadPage();
+            //inicializo el orden actual
+            CurrentSort = sortOrder;
+
+            // controlamos los filtros de busqueda
+            if (searchString != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            //Agrego filtro de busqueda
+            CurrentFilter = searchString;
+
+
+            IQueryable<Cliente> clientesIQ = from c in _context.Clientes select c;
+
+            //veo si el buscador esta vacio para poder realizar la busqueda
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clientesIQ = clientesIQ.Where(c => c.Nombre.Contains(searchString));
+            }
+
+
+            ////analizo los casos para el ordenamiento
+            switch (sortOrder)
+            {
+                //    case "precio_desc":
+                //        productosIQ = productosIQ.OrderBy(p => p.Precio);
+                //        break;
+                //    case "name_dec":
+                //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
+                //        break;
+                default:
+                    clientesIQ = clientesIQ.OrderBy(c => c.Id);
+                    break;
+            }
+
+            int pageSize = 2;
+            Clientes = await PaginatedList<Cliente>.CreateAsync(clientesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }
 }

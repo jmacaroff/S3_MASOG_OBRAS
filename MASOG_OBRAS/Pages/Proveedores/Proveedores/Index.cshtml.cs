@@ -20,15 +20,58 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             _context = context;
         }
 
-        public IList<Proveedor> Proveedores { get;set; }
+        // public IList<Proveedor> Proveedores { get;set; }
 
-        public async Task OnGetAsync(int pageNumber, int pageSize)
+        public PaginatedList<Proveedor> Proveedores { get; set; }
+
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+
+        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
-            pageNumber = pageNumber == 0 ? 1 : pageNumber;
-            pageSize = pageSize == 0 ? 10 : pageSize;
-            this.CurrentPage = pageNumber;
-            Init(await _context.Proveedores.ToListAsync(), pageNumber, pageSize);
-            Proveedores = LoadPage();
+            //inicializo el orden actual
+            CurrentSort = sortOrder;
+
+            // controlamos los filtros de busqueda
+            if (searchString != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            //Agrego filtro de busqueda
+            CurrentFilter = searchString;
+
+
+            IQueryable<Proveedor> proveedoresIQ = from p in _context.Proveedores select p;
+
+            //veo si el buscador esta vacio para poder realizar la busqueda
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                proveedoresIQ = proveedoresIQ.Where(p => p.RazonSocial.Contains(searchString));
+            }
+
+
+            ////analizo los casos para el ordenamiento
+            switch (sortOrder)
+            {
+                //    case "precio_desc":
+                //        productosIQ = productosIQ.OrderBy(p => p.Precio);
+                //        break;
+                //    case "name_dec":
+                //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
+                //        break;
+                default:
+                    proveedoresIQ = proveedoresIQ.OrderBy(p => p.Id);
+                    break;
+            }
+
+            int pageSize = 2;
+            Proveedores = await PaginatedList<Proveedor>.CreateAsync(proveedoresIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+
         }
 
     }

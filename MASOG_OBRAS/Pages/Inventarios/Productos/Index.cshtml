@@ -9,6 +9,9 @@
 <p>
     <a asp-page="Create" class="btn btn-primary">Nuevo Producto</a>
 </p>
+
+<!-- Campo de Búsqueda ID -->
+
 @*<form action="Productos/Details" method="get">
         <div class="form-group row align-items-end">
             <div class="col-2">
@@ -20,12 +23,13 @@
             </div>
         </div>
     </form>*@
+
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Buscar por Id | Descripción:
+            Buscar por ID o Descripción:&nbsp;
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
             <a asp-page="./Index">Volver a la Lista Completa</a>
         </p>
     </div>
@@ -35,7 +39,7 @@
     <thead>
         <tr>
             <th>
-                Id
+                ID
             </th>
             <th>
                 Descripcion
@@ -91,7 +95,7 @@
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Ver detalle</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
                     <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
                 </td>
             </tr>

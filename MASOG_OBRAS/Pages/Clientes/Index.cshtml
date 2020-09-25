@@ -8,19 +8,33 @@
 <h1>Clientes</h1>
 
 <p>
-    <a asp-page="Create" class="btn btn-primary">Agregar Cliente</a>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Cliente</a>
 </p>
 
-<!-- Campo de Busqueda Nombre -->
-<form action="./Proveedores/Details" method="get">
-    <div class="form-group row align-items-end">
-        <div class="col-2">
-            <label for="inputid">Buscar por Nombre</label>
-            <input type="text" class="form-control" id="inputcuit" name="cuit" required>
+<!-- Campo de Búsqueda Nombre -->
+
+@*<form action="./Proveedores/Details" method="get">
+        <div class="form-group row align-items-end">
+            <div class="col-2">
+                <label for="inputid">Buscar por Nombre</label>
+                <input type="text" class="form-control" id="inputcuit" name="cuit" required>
+            </div>
+            <div class="col-10">
+                <button type="submit" value="Search" class="btn btn-primary">Buscar</button>
+            </div>
         </div>
-        <div class="col-10">
-            <button type="submit" value="Search" class="btn btn-primary">Buscar</button>
-        </div>
+    </form>*@
+
+<!-- Campo de Búsqueda por Nombre -->
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por Nombre:&nbsp;
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
     </div>
 </form>
 
@@ -73,15 +87,36 @@
         }
     </tbody>
 </table>
-<div class="row justify-content-end">
-    <div class="col-1">
-        @if (Model.HasPrevious())
-        {
-            <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage -1)">Anterior</a>}
-    </div>
-    <div class="col-1">
-        @if (Model.HasNext())
-        {
-            <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Siguiente</a>}
-    </div>
-</div>
+
+@{
+    var prevDisabled = !Model.Clientes.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Clientes.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Clientes.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Clientes.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>
+
+@*<div class="row justify-content-end">
+        <div class="col-1">
+            @if (Model.HasPrevious())
+            {
+                <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage -1)">Anterior</a>}
+        </div>
+        <div class="col-1">
+            @if (Model.HasNext())
+            {
+                <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Siguiente</a>}
+        </div>
+    </div>*@
