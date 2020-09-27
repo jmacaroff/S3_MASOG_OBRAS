@@ -1,0 +1,51 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.Ordenes.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Eliminar</h1>
+
+<h3>¿Estás seguro de que quieres eliminar esta orden?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orden.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Orden.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orden.Fecha)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Orden.Fecha)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orden.FechaEntrega)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Orden.FechaEntrega)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orden.Observacion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Orden.Observacion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orden.Proveedor)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Orden.Proveedor.RazonSocial)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Orden.Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-page="./Index">Volver al listado</a>
+    </form>
+</div>

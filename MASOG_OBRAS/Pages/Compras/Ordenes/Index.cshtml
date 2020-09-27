@@ -1,0 +1,95 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.Ordenes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Órdenes</h1>
+
+<p>
+    <a asp-page="Create">Nueva Orden</a>
+</p>
+
+<!-- Campo de Búsqueda por Fecha -->
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por Fecha:&nbsp;
+            <input type="date" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ordenes[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ordenes[0].Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ordenes[0].FechaEntrega)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ordenes[0].Observacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ordenes[0].Proveedor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Ordenes)
+        {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.Id)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEntrega)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Ordenes.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Ordenes.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Ordenes.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Ordenes.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>

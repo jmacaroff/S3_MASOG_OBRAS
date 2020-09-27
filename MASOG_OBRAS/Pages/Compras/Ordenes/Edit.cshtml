@@ -1,0 +1,61 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.Ordenes.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Editar</h1>
+
+<h4>Orden</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Orden.Id" class="control-label"></label>
+                <input asp-for="Orden.Id" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Orden.ProveedorId" class="control-label"></label>
+                <select asp-for="Orden.ProveedorId" class="form-control" asp-items="ViewBag.ProveedorId"></select>
+                <span asp-validation-for="Orden.ProveedorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Orden.Fecha" class="control-label"></label>
+                <input asp-for="Orden.Fecha" class="form-control" />
+                <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Orden.FechaEntrega" class="control-label"></label>
+                <input asp-for="Orden.FechaEntrega" class="form-control" />
+                <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Orden.Observacion" class="control-label"></label>
+                <input asp-for="Orden.Observacion" class="form-control" />
+                <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
+            </div>
+
+            @* Mensaje que muestra el error en la validación. *@
+
+            @if (Model.MessageError != null)
+            {
+                <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Volver al listado</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

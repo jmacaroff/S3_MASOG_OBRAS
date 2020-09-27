@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFDataAccessLibrary.Models.Compras;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +37,8 @@ namespace EFDataAccessLibrary.Models.Inventarios
         [DisplayName("Activo")]
         [Required]
         public bool Activo { get; set; }
+
+        public ICollection<OrdenItem> OrdenItems { get; set; }
     }
 }
 

@@ -9,9 +9,14 @@
 
 <h3>¿Estás seguro de que quieres eliminar este depósito?</h3>
 <div>
-    <h4>Deposito</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Deposito.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Deposito.Id)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Deposito.Descripcion)
         </dt>

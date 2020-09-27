@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFDataAccessLibrary.Models.Compras;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -37,5 +38,7 @@ namespace EFDataAccessLibrary.Models.Proveedores
 
         [DisplayName("Observación")]
         public string Observacion { get; set; }
+
+        public ICollection<Orden> Ordenes { get; set; }
     }
 }

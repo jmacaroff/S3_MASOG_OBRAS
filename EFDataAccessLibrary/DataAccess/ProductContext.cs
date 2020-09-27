@@ -1,6 +1,7 @@
 ﻿using EFDataAccessLibrary.Models.Clientes;
 using EFDataAccessLibrary.Models.Inventarios;
 using EFDataAccessLibrary.Models.Proveedores;
+using EFDataAccessLibrary.Models.Compras;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace EFDataAccessLibrary.DataAccess
         public DbSet<Deposito> Depositos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
+        public DbSet<OrdenItem> OrdenItems { get; set; }
     }
 
 }

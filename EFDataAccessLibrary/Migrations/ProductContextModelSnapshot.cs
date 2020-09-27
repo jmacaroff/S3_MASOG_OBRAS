@@ -47,6 +47,64 @@ namespace EFDataAccessLibrary.Migrations
                     b.ToTable("Clientes");
                 });
 
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.Orden", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaEntrega")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProveedorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProveedorId");
+
+                    b.ToTable("Ordenes");
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.OrdenItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrdenId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductoId")
+                        .IsRequired()
+                        .HasColumnType("varchar(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("OrdenItems");
+                });
+
             modelBuilder.Entity("EFDataAccessLibrary.Models.Inventarios.Deposito", b =>
                 {
                     b.Property<string>("Id")
@@ -116,6 +174,30 @@ namespace EFDataAccessLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Proveedores");
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.Orden", b =>
+                {
+                    b.HasOne("EFDataAccessLibrary.Models.Proveedores.Proveedor", "Proveedor")
+                        .WithMany("Ordenes")
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.OrdenItem", b =>
+                {
+                    b.HasOne("EFDataAccessLibrary.Models.Compras.Orden", "Orden")
+                        .WithMany("OrdenItems")
+                        .HasForeignKey("OrdenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EFDataAccessLibrary.Models.Inventarios.Producto", "Producto")
+                        .WithMany("OrdenItems")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

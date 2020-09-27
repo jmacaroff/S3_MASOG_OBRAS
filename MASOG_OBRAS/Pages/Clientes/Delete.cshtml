@@ -9,9 +9,14 @@
 
 <h3>Esta seguro que quiere eliminar este item?</h3>
 <div>
-    <h4>Cliente</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Id)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cliente.Nombre)
         </dt>
