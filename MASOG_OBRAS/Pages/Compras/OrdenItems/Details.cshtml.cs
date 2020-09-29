@@ -7,17 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Compras;
-using Microsoft.Data.SqlClient;
-using System.Reflection;
-using EFDataAccessLibrary.Models;
-using MASOG_OBRAS.Classes;
-using EFDataAccessLibrary.Models.Inventarios;
-using EFDataAccessLibrary.Models.Proveedores;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
-
-namespace MASOG_OBRAS.Pages.Compras.Ordenes
+namespace MASOG_OBRAS.Pages.Compras.OrdenItems
 {
     public class DetailsModel : PageModel
     {
@@ -28,8 +19,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             _context = context;
         }
 
-        public Orden Orden { get; set; }
-        public List<OrdenItem> OrdenItems { get; set; }
+        public OrdenItem OrdenItem { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -38,14 +28,11 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
                 return NotFound();
             }
 
-            Orden = await _context.Ordenes
-                .Include(o => o.Proveedor).FirstOrDefaultAsync(m => m.Id == id);
-
-            OrdenItems = await _context.OrdenItems.Where(o => o.OrdenId == Orden.Id)
+            OrdenItem = await _context.OrdenItems
                 .Include(o => o.Orden)
-                .Include(o => o.Producto).ToListAsync();
+                .Include(o => o.Producto).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Orden == null)
+            if (OrdenItem == null)
             {
                 return NotFound();
             }
