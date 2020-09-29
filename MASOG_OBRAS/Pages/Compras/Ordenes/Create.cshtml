@@ -6,15 +6,84 @@
 }
 
 <h1>Nueva orden</h1>
-
 <div class="row">
     <div class="col-md-10">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Orden.ProveedorId" class="control-label"></label>
-                <select asp-for="Orden.ProveedorId" class="form-control" asp-items="ViewBag.ProveedorId"></select>
+                <label class="control-label">Seleccione proveedor</label>
+                <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
             </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrdenItem.Precio)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.OrdenItems)
+                    {
+                        <tr>
+                            <th>
+                                @item.ProductoId
+                            </th>
+                            <th>
+                                @item.Cantidad
+                            </th>
+                            <th>
+                                @item.Precio
+                            </th>
+                            <th>
+                                @item.Observacion
+                            </th>
+                        </tr>
+                    }
+                </thead>
+                <tbody>
+                    @if (Model.HasProduct)
+                    {
+                        <tr>
+                            <th>
+                                <div class="form-group">
+                                    <select asp-for="OrdenItem.ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <input asp-for="OrdenItem.Cantidad" class="form-control" />
+                                    <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <input asp-for="OrdenItem.Precio" class="form-control" />
+                                    <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <input asp-for="OrdenItem.Observacion" class="form-control" />
+                                    <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <input type="submit" value="Agregar" class="btn btn-primary" asp-page-handler="AddItem" />
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+        <form method="post">
             <div class="form-group">
                 <label asp-for="Orden.Fecha" class="control-label"></label>
                 <input asp-for="Orden.Fecha" class="form-control" />
@@ -30,81 +99,13 @@
                 <input asp-for="Orden.Observacion" class="form-control" />
                 <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
             </div>
-
-            @* Mensaje que muestra el error en la validación. *@
-
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
+            </div>
             @if (Model.MessageError != null)
             {
-                <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+            <div class="alert alert-warning" role="alert">@Model.MessageError</div>
             }
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrdenItem.Id)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrdenItem.Precio)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
-                    </th>
-                    <th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>
-                        <div class="form-group">
-                            <input asp-for="OrdenItem.OrdenId" class="form-control" />
-                        </div>
-                    </th>
-                    <th>
-                        <div class="form-group">
-                            <select asp-for="OrdenItem.ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="form-group">
-                            <input asp-for="OrdenItem.Cantidad" class="form-control" />
-                            <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="form-group">
-                            <input asp-for="OrdenItem.Precio" class="form-control" />
-                            <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="form-group">
-                            <input asp-for="OrdenItem.Observacion" class="form-control" />
-                            <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
-                        </div>
-                    </th>
-                    <th>
-                        <input type="button" value="Eliminar" class="btn btn-danger" />
-                    </th>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>
-                        <input class="btn btn-default" type="button" value="Agregar" />
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-            </div>
         </form>
     </div>
 </div>

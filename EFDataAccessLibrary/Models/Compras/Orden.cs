@@ -24,13 +24,13 @@ namespace EFDataAccessLibrary.Models.Compras
         [Required(ErrorMessage = "Se requiere una fecha.")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha")]
-        public DateTime Fecha { get; set; }
+        public DateTime Fecha { get; set; } = DateTime.Now;
 
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Se requiere una fecha de entrega estimada.")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Entrega estimada")]
-        public DateTime FechaEntrega { get; set; }
+        public DateTime FechaEntrega { get; set; } = DateTime.Now.AddDays(1);
 
         [DisplayName("Observación")]
         public string Observacion { get; set; }

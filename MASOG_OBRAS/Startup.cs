@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
+using Microsoft.Extensions.Options;
 
 namespace MASOG_OBRAS
 {
@@ -31,9 +32,14 @@ namespace MASOG_OBRAS
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
-            //Esto es por defecto, AddRazorRuntimeCompilation() permite modificar el html y ver los cambios sin cerrar navegador
+            ////Esto es por defecto, AddRazorRuntimeCompilation() permite modificar el html y ver los cambios sin cerrar navegador
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
+
+            services.AddSession(options => {
+                options.Cookie.Name = ".MasogObras.Session";
+                options.Cookie.IsEssential = true;
+            });
 
             //services.AddDbContext<MASOG_OBRASContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("MASOG_OBRASContext")));
@@ -57,6 +63,7 @@ namespace MASOG_OBRAS
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
