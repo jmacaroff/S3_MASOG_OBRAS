@@ -32,13 +32,14 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         [BindProperty]
         public int ProveedorId { get; set; }
         [BindProperty]
-        public int ProductoId { get; set; }
+        public string ProductoId { get; set; }
         [BindProperty]
         public Orden Orden { get; set; }
         [BindProperty]
         public OrdenItem OrdenItem { get; set; }
         [BindProperty]
         public Producto Producto { get; set; }
+
         public List<OrdenItem> OrdenItems { get; set; }
 
         public CreateModel(ProductContext context)
@@ -61,7 +62,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             {
                 HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
             }
-            Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId.ToString());
+            Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
             HasProduct = true;
             HasProveedor = true;
             OrdenItem.Precio = Producto.Precio;
