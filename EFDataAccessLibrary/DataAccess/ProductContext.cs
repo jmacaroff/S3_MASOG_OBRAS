@@ -18,6 +18,8 @@ namespace EFDataAccessLibrary.DataAccess
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Orden> Ordenes { get; set; }
         public DbSet<OrdenItem> OrdenItems { get; set; }
+        public DbSet<FacturaCompra> FacturasCompra { get; set; }
+        public DbSet<FacturaCompraItem> FacturaCompraItems { get; set; }
     }
 
 }

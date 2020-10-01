@@ -37,8 +37,8 @@ namespace EFDataAccessLibrary.Models.Inventarios
         [DisplayName("Activo")]
         [Required]
         public bool Activo { get; set; }
-
         public ICollection<OrdenItem> OrdenItems { get; set; }
+        public ICollection<FacturaCompraItem> FacturaCompraItems { get; set; }
     }
 }
 
