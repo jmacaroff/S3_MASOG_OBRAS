@@ -1,19 +1,75 @@
 ﻿@page
 @model MASOG_OBRAS.Pages.Compras.Ordenes.CreateModel
-
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Nueva orden</h1>
-<div class="row">
-    <div class="col-md-10">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label class="control-label">Seleccione proveedor</label>
-                <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <form method="post" class="mb-4">
+                <h2>Nueva orden</h2>
+                <div class="form-group">
+                    <label class="control-label">Seleccione proveedor</label>
+                    <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Producto</label>
+                    <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                </div>
+                <input type="submit" value="Consultar Producto" class="btn btn-primary" asp-page-handler="Product" />
+            </form>
+        </div>
+        @if (Model.HasProduct)
+        {
+            <div class="col-8">
+                <form method="post" class="mb-4">
+                    <h2>Resultado de consulta</h2>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="Producto.Id" class="control-label">ID del Producto</label>
+                                <input asp-for="Producto.Id" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label asp-for="Producto.Descripcion" class="control-label">Descripcion</label>
+                                <input asp-for="Producto.Descripcion" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="OrdenItem.Cantidad" class="control-label">Cantidad</label>
+                                <input asp-for="OrdenItem.Cantidad" class="form-control" />
+                                <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="OrdenItem.Precio" class="control-label">Precio</label>
+                                <input asp-for="OrdenItem.Precio" class="form-control" />
+                                <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OrdenItem.Observacion" class="control-label">Observacion(*)</label>
+                        <input asp-for="OrdenItem.Observacion" class="form-control" />
+                        <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
+                    </div>
+                    <input asp-for="OrdenItem.ProductoId" class="form-control" hidden />
+                    <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
+                </form>
             </div>
+        }
+    </div>
+    <div class="row">
+        @if (Model.HasOrdenItems)
+        {
+            <h2>Productos agregados</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -29,7 +85,12 @@
                         <th>
                             @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
                         </th>
+                        <th>
+                            Operacion
+                        </th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach (var item in Model.OrdenItems)
                     {
                         <tr>
@@ -45,75 +106,65 @@
                             <th>
                                 @item.Observacion
                             </th>
-                        </tr>
-                    }
-                </thead>
-                <tbody>
-                    @if (Model.HasProduct)
-                    {
-                        <tr>
                             <th>
-                                <div class="form-group">
-                                    <select asp-for="OrdenItem.ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
-                                </div>
-                            </th>
-                            <th>
-                                <div class="form-group">
-                                    <input asp-for="OrdenItem.Cantidad" class="form-control" />
-                                    <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
-                                </div>
-                            </th>
-                            <th>
-                                <div class="form-group">
-                                    <input asp-for="OrdenItem.Precio" class="form-control" />
-                                    <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
-                                </div>
-                            </th>
-                            <th>
-                                <div class="form-group">
-                                    <input asp-for="OrdenItem.Observacion" class="form-control" />
-                                    <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
-                                </div>
-                            </th>
-                            <th>
-                                <input type="submit" value="Agregar" class="btn btn-primary" asp-page-handler="AddItem" />
+                                <form method="post">
+                                    <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
+                                </form>
                             </th>
                         </tr>
                     }
                 </tbody>
             </table>
-        </form>
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Orden.Fecha" class="control-label"></label>
-                <input asp-for="Orden.Fecha" class="form-control" />
-                <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">
+                No hay productos agregados a la orden
             </div>
-            <div class="form-group">
-                <label asp-for="Orden.FechaEntrega" class="control-label"></label>
-                <input asp-for="Orden.FechaEntrega" class="form-control" />
-                <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Orden.Observacion" class="control-label"></label>
-                <input asp-for="Orden.Observacion" class="form-control" />
-                <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
-            </div>
-            @if (Model.MessageError != null)
-            {
-            <div class="alert alert-warning" role="alert">@Model.MessageError</div>
-            }
-        </form>
+        }
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form method="post">
+                <h2>Datos adicionales</h2>
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label asp-for="Orden.Fecha" class="control-label"></label>
+                        <input asp-for="Orden.Fecha" class="form-control" />
+                        <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-2">
+                        <label asp-for="Orden.FechaEntrega" class="control-label"></label>
+                        <input asp-for="Orden.FechaEntrega" class="form-control" />
+                        <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-4">
+                        <label asp-for="Orden.Observacion" class="control-label">Observacion(*)</label>
+                        <input asp-for="Orden.Observacion" class="form-control" />
+                        <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <div class="form-group">
+                            <a asp-page="Index" class="btn btn-danger">Cancelar</a>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="form-group">
+                            <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
+                        </div>
+                    </div>
+                </div>
+                @if (Model.MessageError != null)
+                {
+                    <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+                }
+            </form>
+        </div>
+
     </div>
 </div>
-
-<div>
-    <a asp-page="Index">Volver al listado</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
