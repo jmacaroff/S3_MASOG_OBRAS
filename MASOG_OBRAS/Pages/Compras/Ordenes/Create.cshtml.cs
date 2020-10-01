@@ -21,59 +21,85 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
 {
     public class CreateModel : BaseCreatePage
     {
-        private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
+        private readonly ProductContext _context;
         private readonly string LIST_KEY = "ListKey";
         private readonly string PROVEEDOR_KEY = "ProveedorKey";
-        public CreateModel(EFDataAccessLibrary.DataAccess.ProductContext context)
-        {
-            _context = context;
-        }
 
-        public IActionResult OnGet()
-        {
-            HttpContext.Session.Remove(LIST_KEY);
-            HttpContext.Session.Remove(PROVEEDOR_KEY);
-            loadViewData();
-            OrdenItems = new List<OrdenItem>();
-            return Page();
-        }
-        public bool HasProduct { get; set; } = true;
+
         public bool HasProveedor { get; set; } = false;
+        public bool HasProduct { get; set; } = false;
+        public bool HasOrdenItems { get; set; } = false;
         [BindProperty]
         public int ProveedorId { get; set; }
+        [BindProperty]
+        public string ProductoId { get; set; }
         [BindProperty]
         public Orden Orden { get; set; }
         [BindProperty]
         public OrdenItem OrdenItem { get; set; }
+        [BindProperty]
+        public Producto Producto { get; set; }
+
         public List<OrdenItem> OrdenItems { get; set; }
 
-
-        public void OnPostAddItem()
+        public CreateModel(ProductContext context)
         {
-            OrdenItem.OrdenId = Orden.Id;
-            List<OrdenItem> list = HttpContext.Session.GetComplexData<List<OrdenItem>>(LIST_KEY);
-            OrdenItems = list == null ? new List<OrdenItem>() : list;
-            OrdenItems.Add(OrdenItem);
-            HttpContext.Session.SetComplexData(LIST_KEY, OrdenItems);
+            _context = context;
+        }
+
+        public IActionResult OnGet(string id,string action)
+        {
+            HttpContext.Session.Remove(LIST_KEY);
+            HttpContext.Session.Remove(PROVEEDOR_KEY);
+            LoadOrdenItems();
+            LoadViewData();
+            return Page();
+        }
+        public void OnPostProduct()
+        {
             int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
             if (proveedorId == -1)
             {
                 HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
             }
-            loadViewData();
+            Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
+            HasProduct = true;
+            HasProveedor = true;
+            OrdenItem.Precio = Producto.Precio;
+            OrdenItem.ProductoId = Producto.Id;
+            LoadOrdenItems();
+            LoadViewData();
+        }
+
+        public void OnPostAddItem()
+        {
+            OrdenItem.OrdenId = Orden.Id;
+            LoadOrdenItems();
+            HasOrdenItems = true;
+            OrdenItems.Add(OrdenItem);
+            SaveOrdenItems();
+            LoadProveedorId();
+            LoadViewData();
+        }
+        public void OnPostRemoveItem(string id)
+        {
+            LoadOrdenItems();
+            OrdenItems = OrdenItems.Where(x => x.ProductoId != id).ToList();
+            HasOrdenItems = OrdenItems.Count != 0;
+            SaveOrdenItems();
+            LoadProveedorId();
+            LoadViewData();
         }
 
         public async Task<IActionResult> OnPostSaveOrder()
         {
-            Console.WriteLine(Orden);
-            List<OrdenItem> list = HttpContext.Session.GetComplexData<List<OrdenItem>>(LIST_KEY);
-            if (list == null)
+            LoadOrdenItems();
+            if (OrdenItems == null)
             {
                 return Page();
             }
             else
             {
-                OrdenItems = list;
                 Orden.OrdenItems = OrdenItems;
                 Orden.ProveedorId = (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
                 _context.Ordenes.Add(Orden);
@@ -81,12 +107,27 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             }
 
         }
-
-        private void loadViewData()
+        private void LoadProveedorId()
+        {
+            ProveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+            HasProveedor = ProveedorId != -1;
+        }
+        private void LoadOrdenItems()
+        {
+            List<OrdenItem> list = HttpContext.Session.GetComplexData<List<OrdenItem>>(LIST_KEY);
+            if (list == null)
+            {
+                OrdenItems = new List<OrdenItem>();
+            }else
+            {
+                OrdenItems = list;
+                HasOrdenItems = true;
+            }
+        }
+        private void LoadViewData()
         {
             if (ProveedorId != 0)
             {
-                HasProveedor = true;
                 ViewData["ProveedorId"] = new SelectList(_context.Proveedores.Where(x => x.Id == ProveedorId), "Id", "RazonSocial");
             }
             else
@@ -100,20 +141,16 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
                 {
                     list = list.Where(x => x.Id != item.ProductoId).ToList();
                 }
-                if(list.Count == 0)
-                {
-                    HasProduct = false;
-                }else
-                {
-                    HasProduct = true;
-                    ViewData["ProductoId"] = new SelectList(list, "Id", "Id");
-                }
-                
+                ViewData["ProductoId"] = new SelectList(list, "Id", "Id");
             }
             else
             {
                 ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Id");
             }
+        }
+        private void SaveOrdenItems()
+        {
+            HttpContext.Session.SetComplexData(LIST_KEY, OrdenItems);
         }
     }
 
