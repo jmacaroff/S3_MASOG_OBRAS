@@ -156,10 +156,16 @@
                         </div>
                     </div>
                 </div>
-                @if (Model.MessageError != null)
-                {
-                    <div class="alert alert-warning" role="alert">@Model.MessageError</div>
-                }
+                <div class="row">
+                    <div class="col-2">
+                        @if (Model.MessageError != null)
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                @Model.MessageError
+                            </div>
+                        }
+                    </div>
+                </div>
             </form>
         </div>
 
