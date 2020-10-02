@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Compras;
+using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Compras.OrdenItems
+namespace MASOG_OBRAS.Pages.Compras.Facturas
 {
-    public class EditModel : PageModel
+    public class EditModel : BaseEditPage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -21,7 +22,7 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenItems
         }
 
         [BindProperty]
-        public OrdenItem OrdenItem { get; set; }
+        public FacturaCompra FacturaCompra { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,16 +31,13 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenItems
                 return NotFound();
             }
 
-            OrdenItem = await _context.OrdenItems
-                .Include(o => o.Orden)
-                .Include(o => o.Producto).FirstOrDefaultAsync(m => m.Id == id);
+            FacturaCompra = await _context.FacturasCompra.Include(p => p.Proveedor).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (OrdenItem == null)
+            if (FacturaCompra == null)
             {
                 return NotFound();
             }
-           ViewData["OrdenId"] = new SelectList(_context.Ordenes, "Id", "Id");
-           ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Id");
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "RazonSocial");
             return Page();
         }
 
@@ -52,7 +50,7 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenItems
                 return Page();
             }
 
-            _context.Attach(OrdenItem).State = EntityState.Modified;
+            _context.Attach(FacturaCompra).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +58,7 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenItems
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrdenItemExists(OrdenItem.Id))
+                if (!FacturaCompraExists(FacturaCompra.Id))
                 {
                     return NotFound();
                 }
@@ -73,9 +71,9 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenItems
             return RedirectToPage("./Index");
         }
 
-        private bool OrdenItemExists(int id)
+        private bool FacturaCompraExists(int id)
         {
-            return _context.OrdenItems.Any(e => e.Id == id);
+            return _context.FacturasCompra.Any(e => e.Id == id);
         }
     }
 }

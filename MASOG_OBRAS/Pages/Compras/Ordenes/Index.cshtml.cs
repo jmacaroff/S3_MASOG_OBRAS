@@ -68,7 +68,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
                     break;
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
 
             // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
 

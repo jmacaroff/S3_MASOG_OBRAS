@@ -60,7 +60,7 @@ namespace EFDataAccessLibrary.Models.Compras
         [Range(1, int.MaxValue, ErrorMessage = "Sólo se aceptan números positivos.")]
         public int Cantidad { get; set; }
 
-        [DisplayName("Importe")]
+        [DisplayName("Precio")]
         [Required(ErrorMessage = "Se requiere un importe.")]
         [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
         [Column(TypeName = "decimal(18,2)")]

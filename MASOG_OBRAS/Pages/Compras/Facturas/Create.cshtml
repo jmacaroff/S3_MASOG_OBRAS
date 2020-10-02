@@ -1,0 +1,180 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.Facturas.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <form method="post" class="mb-4">
+                <h2>Nueva factura</h2>
+                <div class="form-group">
+                    <label class="control-label">Seleccione proveedor</label>
+                    <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Producto</label>
+                    <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                </div>
+                <input type="submit" value="Consultar Producto" class="btn btn-primary" asp-page-handler="Product" />
+            </form>
+        </div>
+        @if (Model.HasProduct)
+        {
+            <div class="col-8">
+                <form method="post" class="mb-4">
+                    <h2>Resultado de consulta</h2>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="Producto.Id" class="control-label">ID del Producto</label>
+                                <input asp-for="Producto.Id" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label asp-for="Producto.Descripcion" class="control-label">Descripcion</label>
+                                <input asp-for="Producto.Descripcion" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="FacturaCompraItem.Cantidad" class="control-label">Cantidad</label>
+                                <input asp-for="FacturaCompraItem.Cantidad" class="form-control" />
+                                <span asp-validation-for="FacturaCompraItem.Cantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="FacturaCompraItem.Precio" class="control-label">Precio</label>
+                                <input asp-for="FacturaCompraItem.Precio" class="form-control" />
+                                <span asp-validation-for="FacturaCompraItem.Precio" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FacturaCompraItem.Observacion" class="control-label">Observacion(*)</label>
+                        <input asp-for="FacturaCompraItem.Observacion" class="form-control" />
+                        <span asp-validation-for="FacturaCompraItem.Observacion" class="text-danger"></span>
+                    </div>
+                    <input asp-for="FacturaCompraItem.ProductoId" class="form-control" hidden />
+                    <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
+                </form>
+            </div>
+        }
+    </div>
+    <div class="row">
+        @if (Model.HasFacturaCompraItems)
+        {
+            <h2>Productos agregados</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaCompraItem.ProductoId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaCompraItem.Cantidad)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaCompraItem.Precio)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaCompraItem.Observacion)
+                        </th>
+                        <th>
+                            Operacion
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.FacturaCompraItems)
+                    {
+                        <tr>
+                            <th>
+                                @item.ProductoId
+                            </th>
+                            <th>
+                                @item.Cantidad
+                            </th>
+                            <th>
+                                @item.Precio
+                            </th>
+                            <th>
+                                @item.Observacion
+                            </th>
+                            <th>
+                                <form method="post">
+                                    <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
+                                </form>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">
+                No hay productos agregados a la orden
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form method="post">
+                <h2>Datos adicionales</h2>
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label asp-for="FacturaCompra.PuntoVenta" class="control-label"></label>
+                        <input asp-for="FacturaCompra.PuntoVenta" class="form-control" />
+                        <span asp-validation-for="FacturaCompra.PuntoVenta" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-2">
+                        <label asp-for="FacturaCompra.TipoFactura" class="control-label"></label>
+                        <input asp-for="FacturaCompra.TipoFactura" class="form-control" />
+                        <span asp-validation-for="FacturaCompra.TipoFactura" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-2">
+                        <label asp-for="FacturaCompra.FechaFactura" class="control-label"></label>
+                        <input asp-for="FacturaCompra.FechaFactura" class="form-control" />
+                        <span asp-validation-for="FacturaCompra.FechaFactura" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-2">
+                        <label asp-for="FacturaCompra.FechaAlta" class="control-label"></label>
+                        <input asp-for="FacturaCompra.FechaAlta" class="form-control" />
+                        <span asp-validation-for="FacturaCompra.FechaAlta" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-4">
+                        <label asp-for="FacturaCompra.Observacion" class="control-label">Observacion(*)</label>
+                        <input asp-for="FacturaCompra.Observacion" class="form-control" />
+                        <span asp-validation-for="FacturaCompra.Observacion" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <div class="form-group">
+                            <a asp-page="Index" class="btn btn-danger">Cancelar</a>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="form-group">
+                            <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
+                        </div>
+                    </div>
+                </div>
+                @if (Model.MessageError != null)
+                {
+                    <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+                }
+            </form>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

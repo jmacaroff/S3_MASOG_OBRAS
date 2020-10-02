@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace EFDataAccessLibrary.DataAccess
 {
@@ -20,6 +21,16 @@ namespace EFDataAccessLibrary.DataAccess
         public DbSet<OrdenItem> OrdenItems { get; set; }
         public DbSet<FacturaCompra> FacturasCompra { get; set; }
         public DbSet<FacturaCompraItem> FacturaCompraItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 
 }

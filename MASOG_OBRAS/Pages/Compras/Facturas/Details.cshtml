@@ -1,0 +1,101 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.Facturas.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+    <h4>Factura de Compra</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.PuntoVenta)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.PuntoVenta)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.ProveedorId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.Proveedor.RazonSocial)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.TipoFactura)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.TipoFactura)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.FechaFactura)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.FechaFactura)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.FechaAlta)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.FechaAlta)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.Observacion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaCompra.Observacion)
+        </dd>
+    </dl>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Producto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Observacion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FacturaCompraItems)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cantidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacion)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.FacturaCompra.Id">Editar</a> |
+    <a asp-page="./Index">Volver al listado</a>
+</div>

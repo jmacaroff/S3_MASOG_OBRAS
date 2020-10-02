@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
+using EFDataAccessLibrary.Models.Compras;
 using EFDataAccessLibrary.Models.Proveedores;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
+namespace MASOG_OBRAS.Pages.Compras.Facturas
 {
-    public class IndexModel : BaseIndexPage<Proveedor>
+    public class IndexModel : BaseIndexPage<FacturaCompra>
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -20,10 +21,9 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             _context = context;
         }
 
-        // public IList<Proveedor> Proveedores { get;set; }
+        // public IList<Cliente> Clientes { get;set; }
 
-        public PaginatedList<Proveedor> Proveedores { get; set; }
-
+        public PaginatedList<FacturaCompra> FacturasCompra { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
@@ -45,15 +45,14 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
             //Agrego filtro de busqueda
             CurrentFilter = searchString;
 
+            IQueryable<FacturaCompra> facturaIQ = from o in _context.FacturasCompra select o;
 
-            IQueryable<Proveedor> proveedoresIQ = from p in _context.Proveedores select p;
+            //veo si el buscador esta vacio para poder realizar la búsqueda
 
-            //veo si el buscador esta vacio para poder realizar la busqueda
             if (!String.IsNullOrEmpty(searchString))
             {
-                proveedoresIQ = proveedoresIQ.Where(p => p.RazonSocial.Contains(searchString));
+                facturaIQ = facturaIQ.Where(c => c.FechaFactura.ToString().Contains(searchString));
             }
-
 
             ////analizo los casos para el ordenamiento
             switch (sortOrder)
@@ -65,14 +64,16 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
                 //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
                 //        break;
                 default:
-                    proveedoresIQ = proveedoresIQ.OrderBy(p => p.Id);
+                    facturaIQ = facturaIQ.OrderBy(c => c.Id);
                     break;
             }
 
             int pageSize = 5;
-            Proveedores = await PaginatedList<Proveedor>.CreateAsync(proveedoresIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
+            // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
+
+            FacturasCompra = await PaginatedList<FacturaCompra>.CreateAsync(facturaIQ.Include(p => p.Proveedor).AsNoTracking(), pageIndex ?? 1, pageSize);
         }
-
     }
 }
+

@@ -69,7 +69,7 @@ namespace MASOG_OBRAS.Pages.Clientes
                     break;
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             Clientes = await PaginatedList<Cliente>.CreateAsync(clientesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }

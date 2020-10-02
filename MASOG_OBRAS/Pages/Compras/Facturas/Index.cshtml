@@ -1,0 +1,89 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.Facturas.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Facturas de Compra</h1>
+
+<p>
+    <a asp-page="Create">Nueva Factura de Compra</a>
+</p>
+
+<!-- Campo de Búsqueda por Fecha -->
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por Fecha de Factura:&nbsp;
+            <input type="date" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturasCompra[0].PuntoVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturasCompra[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturasCompra[0].ProveedorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturasCompra[0].FechaFactura)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FacturasCompra)
+        {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.PuntoVenta)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaFactura)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.FacturasCompra.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.FacturasCompra.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.FacturasCompra.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.FacturasCompra.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>

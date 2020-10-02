@@ -30,7 +30,7 @@ namespace EFDataAccessLibrary.Models.Compras
         [RegularExpression(@"^[A-C]{1}$", ErrorMessage = "Sólo se acepta A, B o C.")]
         [Column(TypeName = "char(1)")]
         [Display(Name = "Tipo de Factura")]
-        public int TipoFactura { get; set; }
+        public string TipoFactura { get; set; }
 
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Se requiere una fecha.")]
@@ -48,8 +48,7 @@ namespace EFDataAccessLibrary.Models.Compras
         public string Observacion { get; set; }
 
         public Proveedor Proveedor { get; set; }
-
-        public ICollection<FacturaCompraItem> OrdenItems { get; set; }
+        public ICollection<FacturaCompraItem> FacturaCompraItems { get; set; }
 
     }
 
@@ -72,7 +71,7 @@ namespace EFDataAccessLibrary.Models.Compras
         [Range(1, int.MaxValue, ErrorMessage = "Sólo se aceptan números positivos.")]
         public int Cantidad { get; set; }
 
-        [DisplayName("Importe")]
+        [DisplayName("Precio")]
         [Required(ErrorMessage = "Se requiere un importe.")]
         [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
         [Column(TypeName = "decimal(18,2)")]

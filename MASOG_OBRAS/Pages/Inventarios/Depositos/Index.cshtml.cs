@@ -59,7 +59,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.Depositos
                     break;
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             Depositos = await PaginatedList<Deposito>.CreateAsync(depositosIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }
