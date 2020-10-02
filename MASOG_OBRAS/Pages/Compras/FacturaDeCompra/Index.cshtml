@@ -1,0 +1,66 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.FacturaDeCompra.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompra[0].PuntoVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompra[0].TipoFactura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompra[0].FechaFactura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompra[0].FechaAlta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompra[0].Observacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaCompra[0].Proveedor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FacturaCompra) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PuntoVenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoFactura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaFactura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaAlta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

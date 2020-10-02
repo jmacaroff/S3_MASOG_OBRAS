@@ -94,8 +94,10 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         public async Task<IActionResult> OnPostSaveOrder()
         {
             LoadOrdenItems();
-            if (OrdenItems == null)
+            if (OrdenItems.Count == 0)
             {
+                MessageError = "No hay items en la orden.";
+                LoadViewData();
                 return Page();
             }
             else
