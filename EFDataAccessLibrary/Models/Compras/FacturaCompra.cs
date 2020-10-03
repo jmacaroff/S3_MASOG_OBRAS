@@ -21,10 +21,15 @@ namespace EFDataAccessLibrary.Models.Compras
         public int ProveedorId { get; set; }
 
         [Required(ErrorMessage = "Se requiere un punto de venta.")]
-        [RegularExpression(@"^\d{5}$", ErrorMessage = "Formato incorrecto, debe introducir 5 números.")]
+        [RegularExpression(@"^\d{1,5}$", ErrorMessage = "Formato incorrecto, no debe superar los 5 dígitos.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Sólo se aceptan números positivos.")]
         [Column(TypeName = "nchar(5)")]
         [Display(Name = "Punto de Venta")]
         public int PuntoVenta { get; set; }
+
+        [DisplayName("Número")]
+        [Required(ErrorMessage = "Se requiere un número.")]
+        public int Numero { get; set; }
 
         [Required(ErrorMessage = "Se requiere un tipo de factura.")]
         [RegularExpression(@"^[A-C]{1}$", ErrorMessage = "Sólo se acepta A, B o C.")]

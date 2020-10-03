@@ -93,8 +93,10 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
         public async Task<IActionResult> OnPostSaveOrder()
         {
             LoadFacturaCompraItems();
-            if (FacturaCompraItems == null)
+            if (FacturaCompraItems.Count == 0)
             {
+                MessageError = "No hay items en la factura.";
+                LoadViewData();
                 return Page();
             }
             else

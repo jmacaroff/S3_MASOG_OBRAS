@@ -6,142 +6,151 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-4">
+        <div class="col-12">
             <form method="post" class="mb-4">
                 <h2>Nueva orden</h2>
                 <div class="form-group">
-                    <label class="control-label">Seleccione proveedor</label>
-                    <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label class="control-label">Seleccione proveedor</label>
+                            <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label asp-for="Orden.Fecha" class="control-label"></label>
+                            <input asp-for="Orden.Fecha" class="form-control" />
+                            <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label asp-for="Orden.FechaEntrega" class="control-label"></label>
+                            <input asp-for="Orden.FechaEntrega" class="form-control" />
+                            <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-4">
+                            <label asp-for="Orden.Observacion" class="control-label">Observacion(*)</label>
+                            <input asp-for="Orden.Observacion" class="form-control" />
+                            <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Producto</label>
-                    <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+            </form>
+            <form method="post" class="mb-4">
+                <h2>Datos adicionales</h2>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                    </div>
+                    <div class="form-group col-4">
+                        <input type="submit" value="Consultar Producto" class="btn btn-primary" asp-page-handler="Product" />
+                    </div>
                 </div>
-                <input type="submit" value="Consultar Producto" class="btn btn-primary" asp-page-handler="Product" />
             </form>
         </div>
-        @if (Model.HasProduct)
-        {
-            <div class="col-8">
+    </div>
+    @if (Model.HasProduct)
+    {
+        <div class="row">
+            <div class="col-12">
                 <form method="post" class="mb-4">
-                    <h2>Resultado de consulta</h2>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label asp-for="Producto.Id" class="control-label">ID del Producto</label>
-                                <input asp-for="Producto.Id" class="form-control" disabled />
-                            </div>
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <label asp-for="Producto.Descripcion" class="control-label">Descripcion</label>
-                                <input asp-for="Producto.Descripcion" class="form-control" disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label asp-for="OrdenItem.Cantidad" class="control-label">Cantidad</label>
-                                <input asp-for="OrdenItem.Cantidad" class="form-control" />
-                                <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label asp-for="OrdenItem.Precio" class="control-label">Precio</label>
-                                <input asp-for="OrdenItem.Precio" class="form-control" />
-                                <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group">
-                        <label asp-for="OrdenItem.Observacion" class="control-label">Observacion(*)</label>
-                        <input asp-for="OrdenItem.Observacion" class="form-control" />
-                        <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label asp-for="Producto.Descripcion" class="control-label">Descripción</label>
+                                        <input asp-for="Producto.Descripcion" class="form-control" disabled />
+                                    </td>
+                                    <td>
+                                        <label asp-for="OrdenItem.Cantidad" class="control-label">Cantidad</label>
+                                        <input asp-for="OrdenItem.Cantidad" class="form-control" />
+                                        <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <label asp-for="OrdenItem.Precio" class="control-label">Precio</label>
+                                        <input asp-for="OrdenItem.Precio" class="form-control" />
+                                        <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <label asp-for="OrdenItem.Observacion" class="control-label">Observación</label>
+                                        <input asp-for="OrdenItem.Observacion" class="form-control" />
+                                        <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <p style="font-size:66.7%;"> - </p>
+                                        <input asp-for="OrdenItem.ProductoId" class="form-control" hidden />
+                                        <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <input asp-for="OrdenItem.ProductoId" class="form-control" hidden />
-                    <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
                 </form>
             </div>
-        }
-    </div>
+        </div>
+    }
     <div class="row">
-        @if (Model.HasOrdenItems)
-        {
-            <h2>Productos agregados</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.OrdenItem.Precio)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
-                        </th>
-                        <th>
-                            Operacion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.OrdenItems)
-                    {
-                        <tr>
-                            <th>
-                                @item.ProductoId
-                            </th>
-                            <th>
-                                @item.Cantidad
-                            </th>
-                            <th>
-                                @item.Precio
-                            </th>
-                            <th>
-                                @item.Observacion
-                            </th>
-                            <th>
-                                <form method="post">
-                                    <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
-                                </form>
-                            </th>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <div class="alert alert-warning" role="alert">
-                No hay productos agregados a la orden
-            </div>
-        }
+        <div class="col-12">
+            <form method="post" class="mb-4">
+                <div class="form-group">
+                    @if (Model.HasOrdenItems)
+                     {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OrdenItem.Precio)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
+                                    </th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model.OrdenItems)
+                             {
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @item.ProductoId
+                                        </td>
+                                        <td>
+                                            @item.Cantidad
+                                        </td>
+                                        <td>
+                                            @item.Precio
+                                        </td>
+                                        <td>
+                                            @item.Observacion
+                                        </td>
+                                        <td>
+                                            <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                             }
+                        </table>
+                     }
+                </div>
+            </form>
+        </div>
     </div>
     <div class="row">
         <div class="col-12">
             <form method="post">
-                <h2>Datos adicionales</h2>
                 <div class="row">
-                    <div class="form-group col-2">
-                        <label asp-for="Orden.Fecha" class="control-label"></label>
-                        <input asp-for="Orden.Fecha" class="form-control" />
-                        <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-2">
-                        <label asp-for="Orden.FechaEntrega" class="control-label"></label>
-                        <input asp-for="Orden.FechaEntrega" class="form-control" />
-                        <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-4">
-                        <label asp-for="Orden.Observacion" class="control-label">Observacion(*)</label>
-                        <input asp-for="Orden.Observacion" class="form-control" />
-                        <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
+                    <div class="col-2">
+                        @if (Model.MessageError != null)
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                @Model.MessageError
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="row">
@@ -156,21 +165,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-2">
-                        @if (Model.MessageError != null)
-                        {
-                            <div class="alert alert-warning" role="alert">
-                                @Model.MessageError
-                            </div>
-                        }
-                    </div>
-                </div>
             </form>
         </div>
-
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

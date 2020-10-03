@@ -27,6 +27,7 @@ namespace EFDataAccessLibrary.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProveedorId = table.Column<int>(nullable: false),
                     PuntoVenta = table.Column<string>(type: "nchar(5)", nullable: false),
+                    Numero = table.Column<int>(nullable: false),
                     TipoFactura = table.Column<string>(type: "char(1)", nullable: false),
                     FechaFactura = table.Column<DateTime>(nullable: false),
                     FechaAlta = table.Column<DateTime>(nullable: false),

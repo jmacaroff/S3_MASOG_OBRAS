@@ -60,6 +60,9 @@ namespace EFDataAccessLibrary.Migrations
                     b.Property<DateTime>("FechaFactura")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFDataAccessLibrary.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20201002190846_Factura")]
+    [Migration("20201003023141_Factura")]
     partial class Factura
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,9 @@ namespace EFDataAccessLibrary.Migrations
 
                     b.Property<DateTime>("FechaFactura")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
 
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
