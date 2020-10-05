@@ -20,6 +20,9 @@ namespace EFDataAccessLibrary.Models.Compras
         [Required(ErrorMessage = "Se requiere un proveedor.")]
         public int ProveedorId { get; set; }
 
+        [DisplayName("Orden Asociada")]
+        public int OrdenId { get; set; }
+
         [Required(ErrorMessage = "Se requiere un punto de venta.")]
         [RegularExpression(@"^\d{1,5}$", ErrorMessage = "Formato incorrecto, no debe superar los 5 dígitos.")]
         [Range(1, int.MaxValue, ErrorMessage = "Sólo se aceptan números positivos.")]
@@ -53,6 +56,7 @@ namespace EFDataAccessLibrary.Models.Compras
         public string Observacion { get; set; }
 
         public Proveedor Proveedor { get; set; }
+        public Orden Orden { get; set; }
         public ICollection<FacturaCompraItem> FacturaCompraItems { get; set; }
 
     }

@@ -38,6 +38,7 @@ namespace EFDataAccessLibrary.Models.Compras
         public Proveedor Proveedor { get; set; }
 
         public ICollection<OrdenItem> OrdenItems { get; set; }
+        public ICollection<FacturaCompra> FacturaCompra { get; set; }
 
     }
 

@@ -26,6 +26,7 @@ namespace EFDataAccessLibrary.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProveedorId = table.Column<int>(nullable: false),
+                    OrdenId = table.Column<int>(nullable: false),
                     PuntoVenta = table.Column<string>(type: "nchar(5)", nullable: false),
                     Numero = table.Column<int>(nullable: false),
                     TipoFactura = table.Column<string>(type: "char(1)", nullable: false),
@@ -36,6 +37,12 @@ namespace EFDataAccessLibrary.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FacturasCompra", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FacturasCompra_Ordenes_OrdenId",
+                        column: x => x.OrdenId,
+                        principalTable: "Ordenes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FacturasCompra_Proveedores_ProveedorId",
                         column: x => x.ProveedorId,
@@ -82,6 +89,11 @@ namespace EFDataAccessLibrary.Migrations
                 name: "IX_FacturaCompraItems_ProductoId",
                 table: "FacturaCompraItems",
                 column: "ProductoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FacturasCompra_OrdenId",
+                table: "FacturasCompra",
+                column: "OrdenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FacturasCompra_ProveedorId",

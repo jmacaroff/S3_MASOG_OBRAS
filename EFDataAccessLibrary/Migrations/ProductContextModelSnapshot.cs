@@ -66,6 +66,9 @@ namespace EFDataAccessLibrary.Migrations
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OrdenId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProveedorId")
                         .HasColumnType("int");
 
@@ -78,6 +81,8 @@ namespace EFDataAccessLibrary.Migrations
                         .HasColumnType("char(1)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrdenId");
 
                     b.HasIndex("ProveedorId");
 
@@ -247,6 +252,12 @@ namespace EFDataAccessLibrary.Migrations
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.FacturaCompra", b =>
                 {
+                    b.HasOne("EFDataAccessLibrary.Models.Compras.Orden", "Orden")
+                        .WithMany("FacturaCompra")
+                        .HasForeignKey("OrdenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("EFDataAccessLibrary.Models.Proveedores.Proveedor", "Proveedor")
                         .WithMany("FacturasCompra")
                         .HasForeignKey("ProveedorId")
