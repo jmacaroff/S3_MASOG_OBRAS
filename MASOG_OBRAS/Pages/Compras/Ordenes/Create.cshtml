@@ -8,13 +8,30 @@
     <div class="row">
         <div class="col-12">
             <form method="post" class="mb-4">
-                <h2>Nueva orden</h2>
+                <h2>Nueva Orden</h2>
                 <div class="form-group">
                     <div class="row">
+                        <!-- Dropdown Proveedores -->
+                        @*<div class="form-group col-4">
+           <label class="control-label">Seleccione proveedor</label>
+           <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+        </div>*@
+
+                        <!-- Input de Busqueda Proveedores  -->
                         <div class="form-group col-4">
-                            <label class="control-label">Seleccione proveedor</label>
-                            <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                            <label class="control-label">Buscar Proveedor</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="proveedorRazon" placeholder="Buscar Proveedor" />
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-info btn-flat" id="modalBuscarProveedor">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
+                        <br />
+
+
                         <div class="form-group col-4">
                             <label asp-for="Orden.Fecha" class="control-label"></label>
                             <input asp-for="Orden.Fecha" class="form-control" />
@@ -37,13 +54,34 @@
             </form>
             <form method="post" class="mb-4">
                 <h2>Datos adicionales</h2>
+                <br />
+                <label class="control-label">Buscar Producto</label>
                 <div class="row">
+                    <!-- Drop Down de Productos-->
+                    @*<div class="form-group col-4">
+            <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+            </div>*@
+
+                    <!-- Input de Busqueda Productos  -->
                     <div class="form-group col-4">
-                        <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="productoDescripcion" placeholder="Buscar Producto" />
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-outline-info btn-flat ml-auto" id="modalBuscarProducto">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
                     </div>
+
+                    <!-- Modal -->
+
+
                     <div class="form-group col-4">
-                        <input type="submit" value="Consultar Producto" class="btn btn-primary" asp-page-handler="Product" />
+                        <input type="submit" value="Consultar Producto" class="btn btn-primary ml-auto" asp-page-handler="Product" />
                     </div>
+                </div>
+                <div class="row">
                 </div>
             </form>
         </div>
@@ -94,7 +132,7 @@
             <form method="post" class="mb-4">
                 <div class="form-group">
                     @if (Model.HasOrdenItems)
-                     {
+                    {
                         <table class="table">
                             <thead>
                                 <tr>
@@ -113,7 +151,7 @@
                                 </tr>
                             </thead>
                             @foreach (var item in Model.OrdenItems)
-                             {
+                            {
                                 <tbody>
                                     <tr>
                                         <td>
@@ -133,9 +171,9 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                             }
+                            }
                         </table>
-                     }
+                    }
                 </div>
             </form>
         </div>
@@ -154,12 +192,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-1">
+                    <div class="col-2">
                         <div class="form-group">
                             <a asp-page="Index" class="btn btn-danger">Cancelar</a>
                         </div>
                     </div>
-                    <div class="col-1">
+                    <div class="col-3">
                         <div class="form-group">
                             <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
                         </div>
@@ -170,6 +208,23 @@
     </div>
 </div>
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#proveedorRazon').autocomplete({
+            source: '@Url.Page("create", "searchProveedores")',
+            minLength: 2
+        });
+
+        $('#productoDescripcion').autocomplete({           
+            source: '@Url.Page("create", "searchProductos")',
+            minLength: 2
+        });
+    });
+
+</script>
 }

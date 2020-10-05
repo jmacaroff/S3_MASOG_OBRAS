@@ -16,6 +16,7 @@ using EFDataAccessLibrary.Models.Inventarios;
 using EFDataAccessLibrary.Models.Proveedores;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SQLitePCL;
 
 namespace MASOG_OBRAS.Pages.Compras.Ordenes
 {
@@ -31,6 +32,10 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         public bool HasOrdenItems { get; set; } = false;
         [BindProperty]
         public int ProveedorId { get; set; }
+
+        [BindProperty]
+        public string ProveedorRazonSocial { get; set; }
+
         [BindProperty]
         public string ProductoId { get; set; }
         [BindProperty]
@@ -154,6 +159,31 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         {
             HttpContext.Session.SetComplexData(LIST_KEY, OrdenItems);
         }
+
+
+        // Funcion para Buscar los Productos
+        public IActionResult OnGetSearchProductos(string term)
+        {
+            var descripciones = _context.Productos.Where(p => p.Descripcion.ToLower().Contains(term.ToLower())
+                                                            || p.Id.ToLower().Contains(term.ToLower()))
+                                                    //.Select(p => new { p.Id, p.Descripcion }) 
+                                                    .Select(p => p.Descripcion)
+                                                    .ToList();
+
+            return new JsonResult(descripciones);
+        }
+
+        // Funcion para Buscar los Proveedores
+        public IActionResult OnGetSearchProveedores(string term)
+        {
+            var razonesSociales = _context.Proveedores.Where(p => p.RazonSocial.ToLower().Contains(term.ToLower()))
+                                                    //.Select(p => new { p.Id, p.RazonSocial })
+                                                    .Select(p => p.RazonSocial)
+                                                    .ToList();
+
+            return new JsonResult(razonesSociales);
+        }
+
     }
 
     public static class SessionExtensions
@@ -173,4 +203,5 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
     }
+
 }
