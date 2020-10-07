@@ -8,176 +8,169 @@
     <div class="row">
         <div class="col-12">
             <form method="post" class="mb-4">
-                <h2>Nueva Orden</h2>
+                <h2>Nueva Orden de Compra</h2>
                 <div class="form-group">
+                    <label class="control-label">Seleccione Un Proveedor</label>
                     <div class="row">
                         <!-- Dropdown Proveedores -->
-                        @*<div class="form-group col-4">
-           <label class="control-label">Seleccione proveedor</label>
-           <select disabled="@Model.HasProveedor" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
-        </div>*@
-
-                        <!-- Input de Busqueda Proveedores  -->
                         <div class="form-group col-4">
-                            <label class="control-label">Buscar Proveedor</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="proveedorRazon" placeholder="Buscar Proveedor" />
-                                <span class="input-group-append">
-                                    <button type="button" class="btn btn-outline-info btn-flat" id="modalBuscarProveedor">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
+                            <select id="dataProveedor" class="form-control" disabled="@Model.HasProveedor" asp-for="ProveedorId" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
                         </div>
-                        <br />
 
 
+                        <!-- Boton para confirmar el proveedor-->
                         <div class="form-group col-4">
-                            <label asp-for="Orden.Fecha" class="control-label"></label>
-                            <input asp-for="Orden.Fecha" class="form-control" />
-                            <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-4">
-                            <label asp-for="Orden.FechaEntrega" class="control-label"></label>
-                            <input asp-for="Orden.FechaEntrega" class="form-control" />
-                            <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-4">
-                            <label asp-for="Orden.Observacion" class="control-label">Observacion(*)</label>
-                            <input asp-for="Orden.Observacion" class="form-control" />
-                            <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
+                            <button type="button" class="btn btn-outline-info btn-flat" id="modalBuscarProveedor">
+                                Confirmar
+                            </button>
                         </div>
                     </div>
                 </div>
             </form>
+
+            <!-- Buscar los Productos -->
             <form method="post" class="mb-4">
-                <h2>Datos adicionales</h2>
+                <h2> Lista de Productos asociados</h2>
                 <br />
-                <label class="control-label">Buscar Producto</label>
+                <label class="control-label"> Buscar Producto </label>
                 <div class="row">
                     <!-- Drop Down de Productos-->
-                    @*<div class="form-group col-4">
-            <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
-            </div>*@
-
-                    <!-- Input de Busqueda Productos  -->
                     <div class="form-group col-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="productoDescripcion" placeholder="Buscar Producto" />
-                            <span class="input-group-append">
-                                <button type="button" class="btn btn-outline-info btn-flat ml-auto" id="modalBuscarProducto">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
+                        <select id="dataProducto" asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
                     </div>
 
-                    <!-- Modal -->
-
-
+                    <!-- Boton para Agregar Nuevo Producto-->
                     <div class="form-group col-4">
-                        <input type="submit" value="Consultar Producto" class="btn btn-primary ml-auto" asp-page-handler="Product" />
+                        <input type="submit" value="Seleccionar Producto" class="btn btn-primary ml-auto" asp-page-handler="Product" />
                     </div>
                 </div>
                 <div class="row">
                 </div>
             </form>
-        </div>
-    </div>
-    @if (Model.HasProduct)
-    {
-        <div class="row">
-            <div class="col-12">
-                <form method="post" class="mb-4">
-                    <div class="form-group">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <label asp-for="Producto.Descripcion" class="control-label">Descripción</label>
-                                        <input asp-for="Producto.Descripcion" class="form-control" disabled />
-                                    </td>
-                                    <td>
-                                        <label asp-for="OrdenItem.Cantidad" class="control-label">Cantidad</label>
-                                        <input asp-for="OrdenItem.Cantidad" class="form-control" />
-                                        <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
-                                    </td>
-                                    <td>
-                                        <label asp-for="OrdenItem.Precio" class="control-label">Precio</label>
-                                        <input asp-for="OrdenItem.Precio" class="form-control" />
-                                        <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
-                                    </td>
-                                    <td>
-                                        <label asp-for="OrdenItem.Observacion" class="control-label">Observación</label>
-                                        <input asp-for="OrdenItem.Observacion" class="form-control" />
-                                        <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
-                                    </td>
-                                    <td>
-                                        <p style="font-size:66.7%;"> - </p>
-                                        <input asp-for="OrdenItem.ProductoId" class="form-control" hidden />
-                                        <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
-            </div>
-        </div>
-    }
-    <div class="row">
-        <div class="col-12">
-            <form method="post" class="mb-4">
-                <div class="form-group">
-                    @if (Model.HasOrdenItems)
-                    {
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.OrdenItem.Precio)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
-                                    </th>
-                                </tr>
-                            </thead>
-                            @foreach (var item in Model.OrdenItems)
+
+            <!-- Detalle de Orden de Compra-->
+
+            <div class="row">
+                <div class="col-12">
+                    <form method="post" class="mb-4">
+                        <div class="form-group">
+                            @if (Model.HasOrdenItems)
                             {
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            @item.ProductoId
-                                        </td>
-                                        <td>
-                                            @item.Cantidad
-                                        </td>
-                                        <td>
-                                            @item.Precio
-                                        </td>
-                                        <td>
-                                            @item.Observacion
-                                        </td>
-                                        <td>
-                                            <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.Precio)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.Observacion)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.OrdenItems)
+                                    {
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    @item.ProductoId
+                                                </td>
+                                                <td>
+                                                    @item.Cantidad
+                                                </td>
+                                                <td>
+                                                    @item.Precio
+                                                </td>
+                                                <td>
+                                                    @item.Observacion
+                                                </td>
+                                                <td>
+                                                    <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    }
+                                </table>
                             }
-                        </table>
-                    }
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Agregar Nuevo Producto-->
+
+            @if (Model.HasProduct)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <form method="post" class="mb-4">
+                            <div class="form-group">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="Producto.Descripcion" class="control-label">Descripción</label>
+                                                <input asp-for="Producto.Descripcion" class="form-control" disabled />
+                                            </td>
+                                            <td>
+                                                <label asp-for="OrdenItem.Cantidad" class="control-label">Cantidad</label>
+                                                <input asp-for="OrdenItem.Cantidad" class="form-control" />
+                                                <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <label asp-for="OrdenItem.Precio" class="control-label">Precio</label>
+                                                <input asp-for="OrdenItem.Precio" class="form-control" />
+                                                <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <label asp-for="OrdenItem.Observacion" class="control-label">Observación</label>
+                                                <input asp-for="OrdenItem.Observacion" class="form-control" />
+                                                <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <p style="font-size:66.7%;"> - </p>
+                                                <input asp-for="OrdenItem.ProductoId" class="form-control" hidden />
+                                                <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            <!-- Datos Adicionales de Orden de Compra-->
+            <form method="post" class="mb-4">
+
+                <h2>Datos adicionales</h2>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label asp-for="Orden.Fecha" class="control-label"></label>
+                        <input asp-for="Orden.Fecha" class="form-control" />
+                        <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-4">
+                        <label asp-for="Orden.FechaEntrega" class="control-label"></label>
+                        <input asp-for="Orden.FechaEntrega" class="form-control" />
+                        <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-4">
+                        <label asp-for="Orden.Observacion" class="control-label">Observacion(*)</label>
+                        <input asp-for="Orden.Observacion" class="form-control" />
+                        <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <form method="post">
@@ -213,18 +206,33 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
 
-    $(document).ready(function () {
-
-        $('#proveedorRazon').autocomplete({
-            source: '@Url.Page("create", "searchProveedores")',
-            minLength: 2
-        });
-
-        $('#productoDescripcion').autocomplete({           
-            source: '@Url.Page("create", "searchProductos")',
-            minLength: 2
-        });
+    $('#dataProveedor').on('change', function () {
+        // Save value in localstorage
+        localStorage.setItem("#dataProveedor", $(this).val());
     });
 
+    $(document).ready(function () {
+        //Guardar datos despues del refresco
+        if ($('#dataProveedor').length) {
+            $('#dataProveedor').val(localStorage.getItem("#dataProveedor"));
+        }
+        console.log($('#dataProveedor').val())
+
+        //agrega Select2 al dropdown Proveedor
+        $('#dataProveedor').select2({
+            //theme: "classic",
+            theme: "bootstrap4",
+            language: "es",
+            minimumInputLength: 2
+        });
+
+        //agrega Select2 al dropdown Producto
+        $('#dataProducto').select2({
+            theme: "bootstrap4",
+            language: "es",
+            minimumInputLength: 2
+        });
+
+    });
 </script>
 }

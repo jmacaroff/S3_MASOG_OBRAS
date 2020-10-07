@@ -17,6 +17,8 @@ using EFDataAccessLibrary.Models.Proveedores;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using SQLitePCL;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.CodeAnalysis.Options;
 
 namespace MASOG_OBRAS.Pages.Compras.Ordenes
 {
@@ -26,6 +28,9 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         private readonly string LIST_KEY = "ListKey";
         private readonly string PROVEEDOR_KEY = "ProveedorKey";
 
+
+        [BindProperty]
+        public IEnumerable<Proveedor> proveedorNombre { get; set; }
 
         public bool HasProveedor { get; set; } = false;
         public bool HasProduct { get; set; } = false;
@@ -60,6 +65,8 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             LoadViewData();
             return Page();
         }
+
+
         public void OnPostProduct()
         {
             int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
@@ -67,6 +74,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             {
                 HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
             }
+
             Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
             HasProduct = true;
             HasProveedor = true;
@@ -148,40 +156,16 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
                 {
                     list = list.Where(x => x.Id != item.ProductoId).ToList();
                 }
-                ViewData["ProductoId"] = new SelectList(list, "Id", "Id");
+                ViewData["ProductoId"] = new SelectList(list, "Id", "Descripcion");
             }
             else
             {
-                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Id");
+                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
             }
         }
         private void SaveOrdenItems()
         {
             HttpContext.Session.SetComplexData(LIST_KEY, OrdenItems);
-        }
-
-
-        // Funcion para Buscar los Productos
-        public IActionResult OnGetSearchProductos(string term)
-        {
-            var descripciones = _context.Productos.Where(p => p.Descripcion.ToLower().Contains(term.ToLower())
-                                                            || p.Id.ToLower().Contains(term.ToLower()))
-                                                    //.Select(p => new { p.Id, p.Descripcion }) 
-                                                    .Select(p => p.Descripcion)
-                                                    .ToList();
-
-            return new JsonResult(descripciones);
-        }
-
-        // Funcion para Buscar los Proveedores
-        public IActionResult OnGetSearchProveedores(string term)
-        {
-            var razonesSociales = _context.Proveedores.Where(p => p.RazonSocial.ToLower().Contains(term.ToLower()))
-                                                    //.Select(p => new { p.Id, p.RazonSocial })
-                                                    .Select(p => p.RazonSocial)
-                                                    .ToList();
-
-            return new JsonResult(razonesSociales);
         }
 
     }
