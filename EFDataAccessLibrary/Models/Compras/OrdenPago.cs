@@ -18,32 +18,28 @@ namespace EFDataAccessLibrary.Models.Compras
         [Required(ErrorMessage = "Se requiere un proveedor")]
         public int ProveedorId { get; set; }
 
-        // Luego de seleccionar el proveedor se deberia poder visualizar cuales factura estan pendientes y seleccionar las que se van a pagar: saldo > 0 
+        // Luego de seleccionar el proveedor se deberia poder visualizar cuales facturas están pendientes y seleccionar las que se van a pagar: PendientePago > 0 
 
         // Fecha en la que se emite
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "Se requiere una fecha")]
+        [Required(ErrorMessage = "Se requiere una fecha de emisión.")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha de Emision")]
         public DateTime FechaEmision { get; set; } = DateTime.Now;
 
+        // Foma de pago (Efectivo, Débito, Crédito, Cheque). Se debe seleccionar con un drop down
+        [Required(ErrorMessage = "Se requiere una forma de pago.")]
+        [DisplayName("Forma de Pago.")]
+        public int ConceptoPagoId { get; set; }
+
         [DisplayName("Observación")]
         public string Observacion { get; set; }
 
-        [DisplayName("Detalle")]
-        public string Detalle { get; set; }
-
-
-        // Muestra el total de la Orden de Pago segun las facturas que se pagaron
-
-        [Range(1, 1000000000)]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal ImporteTotal { get; set; }
-
+        // Calculado que es la suma de los importes de todas las facturas seleccionadas
+        public double Total { get; set; }
 
         public Proveedor Proveedor { get; set; }
-
+        public ConceptoPago ConceptoPago { get; set; }
         public ICollection<OrdenPagoItem> OrdenPagoItems { get; set; }
 
     }
@@ -53,25 +49,29 @@ namespace EFDataAccessLibrary.Models.Compras
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Se requiere una ordenPago")]
+        [Required(ErrorMessage = "Se requiere una Orden.")]
         public int OrdenPagoId { get; set; }
 
-        [Required(ErrorMessage = "Se requiere una Factura")]
-        public int FacturaId { get; set; }
+        [Required(ErrorMessage = "Se requiere una Factura.")]
+        public int FacturaCompraId { get; set; }
 
-        // Foma de pago   (Efectico, Debito, Credito, Cheque). Se debe seleccionar con un drop down
+        // Lo recupera de PendientePago de la factura.
         [Required]
-        [DisplayName("Forma de Pago")]
-        public string Concepto { get; set; }
-
-        [Range(1, 1000000000)]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal ImportePago { get; set; }
+        public double Importe { get; set; }
 
         public OrdenPago OrdenPago { get; set; }
         public FacturaCompra FacturaCompra { get; set; }
 
+    }
+
+    public class ConceptoPago : BaseModel
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [DisplayName("Descripción")]
+        [Required(ErrorMessage = "Se requiere una descipción.")]
+        public string Descripcion { get; set; }
     }
 
 }

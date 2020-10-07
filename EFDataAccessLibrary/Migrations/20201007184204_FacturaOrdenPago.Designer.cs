@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFDataAccessLibrary.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20201005155535_Factura")]
-    partial class Factura
+    [Migration("20201007184204_FacturaOrdenPago")]
+    partial class FacturaOrdenPago
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,22 @@ namespace EFDataAccessLibrary.Migrations
                     b.ToTable("Clientes");
                 });
 
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.ConceptoPago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConceptoPago");
+                });
+
             modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.FacturaCompra", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +87,9 @@ namespace EFDataAccessLibrary.Migrations
                     b.Property<int>("OrdenId")
                         .HasColumnType("int");
 
+                    b.Property<double>("PendientePago")
+                        .HasColumnType("float");
+
                     b.Property<int>("ProveedorId")
                         .HasColumnType("int");
 
@@ -81,6 +100,9 @@ namespace EFDataAccessLibrary.Migrations
                     b.Property<string>("TipoFactura")
                         .IsRequired()
                         .HasColumnType("char(1)");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -179,6 +201,62 @@ namespace EFDataAccessLibrary.Migrations
                     b.HasIndex("ProductoId");
 
                     b.ToTable("OrdenItems");
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.OrdenPago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ConceptoPagoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaEmision")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProveedorId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConceptoPagoId");
+
+                    b.HasIndex("ProveedorId");
+
+                    b.ToTable("OrdenesPago");
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.OrdenPagoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FacturaCompraId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Importe")
+                        .HasColumnType("float");
+
+                    b.Property<int>("OrdenPagoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacturaCompraId");
+
+                    b.HasIndex("OrdenPagoId");
+
+                    b.ToTable("OrdenPagoItems");
                 });
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Inventarios.Deposito", b =>
@@ -302,6 +380,36 @@ namespace EFDataAccessLibrary.Migrations
                     b.HasOne("EFDataAccessLibrary.Models.Inventarios.Producto", "Producto")
                         .WithMany("OrdenItems")
                         .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.OrdenPago", b =>
+                {
+                    b.HasOne("EFDataAccessLibrary.Models.Compras.ConceptoPago", "ConceptoPago")
+                        .WithMany()
+                        .HasForeignKey("ConceptoPagoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFDataAccessLibrary.Models.Proveedores.Proveedor", "Proveedor")
+                        .WithMany()
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Compras.OrdenPagoItem", b =>
+                {
+                    b.HasOne("EFDataAccessLibrary.Models.Compras.FacturaCompra", "FacturaCompra")
+                        .WithMany()
+                        .HasForeignKey("FacturaCompraId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFDataAccessLibrary.Models.Compras.OrdenPago", "OrdenPago")
+                        .WithMany("OrdenPagoItems")
+                        .HasForeignKey("OrdenPagoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -21,6 +21,8 @@ namespace EFDataAccessLibrary.DataAccess
         public DbSet<OrdenItem> OrdenItems { get; set; }
         public DbSet<FacturaCompra> FacturasCompra { get; set; }
         public DbSet<FacturaCompraItem> FacturaCompraItems { get; set; }
+        public DbSet<OrdenPago> OrdenesPago { get; set; }
+        public DbSet<OrdenPagoItem> OrdenPagoItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

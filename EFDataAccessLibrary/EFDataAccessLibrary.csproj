@@ -21,6 +21,14 @@
     <Compile Remove="Migrations\20201002190846_Factura.Designer.cs" />
     <Compile Remove="Migrations\20201003023141_Factura.cs" />
     <Compile Remove="Migrations\20201003023141_Factura.Designer.cs" />
+    <Compile Remove="Migrations\20201005155535_Factura.cs" />
+    <Compile Remove="Migrations\20201005155535_Factura.Designer.cs" />
+    <Compile Remove="Migrations\20201007183407_RunSqlScript.cs" />
+    <Compile Remove="Migrations\20201007183407_RunSqlScript.Designer.cs" />
+    <Compile Remove="Migrations\20201007183955_FacturaOrdenPago.cs" />
+    <Compile Remove="Migrations\20201007183955_FacturaOrdenPago.Designer.cs" />
+    <Compile Remove="Migrations\20201007184417_RunSqlScript.cs" />
+    <Compile Remove="Migrations\20201007184417_RunSqlScript.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

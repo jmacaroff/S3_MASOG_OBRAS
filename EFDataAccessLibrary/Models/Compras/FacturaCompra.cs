@@ -55,6 +55,14 @@ namespace EFDataAccessLibrary.Models.Compras
         [DisplayName("Observación")]
         public string Observacion { get; set; }
 
+        // Calculado que es la suma de cantidad * precio de todos los ítems
+        [Required]
+        public double Total { get; set; }
+
+        // Igual al total, se pone a 0 cuando la factura se paga en una orden de pago
+        [Required]
+        public double PendientePago { get; set; }
+
         public Proveedor Proveedor { get; set; }
         public Orden Orden { get; set; }
         public ICollection<FacturaCompraItem> FacturaCompraItems { get; set; }
