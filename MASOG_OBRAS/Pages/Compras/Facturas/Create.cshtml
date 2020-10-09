@@ -158,20 +158,19 @@
                             }
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <a asp-page="Index" class="btn btn-danger">Cancelar</a>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveFactura" />
+                            </div>
+                        </div>
+                    </div>
                 </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    <a asp-page="Index" class="btn btn-danger">Cancelar</a>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="form-group">
-                    <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveFactura" />
-                </div>
             </div>
         </div>
     }
