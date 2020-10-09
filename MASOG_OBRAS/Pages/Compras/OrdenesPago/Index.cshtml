@@ -5,56 +5,107 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Ordenes de Pago</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Nueva Orden de Pago</a>
 </p>
+
+<!-- Campo de Búsqueda por Fecha -->
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por Fecha:&nbsp;
+            <input type="date" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].FechaEmision)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].Observacion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].Total)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].Proveedor)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].ConceptoPago)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrdenesPago)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaEmision)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ConceptoPago.Descripcion)
+                                </td>
+                                <td>
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrdenPago[0].FechaEmision)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrdenPago[0].Observacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrdenPago[0].Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrdenPago[0].Proveedor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrdenPago[0].ConceptoPago)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.OrdenPago) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaEmision)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observacion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConceptoPago.Descripcion)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+
 </table>
+
+@{
+    var prevDisabled = !Model.OrdenesPago.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.OrdenesPago.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.OrdenesPago.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.OrdenesPago.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>
