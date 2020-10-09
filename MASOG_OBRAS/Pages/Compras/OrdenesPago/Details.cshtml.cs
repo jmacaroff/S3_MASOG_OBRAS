@@ -20,6 +20,7 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
         }
 
         public OrdenPago OrdenPago { get; set; }
+        public List<OrdenPagoItem> OrdenPagoItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,6 +32,10 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
             OrdenPago = await _context.OrdenesPago
                 .Include(o => o.ConceptoPago)
                 .Include(o => o.Proveedor).FirstOrDefaultAsync(m => m.Id == id);
+
+            OrdenPagoItems = await _context.OrdenPagoItems.Where(o => o.OrdenPagoId == OrdenPago.Id)
+                .Include(o => o.OrdenPago)
+                .Include(o => o.FacturaCompra).ToListAsync();
 
             if (OrdenPago == null)
             {
