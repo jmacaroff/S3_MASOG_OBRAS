@@ -52,8 +52,13 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
 
             if (OrdenPago != null)
             {
+                List<int> list = _context.OrdenPagoItems.Where(z => z.OrdenPagoId == id).Select(x => x.FacturaCompraId).ToList();
+                list.ForEach(x =>
+                {
+                    _context.FacturasCompra.First(y => y.Id == x).PendientePago = _context.FacturasCompra.First(y => y.Id == x).Total;
+                }); 
                 _context.OrdenesPago.Remove(OrdenPago);
-                return await this.RemoveValue(_context);
+                return await RemoveValue(_context);
             }
             else
             {
