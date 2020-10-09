@@ -12,7 +12,6 @@
 </p>
 
 <!-- Campo de Búsqueda CUIT -->
-
 @*<form action="./Proveedores/Details" method="get">
         <div class="form-group row align-items-end">
             <div class="col-2">
@@ -38,67 +37,77 @@
     </div>
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].RazonSocial)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].CUIT)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proveedores[0].Observacion)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Proveedores)
-        {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.Id)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.RazonSocial)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.CUIT)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observacion)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].RazonSocial)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].CUIT)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].Direccion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].Telefono)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].Correo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Proveedores[0].Observacion)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Proveedores)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.RazonSocial)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CUIT)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Direccion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Telefono)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Correo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observacion)
+                                </td>
+                                <td>
+                                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @{
     var prevDisabled = !Model.Proveedores.HasPreviousPage ? "disabled" : "";

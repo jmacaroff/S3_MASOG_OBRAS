@@ -222,6 +222,46 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
 
+            query = query + "SET IDENTITY_INSERT [dbo].[FacturasCompra] ON  ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "INSERT [dbo].[FacturasCompra] ([Id], [ProveedorId], [OrdenId], [PuntoVenta], [Numero], [TipoFactura], [FechaFactura], [FechaAlta], [Observacion], [Total], [PendientePago]) VALUES  ";
+            query = query + "(8, 3, 12, 1, 2, N'A', CAST(N'2020-09-20T00:00:00.0000000' AS DateTime2), CAST(N'2020-09-25T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. placa durlock', CAST(178709.00 AS Decimal(18, 2)), CAST(178709.00 AS Decimal(18, 2)) ), "; 
+            query = query + "(11, 9, 14, 1, 2, N'A', CAST(N'2020-10-02T00:00:00.0000000' AS DateTime2), CAST(N'2020-10-04T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. tornillos', CAST(257500.00 AS Decimal(18, 2)), CAST(257500.00 AS Decimal(18, 2)) ),";
+            query = query + "(13, 4, 18, 1, 2, N'A', CAST(N'2020-10-05T00:00:00.0000000' AS DateTime2), CAST(N'2020-10-05T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por flete Ord. 14', CAST(2600.00 AS Decimal(18, 2)), CAST(2600.00 AS Decimal(18, 2)) )";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "SET IDENTITY_INSERT [dbo].[FacturasCompra] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "SET IDENTITY_INSERT [dbo].[FacturaCompraItems] ON  ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "INSERT [dbo].[FacturaCompraItems] ([Id], [FacturaCompraId], [ProductoId], [Cantidad], [Precio], [Observacion]) VALUES  ";
+            query = query + "(5, 8, N'DUR001', 100, CAST(970.45 AS Decimal(18, 2)), NULL), ";
+            query = query + "(6, 8, N'DUR002', 80, CAST(1020.80 AS Decimal(18, 2)), NULL), ";
+            query = query + "(10, 11, N'TOR001', 5000, CAST(9.00 AS Decimal(18, 2)), NULL), ";
+            query = query + "(11, 11, N'TOR002', 10000, CAST(11.80 AS Decimal(18, 2)), NULL), ";
+            query = query + "(12, 11, N'TOR101', 10000, CAST(9.45 AS Decimal(18, 2)), NULL), ";
+            query = query + "(14, 13, N'FLT001', 10000, CAST(9.45 AS Decimal(18, 2)), NULL) ";
+
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "SET IDENTITY_INSERT [dbo].[FacturaCompraItems] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -8,7 +8,7 @@
 <h1>Facturas de Compra</h1>
 
 <p>
-    <a asp-page="Create">Nueva Factura de Compra</a>
+    <a asp-page="Create" class= "btn btn-primary">Nueva Factura de Compra</a>
 </p>
 
 <!-- Campo de Búsqueda por Fecha -->
@@ -24,48 +24,65 @@
     </div>
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FacturasCompra[0].PuntoVenta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FacturasCompra[0].Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FacturasCompra[0].ProveedorId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FacturasCompra[0].FechaFactura)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.FacturasCompra)
-        {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.PuntoVenta)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaFactura)
-            </td>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                N°Factura
+                                @*@Html.DisplayNameFor(model => model.FacturasCompra[0].PuntoVenta)*@
+                            </th>
+                            <th>
+                                PuntoVenta
+                                @*@Html.DisplayNameFor(model => model.FacturasCompra[0].Id)*@
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FacturasCompra[0].ProveedorId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FacturasCompra[0].FechaFactura)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FacturasCompra[0].Total)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.FacturasCompra)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                    
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PuntoVenta)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaFactura)
+                                </td>
+                                <td>
+                                    $ @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 @{
     var prevDisabled = !Model.FacturasCompra.HasPreviousPage ? "disabled" : "";

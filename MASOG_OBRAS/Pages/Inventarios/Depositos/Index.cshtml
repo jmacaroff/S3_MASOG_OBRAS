@@ -22,43 +22,55 @@
     </div>
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Depositos[0].Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Depositos[0].Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Depositos[0].Direccion)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Depositos)
-        {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.Id)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Depositos[0].Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Depositos[0].Descripcion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Depositos[0].Direccion)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Depositos)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Direccion)
+                                </td>
+                                <td>
+                                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 @{
     var prevDisabled = !Model.Depositos.HasPreviousPage ? "disabled" : "";
