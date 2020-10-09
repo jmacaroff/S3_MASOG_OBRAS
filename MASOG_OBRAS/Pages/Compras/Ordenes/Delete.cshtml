@@ -30,19 +30,26 @@
             @Html.DisplayFor(model => model.Orden.FechaEntrega)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Orden.Observacion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Orden.Observacion)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Orden.Proveedor)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Orden.Proveedor.RazonSocial)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orden.Observacion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Orden.Observacion)
+        </dd>
     </dl>
-    
+
+    @if (Model.MessageError != null)
+    {
+        <div class="alert alert-warning">
+            @Model.MessageError
+        </div>
+    }
+
     <form method="post">
         <input type="hidden" asp-for="Orden.Id" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |

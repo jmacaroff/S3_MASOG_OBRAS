@@ -43,12 +43,12 @@
                         <input asp-for="FacturaCompra.FechaAlta" class="form-control" />
                         <span asp-validation-for="FacturaCompra.FechaAlta" class="text-danger"></span>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-3">
-                            <label asp-for="FacturaCompra.Observacion" class="control-label">Observacion</label>
-                            <input asp-for="FacturaCompra.Observacion" class="form-control" />
-                            <span asp-validation-for="FacturaCompra.Observacion" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-9">
+                        <label asp-for="FacturaCompra.Observacion" class="control-label">Observacion</label>
+                        <input asp-for="FacturaCompra.Observacion" class="form-control" />
+                        <span asp-validation-for="FacturaCompra.Observacion" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -64,7 +64,7 @@
             @if (Model.HasProveedor && !Model.HasOrden)
             {
                 <div class="alert alert-warning">
-                    No hay ordenes pendiente
+                    No hay órdenes pendientes para este proveedor.
                 </div>
             }
             @if (Model.HasOrden)
@@ -94,7 +94,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        Numero de producto
+                                        ID del Producto
                                     </th>
                                     <th>
                                         Cantidad
@@ -103,7 +103,7 @@
                                         Precio
                                     </th>
                                     <th>
-                                        Observacion
+                                        Observación
                                     </th>
                                 </tr>
                             </thead>

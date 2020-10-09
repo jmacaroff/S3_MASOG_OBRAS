@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Compras;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Compras.Ordenes
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BaseDeletePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -48,13 +49,26 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
 
             Orden = await _context.Ordenes.FindAsync(id);
 
+            if (ExistFactura(Orden.Id))
+            {
+                this.MessageError = "Existe una factura asociada.";
+                return null;
+            }
             if (Orden != null)
             {
                 _context.Ordenes.Remove(Orden);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
             }
+            else
+            {
+                return Page();
+            }
+        }
 
-            return RedirectToPage("./Index");
+        private bool ExistFactura(int id)
+        {
+            FacturaCompra facturaCompra = _context.FacturasCompra.Where(f => f.OrdenId == id).FirstOrDefault<FacturaCompra>();
+            return facturaCompra != null;
         }
     }
 }

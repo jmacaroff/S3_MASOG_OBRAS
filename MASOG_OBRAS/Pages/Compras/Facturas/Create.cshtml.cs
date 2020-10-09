@@ -64,7 +64,7 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
         {
             if (FacturaCompra.FechaFactura > FacturaCompra.FechaAlta)
             {
-                MessageError = "Fechas incorrectas";
+                MessageError = "Fechas incorrectas.";
             }
             else
             {

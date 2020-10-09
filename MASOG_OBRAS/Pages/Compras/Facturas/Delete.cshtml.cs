@@ -22,6 +22,7 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
 
         [BindProperty]
         public FacturaCompra FacturaCompra { get; set; }
+        public List<FacturaCompraItem> FacturaCompraItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,6 +33,10 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
 
             FacturaCompra = await _context.FacturasCompra
                 .Include(p => p.Proveedor).FirstOrDefaultAsync(m => m.Id == id);
+
+            FacturaCompraItems = await _context.FacturaCompraItems.Where(o => o.FacturaCompraId == FacturaCompra.Id)
+                .Include(o => o.FacturaCompra)
+                .Include(p => p.Producto).ToListAsync();
 
             if (FacturaCompra == null)
             {
@@ -49,6 +54,11 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
 
             FacturaCompra = await _context.FacturasCompra.FindAsync(id);
 
+            if (ExistOP(FacturaCompra.Id))
+            {
+                this.MessageError = "Existe una Orden de Pago asociada.";
+                return null;
+            }
             if (FacturaCompra != null)
             {
                 _context.FacturasCompra.Remove(FacturaCompra);
@@ -57,6 +67,12 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
             {
                 return Page();
             }
+        }
+
+        private bool ExistOP(int id)
+        {
+            OrdenPagoItem ordenPagoI = _context.OrdenPagoItems.Where(o => o.FacturaCompraId == id).FirstOrDefault<OrdenPagoItem>();
+            return ordenPagoI != null;
         }
     }
 }
