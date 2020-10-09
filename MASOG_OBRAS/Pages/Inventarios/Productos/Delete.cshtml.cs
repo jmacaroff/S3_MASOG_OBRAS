@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Productos
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BaseDeletePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -50,7 +51,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             if (Producto != null)
             {
                 _context.Productos.Remove(Producto);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
             }
 
             return RedirectToPage("./Index");

@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Compras;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BaseDeletePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -52,10 +53,12 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
             if (OrdenPago != null)
             {
                 _context.OrdenesPago.Remove(OrdenPago);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
             }
-
-            return RedirectToPage("./Index");
+            else
+            {
+                return Page();
+            }
         }
     }
 }

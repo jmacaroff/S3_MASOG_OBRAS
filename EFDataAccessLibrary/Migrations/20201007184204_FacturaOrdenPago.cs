@@ -115,7 +115,7 @@ namespace EFDataAccessLibrary.Migrations
                         column: x => x.FacturaCompraId,
                         principalTable: "FacturasCompra",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FacturaCompraItems_Productos_ProductoId",
                         column: x => x.ProductoId,
@@ -148,7 +148,7 @@ namespace EFDataAccessLibrary.Migrations
                         column: x => x.OrdenPagoId,
                         principalTable: "OrdenesPago",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

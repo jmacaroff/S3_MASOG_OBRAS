@@ -5,48 +5,120 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>OrdenPago</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrdenPago.ProveedorId" class="control-label"></label>
-                <select asp-for="OrdenPago.ProveedorId" class ="form-control" asp-items="ViewBag.ProveedorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrdenPago.FechaEmision" class="control-label"></label>
-                <input asp-for="OrdenPago.FechaEmision" class="form-control" />
-                <span asp-validation-for="OrdenPago.FechaEmision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrdenPago.ConceptoPagoId" class="control-label"></label>
-                <select asp-for="OrdenPago.ConceptoPagoId" class ="form-control" asp-items="ViewBag.ConceptoPagoId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrdenPago.Observacion" class="control-label"></label>
-                <input asp-for="OrdenPago.Observacion" class="form-control" />
-                <span asp-validation-for="OrdenPago.Observacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrdenPago.Total" class="control-label"></label>
-                <input asp-for="OrdenPago.Total" class="form-control" />
-                <span asp-validation-for="OrdenPago.Total" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="OrdenPago.ProveedorId" class="control-label"></label>
+                    <select asp-for="OrdenPago.ProveedorId" class="form-control" asp-items="ViewBag.ProveedorId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrdenPago.FechaEmision" class="control-label"></label>
+                    <input asp-for="OrdenPago.FechaEmision" class="form-control" />
+                    <span asp-validation-for="OrdenPago.FechaEmision" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrdenPago.ConceptoPagoId" class="control-label"></label>
+                    <select asp-for="OrdenPago.ConceptoPagoId" class="form-control" asp-items="ViewBag.ConceptoPagoId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrdenPago.Observacion" class="control-label"></label>
+                    <input asp-for="OrdenPago.Observacion" class="form-control" />
+                    <span asp-validation-for="OrdenPago.Observacion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Confirmar" class="btn btn-primary" asp-page-handler="Proveedor" />
+                </div>
+                @if (Model.MessageError != null)
+                {
+                    <div class="alert alert-warning">
+                        @Model.MessageError
+                    </div>
+                }
+            </form>
+        </div>
     </div>
+    @if (Model.HasProveedor && !Model.HasFacturas)
+    {
+        <div class="alert alert-warning">
+            No hay facturas pendientes
+        </div>
+    }
+    @if (Model.HasFacturas)
+    {
+        <div class="row">
+            <div class="col-12">
+                <form method="post" class="mb-4">
+                    <div class="form-group">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Factura
+                                    </th>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                    <th>
+                                        Importe
+                                    </th>
+                                    <th>
+                                        Seleccionar
+                                    </th>
+                                </tr>
+                            </thead>
+                            @for (int i = 0; i < Model.FacturaItems.Count; i++)
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @Model.FacturaItems[i].Id
+                                        </td>
+                                        <td>
+                                           @Model.FacturaItems[i].FechaFactura
+                                        </td>
+                                        <td>
+                                           @Model.FacturaItems[i].Total
+                                        </td>
+                                        <td>
+                                            <div class="form-group form-check">
+                                                <input class="form-check-input" asp-for="@Model.FacturaItems[i].IsSelected" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                        <div class="row">
+                            <div class="col-2">
+                                @if (Model.MessageError != null)
+                                {
+                                    <div class="alert alert-warning" role="alert">
+                                        @Model.MessageError
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1">
+                                <div class="form-group">
+                                    <a asp-page="Index" class="btn btn-danger">Cancelar</a>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="form-group">
+                                    <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrden" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
 </div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
