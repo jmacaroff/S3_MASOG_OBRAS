@@ -75,6 +75,7 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
             List<FacturaCompra> list = _context.FacturasCompra.Where(x => x.ProveedorId == proveedorId && x.PendientePago != 0).ToList();
             List<FacturaSelectedItem> itemList = new List<FacturaSelectedItem>();
             List<OrdenPagoItem> ordenList = new List<OrdenPagoItem>();
+            double total = 0;
             list.ForEach(x =>
             {
                 itemList.Add(new FacturaSelectedItem()
@@ -95,10 +96,12 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
                         FacturaCompraId = itemList[i].Id,
                         Importe = itemList[i].Total
                     });
+                    total += itemList[i].Total;
                     list.First(x => x.Id == itemList[i].Id).PendientePago = 0;
                 }
             }
             OrdenPago.OrdenPagoItems = ordenList;
+            OrdenPago.Total = total;
             _context.OrdenesPago.Add(OrdenPago);
             return await AddNewValue(_context);
         }
