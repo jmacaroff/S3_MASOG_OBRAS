@@ -35,73 +35,73 @@
     </div>
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Descripcion
-                @*<a asp-page="./Index" asp-route-sortOrder="@Model.DescriptionSort">
-                        Descripcion
-                    </a>*@
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Descripcion
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                            <th>
+                                Observacion
+                            </th>
+                            <th>
+                                Activo
+                            </th>
+                            <th>
+                                Operaciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Productos)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Precio)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observacion)
+                                </td>
+                                <td>
 
-            </th>
-            <th>
-                Precio
-                @*<a asp-page="./Index" asp-route-sortOrder="@Model.PrecioSort">
-                        Precio
-                    </a>*@
-
-            </th>
-            <th>
-                Observacion
-            </th>
-            <th>
-                Activo
-            </th>
-            <th>
-                Operaciones
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Productos)
-        {
-            <tr>
-                <th>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Precio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Observacion)
-                </td>
-                <td>
-
-                    @if (item.Activo)
-                    {
-                        <span class="span-activo">Activo</span>
-                    }
-                    else
-                    {
-                        <span class="span-no-activo">No activo</span>
-                    }
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                    @if (item.Activo)
+                                    {
+                                        <span class="span-activo">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="span-no-activo">No activo</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<</div>
 
 @{
     var prevDisabled = !Model.Productos.HasPreviousPage ? "disabled" : "";

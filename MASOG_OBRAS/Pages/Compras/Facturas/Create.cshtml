@@ -159,12 +159,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-1">
+                        <div class="col-3">
                             <div class="form-group">
                                 <a asp-page="Index" class="btn btn-danger">Cancelar</a>
                             </div>
                         </div>
-                        <div class="col-1">
+                        <div class="col-3">
                             <div class="form-group">
                                 <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveFactura" />
                             </div>
@@ -178,17 +178,28 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
-    $('#ddProveedores').select2({
-        theme: "bootstrap4",
-        language: "es",
-    })
 
-    $('#ddOrdenes').select2({
-        theme: "bootstrap4",
-        language: "es",
-    })
+    $('#ddProveedores').on('change', function () {
+        // Save value in localstorage
+        localStorage.setItem("#ddProveedores", $(this).val());
+    });
 
     $(document).ready(function () {
+        //Guardar datos despues del refresco
+        if ($('#ddProveedores').length) {
+            $('#ddProveedores').val(localStorage.getItem("#ddProveedores"));
+        }
+
+        $('#ddProveedores').select2({
+            theme: "bootstrap4",
+            language: "es",
+        })
+
+        $('#ddOrdenes').select2({
+            theme: "bootstrap4",
+            language: "es",
+        })
+
 
     });
 </script>
