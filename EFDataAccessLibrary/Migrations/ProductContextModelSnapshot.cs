@@ -348,7 +348,7 @@ namespace EFDataAccessLibrary.Migrations
                     b.HasOne("EFDataAccessLibrary.Models.Compras.FacturaCompra", "FacturaCompra")
                         .WithMany("FacturaCompraItems")
                         .HasForeignKey("FacturaCompraId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EFDataAccessLibrary.Models.Inventarios.Producto", "Producto")

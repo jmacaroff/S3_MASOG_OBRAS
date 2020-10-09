@@ -27,6 +27,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         private readonly ProductContext _context;
         private readonly string LIST_KEY = "ListKey";
         private readonly string PROVEEDOR_KEY = "ProveedorKey";
+        private readonly string ORDER_KEY = "OrdenKey";
 
 
         [BindProperty]
@@ -34,6 +35,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
 
         public bool HasProveedor { get; set; } = false;
         public bool HasProduct { get; set; } = false;
+        public bool HasProductList { get; set; }
         public bool HasOrdenItems { get; set; } = false;
         [BindProperty]
         public int ProveedorId { get; set; }
@@ -57,7 +59,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             _context = context;
         }
 
-        public IActionResult OnGet(string id,string action)
+        public IActionResult OnGet()
         {
             HttpContext.Session.Remove(LIST_KEY);
             HttpContext.Session.Remove(PROVEEDOR_KEY);
@@ -65,21 +67,35 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             LoadViewData();
             return Page();
         }
-
+        public void OnPostHeader()
+        {
+            if(Orden.Fecha > Orden.FechaEntrega)
+            {
+                MessageError = "Fechas incorrectas";
+            }
+            else
+            {
+                MessageError = null;
+                int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                if (proveedorId == -1)
+                {
+                    HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
+                }
+                HttpContext.Session.SetComplexData(ORDER_KEY, Orden);
+                HasProveedor = true;
+            }
+            LoadOrdenItems();
+            LoadViewData();
+        }
 
         public void OnPostProduct()
         {
-            int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
-            if (proveedorId == -1)
-            {
-                HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
-            }
 
             Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
             HasProduct = true;
-            HasProveedor = true;
             OrdenItem.Precio = Producto.Precio;
             OrdenItem.ProductoId = Producto.Id;
+            LoadProveedorId();
             LoadOrdenItems();
             LoadViewData();
         }
@@ -120,7 +136,6 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
                 _context.Ordenes.Add(Orden);
                 return await AddNewValue(_context);
             }
-
         }
         private void LoadProveedorId()
         {
@@ -149,18 +164,33 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             {
                 ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "RazonSocial");
             }
-            if (OrdenItems != null)
+            if (OrdenItems.Count > 0)
             {
                 List<Producto> list = _context.Productos.ToList();
                 foreach(OrdenItem item in OrdenItems)
                 {
                     list = list.Where(x => x.Id != item.ProductoId).ToList();
                 }
-                ViewData["ProductoId"] = new SelectList(list, "Id", "Descripcion");
+                if(list.Count == 0)
+                {
+                    HasProductList = false;
+                }else
+                {
+                    ViewData["ProductoId"] = new SelectList(list, "Id", "Descripcion");
+                    HasProductList = true;
+                }
             }
             else
             {
-                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
+                if (_context.Productos.ToList().Count == 0)
+                {
+                    HasProductList = false;
+                }
+                else
+                {
+                    ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
+                    HasProductList = true;
+                }
             }
         }
         private void SaveOrdenItems()
@@ -170,22 +200,22 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
 
     }
 
-    public static class SessionExtensions
-    {
-        public static T GetComplexData<T>(this ISession session, string key)
-        {
-            var data = session.GetString(key);
-            if (data == null)
-            {
-                return default(T);
-            }
-            return JsonConvert.DeserializeObject<T>(data);
-        }
+    //public static class SessionExtensions
+    //{
+    //    public static T GetComplexData<T>(this ISession session, string key)
+    //    {
+    //        var data = session.GetString(key);
+    //        if (data == null)
+    //        {
+    //            return default(T);
+    //        }
+    //        return JsonConvert.DeserializeObject<T>(data);
+    //    }
 
-        public static void SetComplexData(this ISession session, string key, object value)
-        {
-            session.SetString(key, JsonConvert.SerializeObject(value));
-        }
-    }
+    //    public static void SetComplexData(this ISession session, string key, object value)
+    //    {
+    //        session.SetString(key, JsonConvert.SerializeObject(value));
+    //    }
+    //}
 
 }

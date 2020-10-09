@@ -205,7 +205,7 @@ namespace EFDataAccessLibrary.Migrations
                 column: "OrdenId",
                 principalTable: "Ordenes",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrdenItems_Productos_ProductoId",
@@ -213,7 +213,7 @@ namespace EFDataAccessLibrary.Migrations
                 column: "ProductoId",
                 principalTable: "Productos",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             string query = "";
 

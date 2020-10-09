@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Compras;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Compras.Facturas
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BaseDeletePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -51,10 +52,11 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
             if (FacturaCompra != null)
             {
                 _context.FacturasCompra.Remove(FacturaCompra);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
+            }else
+            {
+                return Page();
             }
-
-            return RedirectToPage("./Index");
         }
     }
 }

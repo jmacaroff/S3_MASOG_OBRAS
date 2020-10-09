@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +9,12 @@ using System.Threading.Tasks;
 
 namespace MASOG_OBRAS.Classes
 {
-
-    public abstract class BaseCreatePage : PageModel
+    public class BaseDeletePage : PageModel
     {
         [BindProperty]
         public string MessageError { get; set; }
 
-        public async Task<IActionResult> AddNewValue(DbContext context)
+        public async Task<IActionResult> RemoveValue(DbContext context)
         {
             try
             {
@@ -33,23 +30,6 @@ namespace MASOG_OBRAS.Classes
                 MessageError = sqlException.Message;
                 return Page();
             }
-        }
-    }
-    public static class SessionExtensions
-    {
-        public static T GetComplexData<T>(this ISession session, string key)
-        {
-            var data = session.GetString(key);
-            if (data == null)
-            {
-                return default(T);
-            }
-            return JsonConvert.DeserializeObject<T>(data);
-        }
-
-        public static void SetComplexData(this ISession session, string key, object value)
-        {
-            session.SetString(key, JsonConvert.SerializeObject(value));
         }
     }
 }

@@ -22,23 +22,29 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
     public class CreateModel : BaseCreatePage
     {
         private readonly ProductContext _context;
-        private readonly string LIST_KEY = "ListKey";
+        private readonly string FACTURA_KEY = "FacturaKey";
+        private readonly string ORDEN_KEY = "OrdenKey";
+        private readonly string ORDEN_ITEMS_KEY = "OrdenItemsKey";
         private readonly string PROVEEDOR_KEY = "ProveedorKey";
 
-        public bool HasProveedor { get; set; } = false;
-        public bool HasProduct { get; set; } = false;
-        public bool HasFacturaCompraItems { get; set; } = false;
+        [BindProperty]
+        public bool HasProveedor { get; set; }
+        [BindProperty]
+        public bool HasOrden { get; set; }
+        [BindProperty]
+        public bool HasOrdenItem { get; set; }
         [BindProperty]
         public int ProveedorId { get; set; }
         [BindProperty]
-        public string ProductoId { get; set; }
+        public int OrdenId { get; set; }
+        [BindProperty]
+        public double Total { get; set; }
+        [BindProperty]
+        public List<OrdenItem> OrdenItems { get; set; }
         [BindProperty]
         public FacturaCompra FacturaCompra { get; set; }
         [BindProperty]
         public FacturaCompraItem FacturaCompraItem { get; set; }
-        [BindProperty]
-        public Producto Producto { get; set; }
-
         public List<FacturaCompraItem> FacturaCompraItems { get; set; }
 
         public CreateModel(ProductContext context)
@@ -46,131 +52,93 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
             _context = context;
         }
 
-        public IActionResult OnGet(string id,string action)
+        public IActionResult OnGet(string id, string action)
         {
-            HttpContext.Session.Remove(LIST_KEY);
+            HttpContext.Session.Remove(FACTURA_KEY);
             HttpContext.Session.Remove(PROVEEDOR_KEY);
-            LoadFacturaCompraItems();
-            LoadViewData();
+            OrdenItems = new List<OrdenItem>();
+            LoadProveedor();
             return Page();
         }
-        public void OnPostProduct()
+        public void OnPostProveedor()
         {
-            int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
-            if (proveedorId == -1)
+            if (FacturaCompra.FechaFactura > FacturaCompra.FechaAlta)
+            {
+                MessageError = "Fechas incorrectas";
+            }
+            else
             {
                 HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
+                HasProveedor = true;
+                HttpContext.Session.SetComplexData(FACTURA_KEY, FacturaCompra);
             }
-            Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
-            HasProduct = true;
-            HasProveedor = true;
-            FacturaCompraItem.Precio = Producto.Precio;
-            FacturaCompraItem.ProductoId = Producto.Id;
-            LoadFacturaCompraItems();
-            LoadViewData();
+            OrdenItems = new List<OrdenItem>();
+            LoadOrden();
+            LoadProveedor();
         }
 
-        public void OnPostAddItem()
+        public void OnPostOrden()
         {
-            FacturaCompraItem.FacturaCompraId = FacturaCompra.Id;
-            LoadFacturaCompraItems();
-            HasFacturaCompraItems = true;
-            FacturaCompraItems.Add(FacturaCompraItem);
-            SaveFacturaCompraItems();
-            LoadProveedorId();
-            LoadViewData();
-        }
-        public void OnPostRemoveItem(string id)
-        {
-            LoadFacturaCompraItems();
-            FacturaCompraItems = FacturaCompraItems.Where(x => x.ProductoId != id).ToList();
-            HasFacturaCompraItems = FacturaCompraItems.Count != 0;
-            SaveFacturaCompraItems();
-            LoadProveedorId();
-            LoadViewData();
+            HttpContext.Session.SetInt32(ORDEN_KEY, OrdenId);
+            OrdenItems = _context.OrdenItems.Where(x => x.OrdenId == OrdenId).ToList();
+            HasOrdenItem = true;
+            HttpContext.Session.SetComplexData(ORDEN_ITEMS_KEY, OrdenItems);
+            Total = (double) OrdenItems.Sum(x => x.Precio * x.Cantidad);
+            LoadFactura();
+            LoadOrden();
+            LoadProveedor();
         }
 
-        public async Task<IActionResult> OnPostSaveOrder()
+        public async Task<IActionResult> OnPostSaveFactura()
         {
-            LoadFacturaCompraItems();
-            if (FacturaCompraItems.Count == 0)
+            List<OrdenItem> list = HttpContext.Session.GetComplexData<List<OrdenItem>>(ORDEN_ITEMS_KEY);
+            int ordenId = (int)HttpContext.Session.GetInt32(ORDEN_KEY);
+            int proveedorId = (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+            FacturaCompra factura = HttpContext.Session.GetComplexData<FacturaCompra>(FACTURA_KEY);
+            factura.OrdenId = ordenId;
+            factura.ProveedorId = proveedorId;
+            List<FacturaCompraItem> facturaCompraItems = new List<FacturaCompraItem>();
+            decimal total = 0;
+            list.ForEach(x =>
             {
-                MessageError = "No hay items en la factura.";
-                LoadViewData();
-                return Page();
-            }
-            else
-            {
-                FacturaCompra.FacturaCompraItems = FacturaCompraItems;
-                FacturaCompra.ProveedorId = (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
-                _context.FacturasCompra.Add(FacturaCompra);
-                return await AddNewValue(_context);
-            }
-
-        }
-        private void LoadProveedorId()
-        {
-            ProveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
-            HasProveedor = ProveedorId != -1;
-        }
-        private void LoadFacturaCompraItems()
-        {
-            List<FacturaCompraItem> list = HttpContext.Session.GetComplexData<List<FacturaCompraItem>>(LIST_KEY);
-            if (list == null)
-            {
-                FacturaCompraItems = new List<FacturaCompraItem>();
-            }
-            else
-            {
-                FacturaCompraItems = list;
-                HasFacturaCompraItems = true;
-            }
-        }
-        private void LoadViewData()
-        {
-            if (ProveedorId != 0)
-            {
-                ViewData["ProveedorId"] = new SelectList(_context.Proveedores.Where(x => x.Id == ProveedorId), "Id", "RazonSocial");
-            }
-            else
-            {
-                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "RazonSocial");
-            }
-            if (FacturaCompraItems != null)
-            {
-                List<Producto> list = _context.Productos.ToList();
-                foreach(FacturaCompraItem item in FacturaCompraItems)
+                facturaCompraItems.Add(new FacturaCompraItem()
                 {
-                    list = list.Where(x => x.Id != item.ProductoId).ToList();
-                }
-                ViewData["ProductoId"] = new SelectList(list, "Id", "Id");
-            }
-            else
-            {
-                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Id");
-            }
-        }
-        private void SaveFacturaCompraItems()
-        {
-            HttpContext.Session.SetComplexData(LIST_KEY, FacturaCompraItems);
-        }
-    }
+                    FacturaCompraId = factura.Id,
+                    ProductoId = x.ProductoId,
+                    Precio = x.Precio,
+                    Cantidad = x.Cantidad,
+                    Observacion = x.Observacion
+                });
+                total += x.Precio * x.Cantidad;
+            });
+            factura.FacturaCompraItems = facturaCompraItems;
+            factura.Total = (double)total;
+            factura.PendientePago = (double)total;
+            _context.FacturasCompra.Add(factura);
+            return await AddNewValue(_context);
 
-    public static class SessionExtensions
-    {
-        public static T GetComplexData<T>(this ISession session, string key)
-        {
-            var data = session.GetString(key);
-            if (data == null)
-            {
-                return default(T);
-            }
-            return JsonConvert.DeserializeObject<T>(data);
         }
-
-        public static void SetComplexData(this ISession session, string key, object value)
+        private void LoadOrden()
         {
-            session.SetString(key, JsonConvert.SerializeObject(value));
+            int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+            if (proveedorId != -1)
+            {
+                List<Orden> list = _context.Ordenes.Where(x => x.ProveedorId == proveedorId).ToList();
+                _context.FacturasCompra.ToList().ForEach(x =>
+                {
+                    list = list.Where(y => y.Id != x.OrdenId).ToList();
+                });
+                HasOrden = list.Count != 0;
+                ViewData["OrdenId"] = new SelectList(list, "Id", "Id");
+            }
+        }
+        private void LoadProveedor()
+        {
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "RazonSocial");
+        }
+        private void LoadFactura()
+        {
+            FacturaCompra = HttpContext.Session.GetComplexData<FacturaCompra>(FACTURA_KEY);
         }
     }
 }
