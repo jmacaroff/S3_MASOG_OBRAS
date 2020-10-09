@@ -1,0 +1,48 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.OrdenesPago.OrdenPagoItems.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPagoItem[0].Importe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPagoItem[0].OrdenPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPagoItem[0].FacturaCompra)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OrdenPagoItem) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrdenPago.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacturaCompra.TipoFactura)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

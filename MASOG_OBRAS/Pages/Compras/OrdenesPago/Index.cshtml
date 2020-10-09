@@ -1,0 +1,60 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Compras.OrdenesPago.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPago[0].FechaEmision)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPago[0].Observacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPago[0].Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPago[0].Proveedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenPago[0].ConceptoPago)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OrdenPago) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEmision)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConceptoPago.Descripcion)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
