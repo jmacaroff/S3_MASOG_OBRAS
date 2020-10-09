@@ -39,12 +39,6 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a asp-page="/Index" class="nav-link @Html.ActiveClass("/Index")">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Compras</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a asp-page="/Compras/Ordenes/Index" class="nav-link @Html.ActiveClass("/Compras/Ordenes/Index")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Órdenes</p>
@@ -138,6 +132,12 @@
                                 <p>Factura</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Recibo</p>
+                            </a>
+                        </li>
                     </ul>
                 <li />
 
@@ -169,7 +169,7 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Req.Obras</p>
+                                <p>Req. de Obra</p>
                             </a>
                         </li>
                     </ul>

@@ -228,9 +228,9 @@ namespace EFDataAccessLibrary.Migrations
             query = "";
 
             query = query + "INSERT [dbo].[FacturasCompra] ([Id], [ProveedorId], [OrdenId], [PuntoVenta], [Numero], [TipoFactura], [FechaFactura], [FechaAlta], [Observacion], [Total], [PendientePago]) VALUES  ";
-            query = query + "(8, 3, 12, 1, 2, N'A', CAST(N'2020-09-20T00:00:00.0000000' AS DateTime2), CAST(N'2020-09-25T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. placa durlock', CAST(178709.00 AS Decimal(18, 2)), CAST(178709.00 AS Decimal(18, 2)) ), "; 
-            query = query + "(11, 9, 14, 1, 2, N'A', CAST(N'2020-10-02T00:00:00.0000000' AS DateTime2), CAST(N'2020-10-04T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. tornillos', CAST(257500.00 AS Decimal(18, 2)), CAST(257500.00 AS Decimal(18, 2)) ),";
-            query = query + "(13, 4, 18, 1, 2, N'A', CAST(N'2020-10-05T00:00:00.0000000' AS DateTime2), CAST(N'2020-10-05T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por flete Ord. 14', CAST(2600.00 AS Decimal(18, 2)), CAST(2600.00 AS Decimal(18, 2)) )";
+            query = query + "(8, 3, 12, 167, 50674, N'A', CAST(N'2020-09-20T00:00:00.0000000' AS DateTime2), CAST(N'2020-09-25T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. placa durlock', CAST(178709.00 AS Decimal(18, 2)), CAST(178709.00 AS Decimal(18, 2)) ), "; 
+            query = query + "(11, 9, 14, 1356, 2343564, N'A', CAST(N'2020-10-02T00:00:00.0000000' AS DateTime2), CAST(N'2020-10-04T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. tornillos', CAST(257500.00 AS Decimal(18, 2)), CAST(257500.00 AS Decimal(18, 2)) ),";
+            query = query + "(13, 4, 18, 8, 10867, N'A', CAST(N'2020-10-05T00:00:00.0000000' AS DateTime2), CAST(N'2020-10-05T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por flete Ord. 14', CAST(2600.00 AS Decimal(18, 2)), CAST(2600.00 AS Decimal(18, 2)) )";
 
             migrationBuilder.Sql(query);
             query = "";

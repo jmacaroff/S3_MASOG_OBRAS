@@ -32,12 +32,10 @@
                     <thead>
                         <tr>
                             <th>
-                                N°Factura
-                                @*@Html.DisplayNameFor(model => model.FacturasCompra[0].PuntoVenta)*@
+                                @Html.DisplayNameFor(model => model.FacturasCompra[0].PuntoVenta)
                             </th>
                             <th>
-                                PuntoVenta
-                                @*@Html.DisplayNameFor(model => model.FacturasCompra[0].Id)*@
+                                @Html.DisplayNameFor(model => model.FacturasCompra[0].Numero)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.FacturasCompra[0].ProveedorId)
@@ -56,11 +54,11 @@
                         {
                             <tr>
                                 <th>
-                                    @Html.DisplayFor(modelItem => item.Id)
+                                    @Html.DisplayFor(modelItem => item.PuntoVenta)
                                     
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PuntoVenta)
+                                    @Html.DisplayFor(modelItem => item.Numero)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
