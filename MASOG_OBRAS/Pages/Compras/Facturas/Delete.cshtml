@@ -61,45 +61,6 @@
         </dd>
     </dl>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Producto)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Cantidad)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Precio)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Observacion)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.FacturaCompraItems)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cantidad)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Precio)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Observacion)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
     @if (Model.MessageError != null)
     {
         <div class="alert alert-warning">

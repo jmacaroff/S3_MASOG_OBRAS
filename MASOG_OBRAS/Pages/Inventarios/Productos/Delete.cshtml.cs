@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
 using MASOG_OBRAS.Classes;
+using EFDataAccessLibrary.Models.Compras;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Productos
 {
@@ -32,6 +33,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
 
             Producto = await _context.Productos.FirstOrDefaultAsync(m => m.Id == id);
 
+
             if (Producto == null)
             {
                 return NotFound();
@@ -48,6 +50,16 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
 
             Producto = await _context.Productos.FindAsync(id);
 
+            if (ExistFactura(Producto.Id))
+            {
+                this.MessageError = "Existe una factura asociada.";
+                return null;
+            }
+            if (ExistOC(Producto.Id))
+            {
+                this.MessageError = "Existe una orden de compra asociada.";
+                return null;
+            }
             if (Producto != null)
             {
                 _context.Productos.Remove(Producto);
@@ -55,6 +67,17 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             }
 
             return RedirectToPage("./Index");
+        }
+
+        private bool ExistFactura(string id)
+        {
+            FacturaCompraItem facturaCompraI = _context.FacturaCompraItems.Where(f => f.ProductoId == id).FirstOrDefault<FacturaCompraItem>();
+            return facturaCompraI != null;
+        }
+        private bool ExistOC(string id)
+        {
+            OrdenItem orden = _context.OrdenItems.Where(o => o.ProductoId == id).FirstOrDefault<OrdenItem>();
+            return orden != null;
         }
     }
 }

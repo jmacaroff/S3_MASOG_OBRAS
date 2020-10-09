@@ -31,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.FacturasCompra[0].PuntoVenta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FacturasCompra[0].Id)
+                @Html.DisplayNameFor(model => model.FacturasCompra[0].Numero)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FacturasCompra[0].ProveedorId)
@@ -49,9 +49,9 @@
             <th>
                 @Html.DisplayFor(modelItem => item.PuntoVenta)
             </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
             </td>

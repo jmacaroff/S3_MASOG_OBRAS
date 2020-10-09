@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Proveedores;
+using EFDataAccessLibrary.Models.Compras;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BaseDeletePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -47,13 +49,34 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
 
             Proveedor = await _context.Proveedores.FindAsync(id);
 
+            if (ExistFactura(Proveedor.Id))
+            {
+                this.MessageError = "Existe una factura asociada.";
+                return null;
+            }
+            if (ExistOC(Proveedor.Id))
+            {
+                this.MessageError = "Existe una orden de compra asociada.";
+                return null;
+            }
             if (Proveedor != null)
             {
                 _context.Proveedores.Remove(Proveedor);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
             }
 
             return RedirectToPage("./Index");
+        }
+
+        private bool ExistFactura(int id)
+        {
+            FacturaCompra facturaCompra = _context.FacturasCompra.Where(f => f.ProveedorId == id).FirstOrDefault<FacturaCompra>();
+            return facturaCompra != null;
+        }
+        private bool ExistOC(int id)
+        {
+            Orden orden = _context.Ordenes.Where(o => o.ProveedorId == id).FirstOrDefault<Orden>();
+            return orden != null;
         }
     }
 }
