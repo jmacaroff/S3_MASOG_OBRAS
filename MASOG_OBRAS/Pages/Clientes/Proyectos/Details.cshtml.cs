@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
 
-namespace MASOG_OBRAS.Pages.Clientes.Clientes
+namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
             _context = context;
         }
 
-        public Cliente Cliente { get; set; }
+        public Proyecto Proyecto { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,9 +28,9 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
                 return NotFound();
             }
 
-            Cliente = await _context.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            Proyecto = await _context.Proyectos.Include(p => p.Cliente).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Cliente == null)
+            if (Proyecto == null)
             {
                 return NotFound();
             }

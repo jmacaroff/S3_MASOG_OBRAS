@@ -1,0 +1,67 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Clientes.Proyectos.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Agregar Proyecto</h1>
+
+<h4>Proyecto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Proyecto.ClienteId" class="control-label"></label>
+                <select id="dataCliente" asp-for="Proyecto.ClienteId" class="form-control" asp-items="@ViewData["ClienteId"] as SelectList"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Proyecto.Nombre" class="control-label"></label>
+                <input asp-for="Proyecto.Nombre" class="form-control" />
+                <span asp-validation-for="Proyecto.Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Proyecto.Direccion" class="control-label"></label>
+                <input asp-for="Proyecto.Direccion" class="form-control" />
+                <span asp-validation-for="Proyecto.Direccion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Proyecto.Observacion" class="control-label"></label>
+                <input asp-for="Proyecto.Observacion" class="form-control" />
+                <span asp-validation-for="Proyecto.Observacion" class="text-danger"></span>
+            </div>
+
+            @* Mensaje que muestra el error en la validación. *@
+
+            @if (Model.MessageError != null)
+            {
+                <div class="alert alert-warning" role="alert">@Model.MessageError</div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#dataCliente').select2({
+            theme: "bootstrap4",
+            language: "es",
+        })
+
+    });
+</script>
+}

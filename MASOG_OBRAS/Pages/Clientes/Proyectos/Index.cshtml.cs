@@ -9,9 +9,9 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Clientes.Clientes
+namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 {
-    public class IndexModel : BaseIndexPage<Cliente>
+    public class IndexModel : BaseIndexPage<Proyecto>
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -20,9 +20,9 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
             _context = context;
         }
 
-        // public IList<Cliente> Clientes { get;set; }
+        // public IList<Proyecto> Proyecto { get;set; }
 
-        public PaginatedList<Cliente> Clientes { get; set; }
+        public PaginatedList<Proyecto> Proyectos { get; set; }
 
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -46,12 +46,12 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
             CurrentFilter = searchString;
 
 
-            IQueryable<Cliente> clientesIQ = from c in _context.Clientes select c;
+            IQueryable<Proyecto> proyectosIQ = from p in _context.Proyectos select p;
 
             //veo si el buscador esta vacio para poder realizar la busqueda
             if (!String.IsNullOrEmpty(searchString))
             {
-                clientesIQ = clientesIQ.Where(c => c.Nombre.Contains(searchString));
+                proyectosIQ = proyectosIQ.Where(p => p.Nombre.Contains(searchString)); 
             }
 
 
@@ -59,12 +59,12 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
             switch (sortOrder)
             {
                 default:
-                    clientesIQ = clientesIQ.OrderBy(c => c.Id);
+                    proyectosIQ = proyectosIQ.OrderBy(p => p.Id);
                     break;
             }
 
             int pageSize = 5;
-            Clientes = await PaginatedList<Cliente>.CreateAsync(clientesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+            Proyectos = await PaginatedList<Proyecto>.CreateAsync(proyectosIQ.Include(p => p.Cliente).AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }
 }

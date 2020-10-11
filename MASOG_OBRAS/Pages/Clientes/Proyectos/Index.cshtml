@@ -1,30 +1,15 @@
 ﻿@page
-@model MASOG_OBRAS.Pages.Clientes.Clientes.IndexModel
+@model MASOG_OBRAS.Pages.Clientes.Proyectos.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Clientes</h1>
+<h1>Proyectos</h1>
 
 <p>
-    <a asp-page="Create" class="btn btn-primary">Nuevo Cliente</a>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Proyecto</a>
 </p>
-
-<!-- Campo de Búsqueda Nombre -->
-@*<form action="./Proveedores/Details" method="get">
-        <div class="form-group row align-items-end">
-            <div class="col-2">
-                <label for="inputid">Buscar por Nombre</label>
-                <input type="text" class="form-control" id="inputcuit" name="cuit" required>
-            </div>
-            <div class="col-10">
-                <button type="submit" value="Search" class="btn btn-primary">Buscar</button>
-            </div>
-        </div>
-    </form>*@
-
-<!-- Campo de Búsqueda por Nombre -->
 
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
@@ -45,47 +30,41 @@
                     <thead>
                         <tr>
                             <th>
-                                ID
+                                @Html.DisplayNameFor(model => model.Proyectos[0].Id)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Clientes[0].Nombre)
+                                @Html.DisplayNameFor(model => model.Proyectos[0].Nombre)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Clientes[0].DNI)
+                                @Html.DisplayNameFor(model => model.Proyectos[0].ClienteId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Clientes[0].Direccion)
+                                @Html.DisplayNameFor(model => model.Proyectos[0].Direccion)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Clientes[0].Telefono)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Clientes[0].Correo)
+                                @Html.DisplayNameFor(model => model.Proyectos[0].Observacion)
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Clientes)
+                        @foreach (var item in Model.Proyectos)
                         {
                             <tr>
                                 <th>
                                     @Html.DisplayFor(modelItem => item.Id)
                                 </th>
-                                <th>
-                                    @Html.DisplayFor(modelItem => item.Nombre)
-                                </th>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DNI)
+                                    @Html.DisplayFor(modelItem => item.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cliente.Nombre)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Direccion)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Telefono)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Correo)
+                                    @Html.DisplayFor(modelItem => item.Observacion)
                                 </td>
                                 <td>
                                     <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
@@ -103,34 +82,21 @@
 
 
 @{
-    var prevDisabled = !Model.Clientes.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Clientes.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.Proyectos.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Proyectos.HasNextPage ? "disabled" : "";
 }
 
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.Clientes.PageIndex - 1)"
+   asp-route-pageIndex="@(Model.Proyectos.PageIndex - 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
    class="btn btn-primary @prevDisabled">
     Anterior
 </a>
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.Clientes.PageIndex + 1)"
+   asp-route-pageIndex="@(Model.Proyectos.PageIndex + 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
    class="btn btn-primary @nextDisabled">
     Siguiente
 </a>
-
-@*<div class="row justify-content-end">
-        <div class="col-1">
-            @if (Model.HasPrevious())
-            {
-                <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage -1)">Anterior</a>}
-        </div>
-        <div class="col-1">
-            @if (Model.HasNext())
-            {
-                <a asp-page="./Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Siguiente</a>}
-        </div>
-    </div>*@

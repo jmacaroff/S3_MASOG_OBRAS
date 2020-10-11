@@ -12,42 +12,42 @@
                 <div class="row">
                     <div class="form-group col-3">
                         <label class="control-label">Seleccione proveedor</label>
-                        <select id="ddProveedores" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                        <select id="ddProveedores" asp-for="ProveedorId" class="form-control" asp-items="@ViewData["ProveedorId"] as SelectList" disabled="@Model.HasProveedor"></select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-3">
                         <label asp-for="FacturaCompra.PuntoVenta" class="control-label"></label>
-                        <input asp-for="FacturaCompra.PuntoVenta" class="form-control" />
+                        <input asp-for="FacturaCompra.PuntoVenta" class="form-control" disabled="@Model.HasProveedor" />
                         <span asp-validation-for="FacturaCompra.PuntoVenta" class="text-danger"></span>
                     </div>
                     <div class="form-group col-3">
                         <label asp-for="FacturaCompra.Numero" class="control-label"></label>
-                        <input asp-for="FacturaCompra.Numero" class="form-control" />
+                        <input asp-for="FacturaCompra.Numero" class="form-control" disabled="@Model.HasProveedor" />
                         <span asp-validation-for="FacturaCompra.Numero" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-3">
                         <label asp-for="FacturaCompra.TipoFactura" class="control-label"></label>
-                        <input asp-for="FacturaCompra.TipoFactura" class="form-control" />
+                        <input asp-for="FacturaCompra.TipoFactura" class="form-control" disabled="@Model.HasProveedor" />
                         <span asp-validation-for="FacturaCompra.TipoFactura" class="text-danger"></span>
                     </div>
                     <div class="form-group col-3">
                         <label asp-for="FacturaCompra.FechaFactura" class="control-label"></label>
-                        <input asp-for="FacturaCompra.FechaFactura" class="form-control" />
+                        <input asp-for="FacturaCompra.FechaFactura" class="form-control" disabled="@Model.HasProveedor" />
                         <span asp-validation-for="FacturaCompra.FechaFactura" class="text-danger"></span>
                     </div>
                     <div class="form-group col-3">
                         <label asp-for="FacturaCompra.FechaAlta" class="control-label"></label>
-                        <input asp-for="FacturaCompra.FechaAlta" class="form-control" />
+                        <input asp-for="FacturaCompra.FechaAlta" class="form-control" disabled="@Model.HasProveedor" />
                         <span asp-validation-for="FacturaCompra.FechaAlta" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-9">
                         <label asp-for="FacturaCompra.Observacion" class="control-label">Observacion</label>
-                        <input asp-for="FacturaCompra.Observacion" class="form-control" />
+                        <input asp-for="FacturaCompra.Observacion" class="form-control" disabled="@Model.HasProveedor" />
                         <span asp-validation-for="FacturaCompra.Observacion" class="text-danger"></span>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                                             @item.Cantidad
                                         </td>
                                         <td align="right">
-                                            @string.Format("{0:C2}", item.Precio) &nbsp; 
+                                            @string.Format("{0:C2}", item.Precio) &nbsp; &nbsp; &nbsp;
                                         </td>
                                         <td>
                                             @item.Observacion

@@ -25,12 +25,24 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
                 <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
-                <!-- Compras y Proveedores-->
+                with font-awesome or any other icon font library -->
+
+                <!-- Proveedores-->
+                <li class="nav-item">
+                    <a asp-page="/Proveedores/Proveedores/Index" class="nav-link @Html.ActiveClass("/Proveedores/Proveedores/Index")">
+                        <i class="nav-icon fas fa-handshake"></i>
+                        <p>
+                            Proveedores
+                        </p>
+                    </a>
+                </li>
+
+                <!-- Compras -->
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link @Html.ActiveClass("/Index")">
-                        <i class="fas fa-cart-plus"></i>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cart-plus"></i>
                         <p>
                             Compras
                             <i class="right fas fa-angle-left"></i>
@@ -59,20 +71,10 @@
                     </ul>
                 </li>
 
-                <!-- Proveedores-->
-                <li class="nav-item">
-                    <a asp-page="/Proveedores/Proveedores/Index" class="nav-link @Html.ActiveClass("/Proveedores/Proveedores/Index")">
-                        <i class="nav-icon far fa-handshake"></i>
-                        <p>
-                            Proveedores
-                        </p>
-                    </a>
-                </li>
-
                 <!-- Inventarios -->
                 <li class="nav-item has-treeview">
                     <!-- menu-open -->
-                    <a href="#" class="nav-link @Html.ActiveClass("/Inventarios/Productos/Index")">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-boxes"></i>
                         <p>
                             Inventarios
@@ -110,6 +112,22 @@
                     </ul>
                 </li>
 
+                <!-- Clientes -->
+                <li class="nav-item">
+                    <a asp-page="/Clientes/Clientes/Index" class="nav-link @Html.ActiveClass("/Clientes/Clientes/Index")">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p> Clientes </p>
+                    </a>
+                </li>
+
+                <!-- Proyectos -->
+                <li class="nav-item">
+                    <a asp-page="/Clientes/Proyectos/Index" class="nav-link @Html.ActiveClass("/Clientes/Proyectos/Index")">
+                        <i class="nav-icon fas fa-hammer"></i>
+                        <p> Proyectos </p>
+                    </a>
+                </li>
+
                 <!-- Ventas -->
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
@@ -134,40 +152,6 @@
                         </li>
                     </ul>
                 <li />
-
-                <!-- Clientes -->
-                <li class="nav-item">
-                    <a asp-page="/Clientes/Clientes/Index" class="nav-link @Html.ActiveClass("/Clientes/Clientes/Index")">
-                        <i class="nav-icon fas fa-address-book"></i>
-                        <p> Clientes </p>
-                    </a>
-                </li>
-               
-
-                <!-- Proyectos -->
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-hammer"></i>
-                        <p>
-                            Proyectos
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Proyectos</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Req. de Obra</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">

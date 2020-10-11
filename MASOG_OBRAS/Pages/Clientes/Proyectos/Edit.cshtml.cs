@@ -10,7 +10,7 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Clientes.Clientes
+namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 {
     public class EditModel : BaseEditPage
     {
@@ -22,7 +22,7 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
         }
 
         [BindProperty]
-        public Cliente Cliente { get; set; }
+        public Proyecto Proyecto { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,12 +31,14 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
                 return NotFound();
             }
 
-            Cliente = await _context.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            Proyecto = await _context.Proyectos.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Cliente == null)
+            if (Proyecto == null)
             {
                 return NotFound();
             }
+
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
             return Page();
         }
 
@@ -48,31 +50,21 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
             {
                 return Page();
             }
-            if (ExistNombre(Cliente.Nombre, Cliente.Id))
+            if (ExistNombre(Proyecto.Nombre, Proyecto.Id))
             {
-                this.MessageError = "Cliente ya registrado.";
-                return null;
-            }
-            if (ExistDNI(Cliente.DNI, Cliente.Id))
-            {
-                this.MessageError = "DNI ya registrado.";
+                this.MessageError = "Proyecto ya registrado.";
                 return null;
             }
 
-            _context.Attach(Cliente).State = EntityState.Modified;
+            _context.Attach(Proyecto).State = EntityState.Modified;
             return await UpdateValue(_context);
         }
 
         private bool ExistNombre(string nombre, int ID)
         {
-            Cliente cliente = _context.Clientes.Where(p => p.Nombre == nombre && p.Id != ID).FirstOrDefault<Cliente>();
-            return cliente != null;
+            Proyecto proyecto = _context.Proyectos.Where(p => p.Nombre == nombre && p.Id != ID).FirstOrDefault<Proyecto>();
+            return proyecto != null;
         }
 
-        private bool ExistDNI(double dni, int ID)
-        {
-            Cliente cliente = _context.Clientes.Where(p => p.DNI == dni && p.Id != ID).FirstOrDefault<Cliente>();
-            return cliente != null;
-        }
     }
 }

@@ -9,7 +9,7 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Clientes.Clientes
+namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 {
     public class CreateModel : BaseCreatePage
     {
@@ -22,11 +22,12 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
 
         public IActionResult OnGet()
         {
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
             return Page();
         }
 
         [BindProperty]
-        public Cliente Cliente { get; set; }
+        public Proyecto Proyecto { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -36,30 +37,20 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
             {
                 return Page();
             }
-            if (ExistNombre(Cliente.Nombre))
+            if (ExistNombre(Proyecto.Nombre))
             {
-                this.MessageError = "Cliente ya registrado.";
+                this.MessageError = "Proyecto ya registrado.";
                 return null;
             }
-            if (ExistDNI(Cliente.DNI))
-            {
-                this.MessageError = "DNI ya registrado.";
-                return null;
-            }
-            _context.Clientes.Add(Cliente);
+            _context.Proyectos.Add(Proyecto);
             return await AddNewValue(_context);
         }
 
         private bool ExistNombre(string nombre)
         {
-            Cliente cliente = _context.Clientes.Where(p => p.Nombre == nombre).FirstOrDefault<Cliente>();
-            return cliente != null;
+            Proyecto proyecto = _context.Proyectos.Where(p => p.Nombre == nombre).FirstOrDefault<Proyecto>();
+            return proyecto != null;
         }
 
-        private bool ExistDNI(double dni)
-        {
-            Cliente cliente = _context.Clientes.Where(p => p.DNI == dni).FirstOrDefault<Cliente>();
-            return cliente != null;
-        }
     }
 }

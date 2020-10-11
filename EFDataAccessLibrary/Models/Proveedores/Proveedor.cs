@@ -38,7 +38,6 @@ namespace EFDataAccessLibrary.Models.Proveedores
 
         [DisplayName("Observación")]
         public string Observacion { get; set; }
-
         public ICollection<Orden> Ordenes { get; set; }
         public ICollection<FacturaCompra> FacturasCompra { get; set; }
     }

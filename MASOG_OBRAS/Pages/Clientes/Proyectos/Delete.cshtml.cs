@@ -9,7 +9,7 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Clientes.Clientes
+namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 {
     public class DeleteModel : BaseDeletePage
     {
@@ -21,7 +21,7 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
         }
 
         [BindProperty]
-        public Cliente Cliente { get; set; }
+        public Proyecto Proyecto { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +30,9 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
                 return NotFound();
             }
 
-            Cliente = await _context.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            Proyecto = await _context.Proyectos.Include(p => p.Cliente).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Cliente == null)
+            if (Proyecto == null)
             {
                 return NotFound();
             }
@@ -46,28 +46,17 @@ namespace MASOG_OBRAS.Pages.Clientes.Clientes
                 return NotFound();
             }
 
-            Cliente = await _context.Clientes.FindAsync(id);
+            Proyecto = await _context.Proyectos.FindAsync(id);
 
-            if (ExistProyecto(Cliente.Id))
+            if (Proyecto != null)
             {
-                this.MessageError = "Existe un Proyecto asociado al cliente.";
-                return null;
-            }
-            if (Cliente != null)
-            {
-                _context.Clientes.Remove(Cliente);
+                _context.Proyectos.Remove(Proyecto);
                 return await this.RemoveValue(_context);
             }
             else
             {
                 return Page();
             }
-        }
-
-        private bool ExistProyecto(int id)
-        {
-            Proyecto proyecto = _context.Proyectos.Where(o => o.ClienteId == id).FirstOrDefault<Proyecto>();
-            return proyecto != null;
         }
     }
 }

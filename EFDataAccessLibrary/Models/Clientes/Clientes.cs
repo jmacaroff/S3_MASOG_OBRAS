@@ -33,5 +33,6 @@ namespace EFDataAccessLibrary.Models.Clientes
         [DisplayName("Correo Electronico")]
         [EmailAddress(ErrorMessage = "El formato es incorrecto.")]
         public string Correo { get; set; }
+        public ICollection<Proyecto> Proyectos { get; set; }
     }
 }

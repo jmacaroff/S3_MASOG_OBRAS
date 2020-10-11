@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20201007183955_FacturaOrdenPago.Designer.cs" />
     <Compile Remove="Migrations\20201007184417_RunSqlScript.cs" />
     <Compile Remove="Migrations\20201007184417_RunSqlScript.Designer.cs" />
+    <Compile Remove="Migrations\20201011192938_Proyectos.cs" />
+    <Compile Remove="Migrations\20201011192938_Proyectos.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

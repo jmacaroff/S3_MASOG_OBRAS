@@ -13,16 +13,24 @@ namespace EFDataAccessLibrary.DataAccess
     public class ProductContext : DbContext
     {
         public ProductContext(DbContextOptions option) : base(option) {  }
+
+        // Inventarios
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Deposito> Depositos { get; set; }
+
+        // Proveedores y compras
         public DbSet<Proveedor> Proveedores { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Orden> Ordenes { get; set; }
         public DbSet<OrdenItem> OrdenItems { get; set; }
         public DbSet<FacturaCompra> FacturasCompra { get; set; }
         public DbSet<FacturaCompraItem> FacturaCompraItems { get; set; }
         public DbSet<OrdenPago> OrdenesPago { get; set; }
         public DbSet<OrdenPagoItem> OrdenPagoItems { get; set; }
+
+        // Clientes y ventas
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Proyecto> Proyectos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
