@@ -117,8 +117,8 @@
                                         <td>
                                             @item.Cantidad
                                         </td>
-                                        <td>
-                                            $ @item.Precio
+                                        <td align="right">
+                                            @string.Format("{0:C2}", item.Precio) &nbsp; 
                                         </td>
                                         <td>
                                             @item.Observacion
@@ -132,11 +132,10 @@
                                     </td>
                                     <td>
                                     </td>
-                                    <td>
-                                        TOTAL
+                                    <td align="right">
+                                        TOTAL:&nbsp;&nbsp; @string.Format("{0:C2}", Model.Total) &nbsp;
                                     </td>
                                     <td>
-                                        $ @Model.Total
                                     </td>
                                 </tr>
                             </tfoot>

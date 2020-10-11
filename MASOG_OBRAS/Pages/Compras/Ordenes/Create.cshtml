@@ -129,6 +129,7 @@
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.OrdenItem.Precio)
                                                 </th>
+                                                <th></th>
                                                 <th>
                                                     Observación
                                                 </th>
@@ -147,9 +148,10 @@
                                                     <td>
                                                         @item.Cantidad
                                                     </td>
-                                                    <td>
-                                                        $ @item.Precio
+                                                    <td align="right">
+                                                        @string.Format("{0:C2}", item.Precio)
                                                     </td>
+                                                    <td></td>
                                                     <td>
                                                         @item.Observacion
                                                     </td>

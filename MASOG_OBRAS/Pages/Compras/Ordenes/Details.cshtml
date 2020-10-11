@@ -48,6 +48,9 @@
     <thead>
         <tr>
             <th>
+                ID
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OrdenItems[0].Producto)
             </th>
             <th>
@@ -56,25 +59,29 @@
             <th>
                 @Html.DisplayNameFor(model => model.OrdenItems[0].Precio)
             </th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.OrdenItems[0].Observacion)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.OrdenItems)
         {
         <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.Producto.Id)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.Producto.Descripcion)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Cantidad)
             </td>
-            <td>
-                $ @Html.DisplayFor(modelItem => item.Precio)
+            <td align="right">
+                @string.Format("{0:C2}", item.Precio)
             </td>
+            <td></td>
             <td>
                 @Html.DisplayFor(modelItem => item.Observacion)
             </td>
@@ -85,5 +92,6 @@
 
 <div>
     <!--<a asp-page="./Edit" asp-route-id="@Model.Orden.Id">Editar</a> -->
-    <a asp-page="./Index">Volver al listado</a>
+    <a asp-page="./Index">Volver al listado</a> |
+    <a asp-page="./Delete" asp-route-id="@Model.Orden.Id">Eliminar</a>
 </div>

@@ -54,6 +54,12 @@
             @Html.DisplayFor(model => model.FacturaCompra.OrdenId)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @string.Format("{0:C2}", Model.FacturaCompra.Total)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaCompra.Observacion)
         </dt>
         <dd class="col-sm-10">
@@ -74,6 +80,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Precio)
             </th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.FacturaCompraItems[0].Observacion)
             </th>
@@ -90,9 +97,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Cantidad)
             </td>
-            <td>
-                $ @Html.DisplayFor(modelItem => item.Precio)
+            <td align="right">
+                @string.Format("{0:C2}", item.Precio)
             </td>
+            <td></td>
             <td>
                 @Html.DisplayFor(modelItem => item.Observacion)
             </td>
@@ -103,5 +111,6 @@
 
 <div>
     <!-- <a asp-page="./Edit" asp-route-id="@Model.FacturaCompra.Id">Editar</a> | -->
-    <a asp-page="./Index">Volver al listado</a>
+    <a asp-page="./Index">Volver al listado</a> |
+    <a asp-page="./Delete" asp-route-id="@Model.FacturaCompra.Id">Eliminar</a>
 </div>

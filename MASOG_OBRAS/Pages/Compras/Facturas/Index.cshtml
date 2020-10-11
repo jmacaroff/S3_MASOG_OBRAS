@@ -47,33 +47,35 @@
                                 @Html.DisplayNameFor(model => model.FacturasCompra[0].Total)
                             </th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.FacturasCompra)
                         {
-                            <tr>
-                                <th>
-                                    @Html.DisplayFor(modelItem => item.PuntoVenta)
-                                    
-                                </th>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Numero)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FechaFactura)
-                                </td>
-                                <td>
-                                    $ @Html.DisplayFor(modelItem => item.Total)
-                                </td>
-                                <td>
-                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.PuntoVenta)
+
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Numero)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaFactura)
+                            </td>
+                            <td align="right">
+                                @string.Format("{0:C2}", @item.Total)
+                            </td>
+                            <td></td>
+                            <td>
+                                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

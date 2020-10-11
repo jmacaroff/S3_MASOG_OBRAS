@@ -38,16 +38,17 @@
                                 @Html.DisplayNameFor(model => model.OrdenesPago[0].FechaEmision)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.OrdenesPago[0].Observacion)
-                            </th>
-                            <th>
                                 @Html.DisplayNameFor(model => model.OrdenesPago[0].Total)
                             </th>
+                            <th></th>
                             <th>
                                 @Html.DisplayNameFor(model => model.OrdenesPago[0].Proveedor)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.OrdenesPago[0].ConceptoPago)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrdenesPago[0].Observacion)
                             </th>
                             <th></th>
                         </tr>
@@ -55,30 +56,31 @@
                     <tbody>
                         @foreach (var item in Model.OrdenesPago)
                         {
-                            <tr>
-                                <th>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </th>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FechaEmision)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Observacion)
-                                </td>
-                                <td>
-                                    $ @Html.DisplayFor(modelItem => item.Total)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ConceptoPago.Descripcion)
-                                </td>
-                                <td>
-                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaEmision)
+                            </td>
+                            <td align="right">
+                                @string.Format("{0:C2}", @item.Total)
+                            </td>
+                            <td></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ConceptoPago.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Observacion)
+                            </td>
+                            <td>
+                                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

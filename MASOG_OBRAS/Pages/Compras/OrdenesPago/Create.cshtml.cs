@@ -100,6 +100,12 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
                     list.First(x => x.Id == itemList[i].Id).PendientePago = 0;
                 }
             }
+            if (ordenList.Count == 0)
+            {
+                MessageError = "No hay items seleccionados.";
+                LoadViewData();
+                return Page();
+            }
             OrdenPago.OrdenPagoItems = ordenList;
             OrdenPago.Total = total;
             _context.OrdenesPago.Add(OrdenPago);

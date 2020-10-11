@@ -50,9 +50,10 @@
         </div>
     }
 
-    <form method="post">
-        <input type="hidden" asp-for="Orden.Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-page="./Index">Volver al listado</a>
-    </form>
+<form method="post">
+    <input type="hidden" asp-for="Orden.Id" />
+    <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+    <a asp-page="./Details" asp-route-id="@Model.Orden.Id">Detalles</a> |
+    <a asp-page="./Index">Volver al listado</a>
+</form>
 </div>

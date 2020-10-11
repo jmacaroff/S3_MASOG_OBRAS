@@ -12,6 +12,12 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrdenPago.Id)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OrdenPago.FechaEmision)
         </dt>
         <dd class="col-sm-10">
@@ -27,7 +33,7 @@
             @Html.DisplayNameFor(model => model.OrdenPago.Total)
         </dt>
         <dd class="col-sm-10">
-            $ @Html.DisplayFor(model => model.OrdenPago.Total)
+            @string.Format("{0:C2}", Model.OrdenPago.Total)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OrdenPago.Proveedor)
@@ -56,27 +62,29 @@
             <th>
                 @Html.DisplayNameFor(model => model.OrdenPagoItems[0].Importe)
             </th>
-            <th></th>
+            <th></th><th></th><th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.OrdenPagoItems)
         {
-            <tr>
-                <th>
-                    @Html.DisplayFor(modelItem => item.FacturaCompra.PuntoVenta)
-                </th>
-                <th>
-                    @Html.DisplayFor(modelItem => item.FacturaCompra.Numero)
-                </th>
-                <td>
-                    $ @Html.DisplayFor(modelItem => item.Importe)
-                </td>
-            </tr>
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.FacturaCompra.PuntoVenta)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.FacturaCompra.Numero)
+            </th>
+            <td align="right">
+                @string.Format("{0:C2}", item.Importe)
+            </td>
+            <td></td><td></td><td></td>
+        </tr>
         }
     </tbody>
 </table>
 
 <div>
-    <a asp-page="./Index">Regresar a la Lista</a>
+    <a asp-page="./Index">Regresar a la Lista</a> |
+    <a asp-page="./Delete" asp-route-id="@Model.OrdenPago.Id">Eliminar</a>
 </div>

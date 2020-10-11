@@ -54,6 +54,12 @@
             @Html.DisplayFor(model => model.FacturaCompra.OrdenId)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaCompra.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @string.Format("{0:C2}", Model.FacturaCompra.Total)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaCompra.Observacion)
         </dt>
         <dd class="col-sm-10">
@@ -68,9 +74,10 @@
         </div>
     }
 
-    <form method="post">
-        <input type="hidden" asp-for="FacturaCompra.Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-page="./Index">Volver al listado</a>
-    </form>
+<form method="post">
+    <input type="hidden" asp-for="FacturaCompra.Id" />
+    <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+    <a asp-page="./Details" asp-route-id="@Model.FacturaCompra.Id">Detalles</a> |
+    <a asp-page="./Index">Volver al listado</a>
+</form>
 </div>

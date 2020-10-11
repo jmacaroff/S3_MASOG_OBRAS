@@ -44,7 +44,7 @@
     @if (Model.HasProveedor && !Model.HasFacturas)
     {
         <div class="alert alert-warning">
-            No hay facturas pendientes
+            No hay facturas pendientes.
         </div>
     }
     @if (Model.HasFacturas)
@@ -81,7 +81,7 @@
                                            @Model.FacturaItems[i].FechaFactura
                                         </td>
                                         <td>
-                                           $ @Model.FacturaItems[i].Total
+                                            @string.Format("{0:C2}", Model.FacturaItems[i].Total)
                                         </td>
                                         <td>
                                             <div class="form-group form-check">
