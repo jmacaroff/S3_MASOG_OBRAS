@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="form-group col-4">
                         <label for="dataCliente" class="control-label">Seleccione Un Cliente</label>
-                        <select id="dataCliente" class="form-control" disabled="@Model.HasCliente" asp-for="ClienteId" asp-items="@ViewData["ClienteId"] as SelectList"></select>
+                        <select id="dataCliente" class="form-control" disabled="@Model.HasProyecto" asp-for="ClienteId" asp-items="@ViewData["ClienteId"] as SelectList"></select>
                     </div>
                 </div>
 
@@ -25,12 +25,12 @@
                 <div class="row">
                     <div class="form-group col-4">
                         <label asp-for="FacturaVenta.PuntoVenta" class="control-label"></label>
-                        <input asp-for="FacturaVenta.PuntoVenta" class="form-control" disabled="@Model.HasCliente" />
+                        <input asp-for="FacturaVenta.PuntoVenta" class="form-control" disabled="@Model.HasProyecto" />
                         <span asp-validation-for="FacturaVenta.PuntoVenta" class="text-danger"></span>
                     </div>
                     <div class="form-group col-4">
                         <label asp-for="FacturaVenta.Numero" class="control-label"></label>
-                        <input asp-for="FacturaVenta.Numero" class="form-control" disabled="@Model.HasCliente" />
+                        <input asp-for="FacturaVenta.Numero" class="form-control" disabled="@Model.HasProyecto" />
                         <span asp-validation-for="FacturaVenta.Numero" class="text-danger"></span>
                     </div>
                 </div>
@@ -39,12 +39,12 @@
                 <div class="row">
                     <div class="form-group col-4">
                         <label asp-for="FacturaVenta.TipoFactura" class="control-label"></label>
-                        <input asp-for="FacturaVenta.TipoFactura" class="form-control" disabled="@Model.HasCliente" />
+                        <input asp-for="FacturaVenta.TipoFactura" class="form-control" disabled="@Model.HasProyecto" />
                         <span asp-validation-for="FacturaVenta.TipoFactura" class="text-danger"></span>
                     </div>
                     <div class="form-group col-4">
                         <label asp-for="FacturaVenta.Fecha" class="control-label"></label>
-                        <input asp-for="FacturaVenta.Fecha" class="form-control" disabled="@Model.HasCliente" />
+                        <input asp-for="FacturaVenta.Fecha" class="form-control" disabled="@Model.HasProyecto" />
                         <span asp-validation-for="FacturaVenta.Fecha" class="text-danger"></span>
                     </div>
                 </div>
@@ -53,14 +53,14 @@
                 <div class="row">
                     <div class="form-group col-9">
                         <label asp-for="FacturaVenta.Observacion" class="control-label">Observacion</label>
-                        <input asp-for="FacturaVenta.Observacion" class="form-control" disabled="@Model.HasCliente" />
+                        <input asp-for="FacturaVenta.Observacion" class="form-control" disabled="@Model.HasProyecto" />
                         <span asp-validation-for="FacturaVenta.Observacion" class="text-danger"></span>
                     </div>
                 </div>
 
-                <!-- Boton Confirmar Proveedor-->
+                <!-- Boton Confirmar Cliente-->
                 <div class="form-group">
-                    <input type="submit" value="Confirmar proveedor" class="btn btn-primary" asp-page-handler="Proveedor" />
+                    <input type="submit" value="Confirmar Cliente" class="btn btn-primary" asp-page-handler="Cliente" />
                 </div>
                 @if (Model.MessageError != null)
                 {
@@ -249,7 +249,7 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveFactura" />
+                            <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveFacturaVenta" />
                         </div>
                     </div>
                 </div>
@@ -276,13 +276,13 @@
             if ($('#dataProyecto').length) {
                 $('#dataProyecto').val(localStorage.getItem("#dataProyecto"));
             }
-            console.log($('#dataProveedor').val())
+            console.log($('#dataProveedor').val());
 
             //Guardar datos despues del refresco de Cliente
             if ($('#dataCliente').length) {
                 $('#dataCliente').val(localStorage.getItem("#dataCliente"));
             }
-            console.log($('#dataCliente').val())
+            console.log($('#dataCliente').val());
 
             //agrega Select2 al dropdown Cliente
             $('#dataCliente').select2({
