@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Ventas;
 
-namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
+namespace MASOG_OBRAS.Pages.Ventas.Recibos
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         }
 
         [BindProperty]
-        public FacturaVenta FacturaVenta { get; set; }
+        public Recibo Recibo { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,16 +30,16 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 return NotFound();
             }
 
-            FacturaVenta = await _context.FacturasVenta
-                .Include(f => f.Cliente)
-                .Include(f => f.Proyecto).FirstOrDefaultAsync(m => m.Id == id);
+            Recibo = await _context.Recibos
+                .Include(r => r.Cliente)
+                .Include(r => r.ConceptoPago).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (FacturaVenta == null)
+            if (Recibo == null)
             {
                 return NotFound();
             }
            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
-           ViewData["ProyectoId"] = new SelectList(_context.Proyectos, "Id", "Direccion");
+           ViewData["ConceptoPagoId"] = new SelectList(_context.Set<ConceptoPago>(), "Id", "Descripcion");
             return Page();
         }
 
@@ -52,7 +52,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 return Page();
             }
 
-            _context.Attach(FacturaVenta).State = EntityState.Modified;
+            _context.Attach(Recibo).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FacturaVentaExists(FacturaVenta.Id))
+                if (!ReciboExists(Recibo.Id))
                 {
                     return NotFound();
                 }
@@ -73,9 +73,9 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             return RedirectToPage("./Index");
         }
 
-        private bool FacturaVentaExists(int id)
+        private bool ReciboExists(int id)
         {
-            return _context.FacturasVenta.Any(e => e.Id == id);
+            return _context.Recibos.Any(e => e.Id == id);
         }
     }
 }

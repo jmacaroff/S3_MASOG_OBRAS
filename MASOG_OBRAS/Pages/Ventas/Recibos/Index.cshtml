@@ -1,14 +1,14 @@
 ﻿@page
-@model MASOG_OBRAS.Pages.Ventas.FacturasVenta.IndexModel
+@model MASOG_OBRAS.Pages.Ventas.Recibos.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Facturas Venta</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-page="Create" class="btn btn-primary">Nueva Factura Venta</a>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Recibo</a>
 </p>
 
 <!-- Campo de Búsqueda por Fecha -->
@@ -32,50 +32,29 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].PuntoVenta)
+                                @Html.DisplayNameFor(model => model.Recibos[0].FechaEmision)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].TipoFactura)
+                                @Html.DisplayNameFor(model => model.Recibos[0].Observacion)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].Numero)
+                                @Html.DisplayNameFor(model => model.Recibos[0].Total)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].Fecha)
+                                @Html.DisplayNameFor(model => model.Recibos[0].Cliente)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].Observacion)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].Total)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].PendienteCobrar)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].Cliente)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FacturaVenta[0].Proyecto)
+                                @Html.DisplayNameFor(model => model.Recibos[0].ConceptoPago)
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.FacturaVenta)
+                        @foreach (var item in Model.Recibos)
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PuntoVenta)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TipoFactura)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Numero)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Fecha)
+                                    @Html.DisplayFor(modelItem => item.FechaEmision)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Observacion)
@@ -84,13 +63,10 @@
                                     @Html.DisplayFor(modelItem => item.Total)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PendienteCobrar)
-                                </td>
-                                <td>
                                     @Html.DisplayFor(modelItem => item.Cliente.Nombre)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Proyecto.Direccion)
+                                    @Html.DisplayFor(modelItem => item.ConceptoPago.Descripcion)
                                 </td>
                                 <td>
                                     <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
@@ -106,20 +82,20 @@
 </div>
 
 @{
-    var prevDisabled = !Model.FacturaVenta.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.FacturaVenta.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.Recibos.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Recibos.HasNextPage ? "disabled" : "";
 }
 
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.FacturaVenta.PageIndex - 1)"
+   asp-route-pageIndex="@(Model.Recibos.PageIndex - 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
    class="btn btn-primary @prevDisabled">
     Anterior
 </a>
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.FacturaVenta.PageIndex + 1)"
+   asp-route-pageIndex="@(Model.Recibos.PageIndex + 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
    class="btn btn-primary @nextDisabled">
     Siguiente

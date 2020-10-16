@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Ventas;
 
-namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
+namespace MASOG_OBRAS.Pages.Ventas.Recibos
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : BaseCreatePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -19,7 +19,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             _context = context;
         }
 
-        public FacturaVenta FacturaVenta { get; set; }
+        public Recibo Recibo { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,11 +28,11 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 return NotFound();
             }
 
-            FacturaVenta = await _context.FacturasVenta
-                .Include(f => f.Cliente)
-                .Include(f => f.Proyecto).FirstOrDefaultAsync(m => m.Id == id);
+            Recibo = await _context.Recibos
+                .Include(r => r.Cliente)
+                .Include(r => r.ConceptoPago).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (FacturaVenta == null)
+            if (Recibo == null)
             {
                 return NotFound();
             }

@@ -25,6 +25,12 @@
             @Html.DisplayFor(model => model.FacturaVenta.TipoFactura)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.Numero)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.Numero)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaVenta.Fecha)
         </dt>
         <dd class="col-sm-10">
@@ -43,6 +49,18 @@
             @Html.DisplayFor(model => model.FacturaVenta.Total)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.PendienteCobrar)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.PendienteCobrar)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.Cliente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.Cliente.Nombre)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaVenta.Proyecto)
         </dt>
         <dd class="col-sm-10">
@@ -52,7 +70,7 @@
     
     <form method="post">
         <input type="hidden" asp-for="FacturaVenta.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
         <a asp-page="./Index">Back to List</a>
     </form>
 </div>

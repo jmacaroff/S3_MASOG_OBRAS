@@ -34,7 +34,11 @@ namespace EFDataAccessLibrary.DataAccess
 
         //Ventas
         public DbSet<FacturaVenta> FacturasVenta { get; set; }
-        public DbSet<FacturaVentaItem> FacturasVentaItems { get; set; }
+        public DbSet<FacturaVentaItem> FacturaVentaItems { get; set; }
+        public DbSet<Recibo> Recibos { get; set; }
+        public DbSet<ReciboItem> ReciboItems { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

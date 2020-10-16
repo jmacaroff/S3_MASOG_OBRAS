@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFDataAccessLibrary.Models.Ventas;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -34,5 +35,6 @@ namespace EFDataAccessLibrary.Models.Clientes
         [EmailAddress(ErrorMessage = "El formato es incorrecto.")]
         public string Correo { get; set; }
         public ICollection<Proyecto> Proyectos { get; set; }
+        public ICollection<FacturaVenta> FacturaVentas { get; set; }
     }
 }

@@ -9,9 +9,9 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Ventas;
 using MASOG_OBRAS.Classes;
 
-namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
+namespace MASOG_OBRAS.Pages.Ventas.Recibos
 {
-    public class IndexModel : BaseIndexPage<FacturaVenta>
+    public class IndexModel : BaseIndexPage<Recibo>
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -20,8 +20,10 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             _context = context;
         }
 
-        public PaginatedList<FacturaVenta> FacturaVenta { get;set; }
 
+        // public IList<Cliente> Clientes { get;set; }
+
+        public PaginatedList<Recibo> Recibos { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
@@ -43,14 +45,15 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             //Agrego filtro de busqueda
             CurrentFilter = searchString;
 
-            IQueryable<FacturaVenta> facturasIQ = from o in _context.FacturasVenta select o;
+            IQueryable<Recibo> recibosIQ = from o in _context.Recibos select o;
 
             //veo si el buscador esta vacio para poder realizar la búsqueda
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                facturasIQ = facturasIQ.Where(c => c.Fecha.ToString().Contains(searchString));
+                recibosIQ = recibosIQ.Where(c => c.FechaEmision.ToString().Contains(searchString));
             }
+
             ////analizo los casos para el ordenamiento
             switch (sortOrder)
             {
@@ -61,16 +64,18 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
                 //        break;
                 default:
-                    facturasIQ = facturasIQ.OrderByDescending(c => c.Id);
+                    recibosIQ = recibosIQ.OrderByDescending(c => c.Id);
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 5;
 
-            FacturaVenta = await PaginatedList<FacturaVenta>.CreateAsync(
-                facturasIQ.Include(c => c.Cliente)
-                          .Include(p => p.Proyecto)
-                .AsNoTracking(),
+            // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
+
+            Recibos = await PaginatedList<Recibo>.CreateAsync(recibosIQ
+                .Include(c => c.Cliente)
+                .Include (c => c.ConceptoPago)
+                .AsNoTracking(), 
                 pageIndex ?? 1, pageSize);
         }
     }

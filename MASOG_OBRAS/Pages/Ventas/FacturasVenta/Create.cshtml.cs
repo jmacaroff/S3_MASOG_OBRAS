@@ -8,193 +8,84 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Ventas;
 using MASOG_OBRAS.Classes;
-using EFDataAccessLibrary.Models.Inventarios;
-using Microsoft.AspNetCore.Http;
 using EFDataAccessLibrary.Models.Clientes;
+using EFDataAccessLibrary.Models.Inventarios;
 
 namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
 {
     public class CreateModel : BaseCreatePage
     {
-        //Declaracion de Variables
         private readonly ProductContext _context;
-        private readonly string LIST_KEY = "ListKey";
+
+        // Keys Necesarias (Supongo que son Estas) 
+        private readonly string CLIENTE_KEY = "ClienteKey";
         private readonly string PROYECTO_KEY = "ProyectoKey";
-        private readonly string FACTURA_KEY = "FacturaKey";
+        private readonly string FACTURAVENTA_KEY = "FacturaVentaKey";
+        private readonly string LISTPRODUCTO_KEY = "ListaProductoKey";
 
+        // Variables de Trabajo
+
+        // Variables booleanas para control de flujo de datos
         [BindProperty]
-        public IEnumerable<Proyecto> proyectoNombre { get; set; }
-
+        public bool HasCliente { get; set; }
         [BindProperty]
         public bool HasProyecto { get; set; }
 
         [BindProperty]
-        public bool HasFactura { get; set; }
-
-        [BindProperty]
         public bool HasProduct { get; set; } = false;
-
         [BindProperty]
         public bool HasProductList { get; set; }
-
         [BindProperty]
         public bool HasFacturaItems { get; set; } = false;
 
+        // Variables Multiproposito
+        [BindProperty]
+        public int ClienteId { get; set; }
         [BindProperty]
         public int ProyectoId { get; set; }
-
         [BindProperty]
-        public string ProyectoNombre { get; set; }
-
-        [BindProperty]
-        public FacturaVenta FacturaVenta { get; set; }
-
+        public string ProductoId { get; set; }
         [BindProperty]
         public double Total { get; set; }
 
+        // Objectos para Trabajar
         [BindProperty]
-        public double SubTotal { get; set; }
-
-        [BindProperty]
-        public FacturaVentaItem FacturaVentaItem { get; set; }
-
-        public List<FacturaVentaItem> L_FacturaVentaItems { get; set; }
-
+        public List<Proyecto> ClienteProyecto { get; set; }
         [BindProperty]
         public Producto Producto { get; set; }
-
         [BindProperty]
-        public string ProductoId { get; set; }
+        public FacturaVenta FacturaVenta { get; set; }
+        [BindProperty]
+        public FacturaVentaItem FacturaVentaItem { get; set; }
+        public List<FacturaVentaItem> FacturaVentaItems { get; set; }
 
-        public CreateModel(EFDataAccessLibrary.DataAccess.ProductContext context)
+
+        public CreateModel(ProductContext context)
         {
             _context = context;
         }
 
-        public IActionResult OnGet(string id, string action)
+        public IActionResult OnGet()
         {
-            HttpContext.Session.Remove(FACTURA_KEY);
-            HttpContext.Session.Remove(PROYECTO_KEY);
-            LoadFacturaVentaItems();
-            LoadViewData();
+        ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
+        ViewData["ProyectoId"] = new SelectList(_context.Proyectos, "Id", "Direccion");
             return Page();
         }
 
-        public void OnPostHeader()
+
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://aka.ms/RazorPagesCRUD.
+        public async Task<IActionResult> OnPostAsync()
         {
-            //Total = (double)L_FacturaVentaItems.Sum(x => x.Precio * x.Cantidad);
-            LoadFacturaVentaItems();
-            LoadViewData();
-        }
-
-            public void OnPostProduct()
-        {
-
-            Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
-            HasProduct = true;
-            FacturaVentaItem.Precio = Producto.Precio;
-            FacturaVentaItem.ProductoId = Producto.Id;
-            FacturaVentaItem.Subtotal = (double)(Producto.Precio * FacturaVentaItem.Cantidad);
-            LoadProyectoId();
-            LoadFacturaVentaItems();
-            LoadViewData();
-        }
-
-        public void OnPostAddItem()
-        {
-            FacturaVentaItem.FacturaVentaId = FacturaVenta.Id;
-            LoadFacturaVentaItems();
-            HasFacturaItems = true;
-            L_FacturaVentaItems.Add(FacturaVentaItem);
-            SaveFacturaVentaItems();
-            LoadProyectoId();
-            LoadViewData();
-        }
-
-
-        public async Task<IActionResult> OnPostSaveFactura()
-        {
-            LoadFacturaVentaItems();
-            if (L_FacturaVentaItems.Count == 0)
+            if (!ModelState.IsValid)
             {
-                MessageError = "No hay items en la orden.";
-                LoadViewData();
                 return Page();
             }
-            else
-            {
-                FacturaVenta.FacturaVentaItems = L_FacturaVentaItems;
-                FacturaVenta.ProyectoID = (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
-                _context.FacturasVenta.Add(FacturaVenta);
-                return await AddNewValue(_context);
-            }
-        }
 
+            _context.FacturasVenta.Add(FacturaVenta);
+            await _context.SaveChangesAsync();
 
-        //Carga ID de Proyectos 
-        private void LoadProyectoId()
-        {
-            ProyectoId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
-            HasProyecto = ProyectoId != -1;
-        }
-
-        private void LoadFacturaVentaItems()
-        {
-            List<FacturaVentaItem> list = HttpContext.Session.GetComplexData<List<FacturaVentaItem>>(LIST_KEY);
-            if (list == null)
-            {
-                L_FacturaVentaItems = new List<FacturaVentaItem>();
-            }
-            else
-            {
-                L_FacturaVentaItems = list;
-                HasFacturaItems = true;
-            }
-        }
-        private void LoadViewData()
-        {
-            if (ProyectoId != 0)
-            {
-                ViewData["ProyectoId"] = new SelectList(_context.Proyectos.Where(x => x.Id == ProyectoId), "Id", "Nombre");
-            }
-            else
-            {
-                ViewData["ProyectoId"] = new SelectList(_context.Proyectos, "Id", "Nombre");
-            }
-            if (L_FacturaVentaItems.Count > 0)
-            {
-                List<Producto> list = _context.Productos.ToList();
-                foreach (FacturaVentaItem item in L_FacturaVentaItems)
-                {
-                    list = list.Where(x => x.Id != item.ProductoId).ToList();
-                }
-                if (list.Count == 0)
-                {
-                    HasProductList = false;
-                }
-                else
-                {
-                    ViewData["ProductoId"] = new SelectList(list, "Id", "Descripcion");
-                    HasProductList = true;
-                }
-            }
-            else
-            {
-                if (_context.Productos.ToList().Count == 0)
-                {
-                    HasProductList = false;
-                }
-                else
-                {
-                    ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
-                    HasProductList = true;
-                }
-            }
-        }
-        private void SaveFacturaVentaItems()
-        {
-            HttpContext.Session.SetComplexData(LIST_KEY, L_FacturaVentaItems);
-
+            return RedirectToPage("./Index");
         }
     }
 }

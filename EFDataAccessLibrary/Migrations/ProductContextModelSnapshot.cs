@@ -363,13 +363,22 @@ namespace EFDataAccessLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
 
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProyectoID")
+                    b.Property<double>("PendienteCobrar")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProyectoId")
                         .HasColumnType("int");
 
                     b.Property<string>("PuntoVenta")
@@ -385,7 +394,9 @@ namespace EFDataAccessLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProyectoID");
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("ProyectoId");
 
                     b.ToTable("FacturasVenta");
                 });
@@ -413,16 +424,69 @@ namespace EFDataAccessLibrary.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(6)");
 
-                    b.Property<double>("Subtotal")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FacturaVentaId");
 
                     b.HasIndex("ProductoId");
 
-                    b.ToTable("FacturasVentaItems");
+                    b.ToTable("FacturaVentaItems");
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Ventas.Recibo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ConceptoPagoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaEmision")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("ConceptoPagoId");
+
+                    b.ToTable("Recibos");
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Ventas.ReciboItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FacturaVentaId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Importe")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ReciboId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacturaVentaId");
+
+                    b.HasIndex("ReciboId");
+
+                    b.ToTable("ReciboItems");
                 });
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Clientes.Proyecto", b =>
@@ -520,16 +584,22 @@ namespace EFDataAccessLibrary.Migrations
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Ventas.FacturaVenta", b =>
                 {
+                    b.HasOne("EFDataAccessLibrary.Models.Clientes.Cliente", "Cliente")
+                        .WithMany("FacturaVentas")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("EFDataAccessLibrary.Models.Clientes.Proyecto", "Proyecto")
                         .WithMany("FacturaVentas")
-                        .HasForeignKey("ProyectoID")
+                        .HasForeignKey("ProyectoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Ventas.FacturaVentaItem", b =>
                 {
-                    b.HasOne("EFDataAccessLibrary.Models.Ventas.FacturaVenta", "FacturaCompra")
+                    b.HasOne("EFDataAccessLibrary.Models.Ventas.FacturaVenta", "FacturaVenta")
                         .WithMany("FacturaVentaItems")
                         .HasForeignKey("FacturaVentaId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -538,6 +608,36 @@ namespace EFDataAccessLibrary.Migrations
                     b.HasOne("EFDataAccessLibrary.Models.Inventarios.Producto", "Producto")
                         .WithMany("FacturaVentaItems")
                         .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Ventas.Recibo", b =>
+                {
+                    b.HasOne("EFDataAccessLibrary.Models.Clientes.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFDataAccessLibrary.Models.Compras.ConceptoPago", "ConceptoPago")
+                        .WithMany()
+                        .HasForeignKey("ConceptoPagoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EFDataAccessLibrary.Models.Ventas.ReciboItem", b =>
+                {
+                    b.HasOne("EFDataAccessLibrary.Models.Ventas.FacturaVenta", "FacturaVenta")
+                        .WithMany()
+                        .HasForeignKey("FacturaVentaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFDataAccessLibrary.Models.Ventas.Recibo", "Recibo")
+                        .WithMany("ReciboItems")
+                        .HasForeignKey("ReciboId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

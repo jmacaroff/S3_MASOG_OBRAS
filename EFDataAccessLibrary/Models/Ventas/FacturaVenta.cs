@@ -9,15 +9,19 @@ using System.Text;
 
 namespace EFDataAccessLibrary.Models.Ventas
 {
-    public class FacturaVenta
+    public class FacturaVenta : BaseModel
     {
         [Key]
         public int Id { get; set; }
 
+        [DisplayName("Cliente Asociado")]
+        [Required(ErrorMessage = "Se requiere un cliente.")]
+        public int ClienteId { get; set; }
+
         //Un Proyecto tiene ninguna o muchas facturas de Venta
         [DisplayName("Proyecto Asociado")]
         [Required(ErrorMessage = "Se requiere un proyecto.")]
-        public int ProyectoID { get; set; }
+        public int ProyectoId { get; set; }
 
         [Required(ErrorMessage = "Se requiere un punto de venta.")]
         [RegularExpression(@"^\d{1,5}$", ErrorMessage = "Formato incorrecto, no debe superar los 5 dígitos.")]
@@ -32,6 +36,10 @@ namespace EFDataAccessLibrary.Models.Ventas
         [Display(Name = "Tipo de Factura")]
         public string TipoFactura { get; set; }
 
+        [DisplayName("Número")]
+        [Required(ErrorMessage = "Se requiere un número.")]
+        public int Numero { get; set; }
+
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Ingrese una Fecha")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -45,12 +53,16 @@ namespace EFDataAccessLibrary.Models.Ventas
         [Required]
         public double Total { get; set; }
 
+        [Required]
+        public double PendienteCobrar { get; set; }
+
         // Relaciones
+        public Cliente Cliente { get; set; }
         public Proyecto Proyecto { get; set; }
         public ICollection<FacturaVentaItem> FacturaVentaItems { get; set; }
     }
 
-    public class FacturaVentaItem
+    public class FacturaVentaItem : BaseModel
     {
         [Key]
         public int Id { get; set; }
@@ -74,14 +86,10 @@ namespace EFDataAccessLibrary.Models.Ventas
         [Range(1, int.MaxValue, ErrorMessage = "Sólo se aceptan números positivos.")]
         public int Cantidad { get; set; }
 
-        //Campo Autocalculado del Subtotal.... precio x cantidad
-        [Required]
-        public double Subtotal { get; set; }
-
         [DisplayName("Observación")]
         public string Observacion { get; set; }
 
-        public FacturaVenta FacturaCompra { get; set; }
+        public FacturaVenta FacturaVenta { get; set; }
         public Producto Producto { get; set; }
     }
 }

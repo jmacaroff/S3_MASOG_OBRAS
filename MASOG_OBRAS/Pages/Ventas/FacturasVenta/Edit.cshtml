@@ -15,9 +15,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FacturaVenta.Id" />
             <div class="form-group">
-                <label asp-for="FacturaVenta.ProyectoID" class="control-label"></label>
-                <select asp-for="FacturaVenta.ProyectoID" class="form-control" asp-items="ViewBag.ProyectoID"></select>
-                <span asp-validation-for="FacturaVenta.ProyectoID" class="text-danger"></span>
+                <label asp-for="FacturaVenta.ClienteId" class="control-label"></label>
+                <select asp-for="FacturaVenta.ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+                <span asp-validation-for="FacturaVenta.ClienteId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.ProyectoId" class="control-label"></label>
+                <select asp-for="FacturaVenta.ProyectoId" class="form-control" asp-items="ViewBag.ProyectoId"></select>
+                <span asp-validation-for="FacturaVenta.ProyectoId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FacturaVenta.PuntoVenta" class="control-label"></label>
@@ -28,6 +33,11 @@
                 <label asp-for="FacturaVenta.TipoFactura" class="control-label"></label>
                 <input asp-for="FacturaVenta.TipoFactura" class="form-control" />
                 <span asp-validation-for="FacturaVenta.TipoFactura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.Numero" class="control-label"></label>
+                <input asp-for="FacturaVenta.Numero" class="form-control" />
+                <span asp-validation-for="FacturaVenta.Numero" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FacturaVenta.Fecha" class="control-label"></label>
@@ -43,6 +53,11 @@
                 <label asp-for="FacturaVenta.Total" class="control-label"></label>
                 <input asp-for="FacturaVenta.Total" class="form-control" />
                 <span asp-validation-for="FacturaVenta.Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.PendienteCobrar" class="control-label"></label>
+                <input asp-for="FacturaVenta.PendienteCobrar" class="form-control" />
+                <span asp-validation-for="FacturaVenta.PendienteCobrar" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
