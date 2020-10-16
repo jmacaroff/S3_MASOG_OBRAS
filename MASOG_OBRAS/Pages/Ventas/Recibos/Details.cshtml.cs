@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Ventas;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Ventas.Recibos
 {

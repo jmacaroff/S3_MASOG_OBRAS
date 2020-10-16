@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Ventas;
+using EFDataAccessLibrary.Models.Compras;
 
 namespace MASOG_OBRAS.Pages.Ventas.Recibos
 {
