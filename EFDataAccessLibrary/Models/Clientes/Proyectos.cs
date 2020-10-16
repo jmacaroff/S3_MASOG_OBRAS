@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFDataAccessLibrary.Models.Ventas;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,8 @@ namespace EFDataAccessLibrary.Models.Clientes
         [DisplayName("Observación")]
         public string Observacion { get; set; }
         public Cliente Cliente { get; set; }
+
+        public ICollection<FacturaVenta> FacturaVentas { get; set; }
 
     }
 }

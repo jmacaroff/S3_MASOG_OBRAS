@@ -1,4 +1,5 @@
 ﻿using EFDataAccessLibrary.Models.Compras;
+using EFDataAccessLibrary.Models.Ventas;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,6 +40,7 @@ namespace EFDataAccessLibrary.Models.Inventarios
         public bool Activo { get; set; }
         public ICollection<OrdenItem> OrdenItems { get; set; }
         public ICollection<FacturaCompraItem> FacturaCompraItems { get; set; }
+        public ICollection<FacturaVentaItem> FacturaVentaItems { get; set; }
     }
 }
 

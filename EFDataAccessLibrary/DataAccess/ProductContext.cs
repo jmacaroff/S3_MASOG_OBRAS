@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using EFDataAccessLibrary.Models.Ventas;
 
 namespace EFDataAccessLibrary.DataAccess
 {
@@ -30,6 +31,10 @@ namespace EFDataAccessLibrary.DataAccess
         // Clientes y ventas
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Proyecto> Proyectos { get; set; }
+
+        //Ventas
+        public DbSet<FacturaVenta> FacturasVenta { get; set; }
+        public DbSet<FacturaVentaItem> FacturasVentaItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

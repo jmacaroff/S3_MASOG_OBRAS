@@ -1,0 +1,60 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Ventas.FacturasVenta.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FacturaVenta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FacturaVenta.Id" />
+            <div class="form-group">
+                <label asp-for="FacturaVenta.ProyectoID" class="control-label"></label>
+                <select asp-for="FacturaVenta.ProyectoID" class="form-control" asp-items="ViewBag.ProyectoID"></select>
+                <span asp-validation-for="FacturaVenta.ProyectoID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.PuntoVenta" class="control-label"></label>
+                <input asp-for="FacturaVenta.PuntoVenta" class="form-control" />
+                <span asp-validation-for="FacturaVenta.PuntoVenta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.TipoFactura" class="control-label"></label>
+                <input asp-for="FacturaVenta.TipoFactura" class="form-control" />
+                <span asp-validation-for="FacturaVenta.TipoFactura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.Fecha" class="control-label"></label>
+                <input asp-for="FacturaVenta.Fecha" class="form-control" />
+                <span asp-validation-for="FacturaVenta.Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.Observacion" class="control-label"></label>
+                <input asp-for="FacturaVenta.Observacion" class="form-control" />
+                <span asp-validation-for="FacturaVenta.Observacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaVenta.Total" class="control-label"></label>
+                <input asp-for="FacturaVenta.Total" class="form-control" />
+                <span asp-validation-for="FacturaVenta.Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
