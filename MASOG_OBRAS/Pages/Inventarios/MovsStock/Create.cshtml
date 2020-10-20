@@ -1,5 +1,6 @@
 ﻿@page
-@model MASOG_OBRAS.Pages.Compras.Ordenes.CreateModel
+@model MASOG_OBRAS.Pages.Inventarios.MovsStock.CreateModel
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -8,35 +9,28 @@
     <div class="row">
         <div class="col-12">
             <form method="post" class="mb-4">
-                <h2>Nueva Orden de Compra</h2>
+                <h2>Nuevo Movimiento de Stock</h2>
                 <div class="row">
                     <div class="form-group col-4">
-                        <label asp-for="Orden.Fecha" class="control-label"></label>
-                        <input asp-for="Orden.Fecha" class="form-control" disabled="@Model.HasProveedor" />
-                        <span asp-validation-for="Orden.Fecha" class="text-danger"></span>
+                        <label asp-for="MovStock.Fecha" class="control-label"></label>
+                        <input asp-for="MovStock.Fecha" class="form-control" disabled="@Model.HasHeader" />
+                        <span asp-validation-for="MovStock.Fecha" class="text-danger"></span>
                     </div>
                     <div class="form-group col-4">
-                        <label asp-for="Orden.FechaEntrega" class="control-label"></label>
-                        <input asp-for="Orden.FechaEntrega" class="form-control" disabled="@Model.HasProveedor" />
-                        <span asp-validation-for="Orden.FechaEntrega" class="text-danger"></span>
+                        <label class="control-label">Tipo de Movimiento</label>
+                        <select class="form-control" disabled="@Model.HasHeader" asp-for="TipoMovimientoId" asp-items="@ViewData["TipoMovimientoId"] as SelectList"></select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-8">
-                        <label asp-for="Orden.Observacion" class="control-label">Observación</label>
-                        <input asp-for="Orden.Observacion" class="form-control" disabled="@Model.HasProveedor" />
-                        <span asp-validation-for="Orden.Observacion" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label for="dataProveedor" class="control-label">Seleccione Un Proveedor</label>
-                        <select id="dataProveedor" class="form-control" disabled="@Model.HasProveedor" asp-for="ProveedorId" asp-items="@ViewData["ProveedorId"] as SelectList"></select>
+                        <label asp-for="MovStock.Observacion" class="control-label">Observación</label>
+                        <input asp-for="MovStock.Observacion" class="form-control" disabled="@Model.HasHeader" />
+                        <span asp-validation-for="MovStock.Observacion" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-1">
-                        <input type="submit" class="btn btn-primary" asp-page-handler="Header" value="Confirmar" disabled="@Model.HasProveedor" />
+                        <input type="submit" class="btn btn-primary" asp-page-handler="Header" value="Confirmar" disabled="@Model.HasHeader" />
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -48,7 +42,7 @@
                     }
                 </div>
             </form>
-            @if (Model.HasProveedor)
+            @if (Model.HasHeader)
             {
                 @if (Model.HasProductList)
                 {
@@ -82,23 +76,18 @@
                                                         <input asp-for="Producto.Descripcion" class="form-control" disabled />
                                                     </td>
                                                     <td>
-                                                        <label asp-for="OrdenItem.Cantidad" class="control-label">Cantidad</label>
-                                                        <input asp-for="OrdenItem.Cantidad" class="form-control" />
-                                                        <span asp-validation-for="OrdenItem.Cantidad" class="text-danger"></span>
+                                                        <label asp-for="MovStockItem.Cantidad" class="control-label">Cantidad</label>
+                                                        <input asp-for="MovStockItem.Cantidad" class="form-control" />
+                                                        <span asp-validation-for="MovStockItem.Cantidad" class="text-danger"></span>
                                                     </td>
                                                     <td>
-                                                        <label asp-for="OrdenItem.Precio" class="control-label">Precio</label>
-                                                        <input asp-for="OrdenItem.Precio" class="form-control" />
-                                                        <span asp-validation-for="OrdenItem.Precio" class="text-danger"></span>
-                                                    </td>
-                                                    <td>
-                                                        <label asp-for="OrdenItem.Observacion" class="control-label">Observación(*)</label>
-                                                        <input asp-for="OrdenItem.Observacion" class="form-control" />
-                                                        <span asp-validation-for="OrdenItem.Observacion" class="text-danger"></span>
+                                                        <label asp-for="MovStockItem.Observacion" class="control-label">Observación(*)</label>
+                                                        <input asp-for="MovStockItem.Observacion" class="form-control" />
+                                                        <span asp-validation-for="MovStockItem.Observacion" class="text-danger"></span>
                                                     </td>
                                                     <td>
                                                         <p style="font-size:66.7%;"> - </p>
-                                                        <input asp-for="OrdenItem.ProductoId" class="form-control" hidden />
+                                                        <input asp-for="MovStockItem.ProductoId" class="form-control" hidden />
                                                         <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
                                                     </td>
                                                 </tr>
@@ -114,20 +103,17 @@
                     <div class="col-12">
                         <form method="post" class="mb-4">
                             <div class="form-group">
-                                @if (Model.HasOrdenItems)
+                                @if (Model.HasMovStockItems)
                                 {
-                                    <h2>Productos de la orden</h2>
+                                    <h2>Productos del movimiento</h2>
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
+                                                    @Html.DisplayNameFor(model => model.MovStockItem.ProductoId)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.OrdenItem.Precio)
+                                                    @Html.DisplayNameFor(model => model.MovStockItem.Cantidad)
                                                 </th>
                                                 <th></th>
                                                 <th>
@@ -138,7 +124,7 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        @foreach (var item in Model.OrdenItems)
+                                        @foreach (var item in Model.MovStockItems)
                                         {
                                             <tbody>
                                                 <tr>
@@ -147,9 +133,6 @@
                                                     </td>
                                                     <td>
                                                         @item.Cantidad
-                                                    </td>
-                                                    <td align="right">
-                                                        @string.Format("{0:C2}", item.Precio)
                                                     </td>
                                                     <td></td>
                                                     <td>
@@ -197,39 +180,3 @@
         </div>
     </div>
 </div>
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
-
-        $('#dataProveedor').on('change', function () {
-            // Save value in localstorage
-            localStorage.setItem("#dataProveedor", $(this).val());
-        });
-
-        $(document).ready(function () {
-            //Guardar datos despues del refresco
-            if ($('#dataProveedor').length) {
-                $('#dataProveedor').val(localStorage.getItem("#dataProveedor"));
-            }
-            console.log($('#dataProveedor').val())
-
-            //agrega Select2 al dropdown Proveedor
-            $('#dataProveedor').select2({
-                //theme: "classic",
-                theme: "bootstrap4",
-                language: "es",
-                // minimumInputLength: 2
-            });
-
-            //agrega Select2 al dropdown Producto
-            $('#dataProducto').select2({
-                theme: "bootstrap4",
-                language: "es",
-                // minimumInputLength: 2
-            });
-
-        });
-    </script>
-}

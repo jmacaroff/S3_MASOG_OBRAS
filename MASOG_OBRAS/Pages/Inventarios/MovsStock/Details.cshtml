@@ -1,0 +1,85 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Inventarios.MovsStock.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+    <h4>Movimiento de Stock</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MovStock.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MovStock.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MovStock.Fecha)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MovStock.Fecha)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MovStock.TipoMovimiento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MovStock.TipoMovimiento.Descripcion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MovStock.Observacion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MovStock.Observacion)
+        </dd>
+    </dl>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovStockItems[0].Producto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovStockItems[0].Cantidad)
+            </th>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovStockItems[0].Observacion)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MovStockItems)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Producto.Id)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <!--<a asp-page="./Edit" asp-route-id="@Model.MovStock.Id">Editar</a> -->
+    <a asp-page="./Index">Volver a la lista</a> |
+    <a asp-page="./Delete" asp-route-id="@Model.MovStock.Id">Eliminar</a>
+</div>

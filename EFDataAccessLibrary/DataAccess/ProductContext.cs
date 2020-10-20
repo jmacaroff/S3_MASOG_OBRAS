@@ -18,6 +18,8 @@ namespace EFDataAccessLibrary.DataAccess
         // Inventarios
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Deposito> Depositos { get; set; }
+        public DbSet<MovStock> MovsStock { get; set; }
+        public DbSet<MovStockItem> MovStockItems { get; set; }
 
         // Proveedores y compras
         public DbSet<Proveedor> Proveedores { get; set; }

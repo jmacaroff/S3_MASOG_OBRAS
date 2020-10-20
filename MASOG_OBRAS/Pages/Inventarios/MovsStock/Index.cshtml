@@ -1,0 +1,97 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Inventarios.MovsStock.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Movimientos de Stock</h1>
+
+<p>
+    <a asp-page="Create">Nuevo Movimiento</a>
+</p>
+
+<!-- Campo de Búsqueda por Fecha -->
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por Fecha:&nbsp;
+            <input type="date" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.MovsStock[0].Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.MovsStock[0].Fecha)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.MovsStock[0].TipoMovimiento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.MovsStock[0].Observacion)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.MovsStock)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Fecha)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoMovimiento.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observacion)
+                                </td>
+                                <td>
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{
+    var prevDisabled = !Model.MovsStock.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.MovsStock.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.MovsStock.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.MovsStock.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>
