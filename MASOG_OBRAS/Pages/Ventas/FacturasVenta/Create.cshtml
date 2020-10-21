@@ -11,17 +11,12 @@
         <div class="col-12">
             <form method="post">
                 <h2>Nueva Factura Venta</h2>
-
-                <!-- ddCliente-->
                 <div class="row">
                     <div class="form-group col-4">
                         <label for="dataCliente" class="control-label">Seleccione Un Cliente</label>
                         <select id="dataCliente" class="form-control" disabled="@Model.HasProyecto" asp-for="ClienteId" asp-items="@ViewData["ClienteId"] as SelectList"></select>
                     </div>
                 </div>
-
-                <!-- Datos Adicionales Encabezado Factura-->
-                <!-- Punto de Venta y N°-->
                 <div class="row">
                     <div class="form-group col-4">
                         <label asp-for="FacturaVenta.PuntoVenta" class="control-label"></label>
@@ -34,8 +29,6 @@
                         <span asp-validation-for="FacturaVenta.Numero" class="text-danger"></span>
                     </div>
                 </div>
-
-                <!-- Tipo Factura y Fecha-->
                 <div class="row">
                     <div class="form-group col-4">
                         <label asp-for="FacturaVenta.TipoFactura" class="control-label"></label>
@@ -48,8 +41,6 @@
                         <span asp-validation-for="FacturaVenta.Fecha" class="text-danger"></span>
                     </div>
                 </div>
-
-                <!-- Observacion -->
                 <div class="row">
                     <div class="form-group col-9">
                         <label asp-for="FacturaVenta.Observacion" class="control-label">Observacion</label>
@@ -57,8 +48,6 @@
                         <span asp-validation-for="FacturaVenta.Observacion" class="text-danger"></span>
                     </div>
                 </div>
-
-                <!-- Boton Confirmar Cliente-->
                 <div class="form-group">
                     <input type="submit" value="Confirmar Cliente" class="btn btn-primary" asp-page-handler="Cliente" />
                 </div>
@@ -69,8 +58,6 @@
                     </div>
                 }
             </form>
-
-            <!-- Valida que el Cliente tenga Proyectos Asociados-->
             @if (Model.HasCliente && !Model.HasProyecto)
             {
                 <div class="alert alert-warning">
@@ -83,10 +70,10 @@
                     <h2>Proyectos</h2>
                     <div class="row">
                         <div class="form-group col-4">
-                            <select id="dataProyecto" asp-for="ProyectoId" class="form-control" asp-items="@ViewData["ProyectoId"] as SelectList"></select>
+                            <select id="dataProyecto" asp-for="ProyectoId" class="form-control" asp-items="@ViewData["ProyectoId"] as SelectList" disabled="@Model.HasProyectoSelected"></select>
                         </div>
                         <div class="form-group col-4">
-                            <input type="submit" value="Seleccionar Proyecto" class="btn btn-primary" asp-page-handler="Proyecto" />
+                            <input type="submit" value="Seleccionar Proyecto" class="btn btn-primary" asp-page-handler="Proyecto" disabled="@Model.HasProyectoSelected" />
                         </div>
                     </div>
                 </form>
@@ -95,140 +82,137 @@
         </div>
     </div>
     <!-- Detalle de Factura Venta-->
-    @if (Model.HasProyecto)
+    @if (Model.HasProductList)
     {
-        @if (Model.HasProductList)
-        {
-            <form method="post" class="mb-4">
-                <h2> Lista de Productos Incluidos en la Factura</h2>
-                <div class="row">
-                    <div class="form-group col-4">
-                        <select id="dataProducto" asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
-                    </div>
-                    <div class="form-group col-4">
-                        <input type="submit" value="Seleccionar Producto" class="btn btn-primary align-self-end" asp-page-handler="Product" />
-                    </div>
+        <form method="post" class="mb-4">
+            <h2> Lista de Productos Incluidos en la Factura</h2>
+            <div class="row">
+                <div class="form-group col-4">
+                    <select id="dataProducto" asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
                 </div>
-            </form>
-            @if (Model.HasProduct)
-            {
-                <div class="row">
-                    <div class="col-12">
-                        <form method="post" class="mb-4">
-                            <div class="form-group">
-                                <h3>Producto</h3>
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="Producto.Id" class="control-label">Descripción</label>
-                                                <input asp-for="Producto.Id" class="form-control" disabled />
-                                            </td>
-                                            <td>
-                                                <label asp-for="Producto.Descripcion" class="control-label">Descripción</label>
-                                                <input asp-for="Producto.Descripcion" class="form-control" disabled />
-                                            </td>
-                                            <td>
-                                                <label asp-for="FacturaVentaItem.Cantidad" class="control-label">Cantidad</label>
-                                                <input asp-for="FacturaVentaItem.Cantidad" class="form-control" />
-                                                <span asp-validation-for="FacturaVentaItem.Cantidad" class="text-danger"></span>
-                                            </td>
-
-                                            <!-- No se si el Precio se puede modificar pero fue que traiga el que esta en producto-->
-                                            <td>
-                                                <label asp-for="FacturaVentaItem.Precio" class="control-label">Precio</label>
-                                                <input asp-for="FacturaVentaItem.Precio" class="form-control" />
-                                                <span asp-validation-for="FacturaVentaItem.Precio" class="text-danger"></span>
-                                            </td>
-                                            <td>
-                                                <label asp-for="FacturaVentaItem.Observacion" class="control-label">Observación(*)</label>
-                                                <input asp-for="FacturaVentaItem.Observacion" class="form-control" />
-                                                <span asp-validation-for="FacturaVentaItem.Observacion" class="text-danger"></span>
-                                            </td>
-                                            <td>
-                                                <p style="font-size:66.7%;"> - </p>
-                                                <input asp-for="FacturaVentaItem.ProductoId" class="form-control" hidden />
-                                                <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
+                <div class="form-group col-4">
+                    <input type="submit" value="Seleccionar Producto" class="btn btn-primary align-self-end" asp-page-handler="Product" />
                 </div>
-            }
-        }
+            </div>
+        </form>
+    }
+    @if (Model.HasProduct)
+    {
         <div class="row">
             <div class="col-12">
                 <form method="post" class="mb-4">
                     <div class="form-group">
-                        @if (Model.HasFacturaItems)
-                        {
-                            <h2>Productos de la orden</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.FacturaVentaItem.ProductoId)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.FacturaVentaItem.Cantidad)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.FacturaVentaItem.Precio)
-                                        </th>
-                                        <th></th>
-                                        <th>
-                                            Observación
-                                        </th>
-                                        <th>
-                                            Eliminar
-                                        </th>
-                                    </tr>
-                                </thead>
-                                @foreach (var item in Model.FacturaVentaItems)
-                                {
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                @item.ProductoId
-                                            </td>
-                                            <td>
-                                                @item.Cantidad
-                                            </td>
-                                            <td align="right">
-                                                @string.Format("{0:C2}", item.Precio)
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                @item.Observacion
-                                            </td>
-                                            <td>
-                                                <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                }
-                                <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td align="right">
-                                            TOTAL:&nbsp;&nbsp; @string.Format("{0:C2}", Model.Total) &nbsp;
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        }
+                        <h3>Producto</h3>
+                        <input asp-for="FacturaVentaItem.ProductoId" class="form-control" hidden />
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label asp-for="Producto.Id" class="control-label">Descripción</label>
+                                        <input asp-for="Producto.Id" class="form-control" disabled />
+                                    </td>
+                                    <td>
+                                        <label asp-for="Producto.Descripcion" class="control-label">Descripción</label>
+                                        <input asp-for="Producto.Descripcion" class="form-control" disabled />
+                                    </td>
+                                    <td>
+                                        <label asp-for="FacturaVentaItem.Cantidad" class="control-label">Cantidad</label>
+                                        <input asp-for="FacturaVentaItem.Cantidad" class="form-control" />
+                                        <span asp-validation-for="FacturaVentaItem.Cantidad" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <label asp-for="FacturaVentaItem.Precio" class="control-label">Precio</label>
+                                        <input asp-for="FacturaVentaItem.Precio" class="form-control" />
+                                        <span asp-validation-for="FacturaVentaItem.Precio" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <label asp-for="FacturaVentaItem.Observacion" class="control-label">Observación(*)</label>
+                                        <input asp-for="FacturaVentaItem.Observacion" class="form-control" />
+                                        <span asp-validation-for="FacturaVentaItem.Observacion" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </form>
             </div>
         </div>
+    }
+    <div class="row">
+        <div class="col-12">
+            <form method="post" class="mb-4">
+                <div class="form-group">
+                    @if (Model.HasFacturaItems)
+                    {
+                        <h2>Productos de la orden</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FacturaVentaItem.ProductoId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FacturaVentaItem.Cantidad)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FacturaVentaItem.Precio)
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        Observación
+                                    </th>
+                                    <th>
+                                        Eliminar
+                                    </th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model.FacturaVentaItems)
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @item.ProductoId
+                                        </td>
+                                        <td>
+                                            @item.Cantidad
+                                        </td>
+                                        <td align="right">
+                                            @string.Format("{0:C2}", item.Precio)
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            @item.Observacion
+                                        </td>
+                                        <td>
+                                            <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td align="right">
+                                        TOTAL:&nbsp;&nbsp; @string.Format("{0:C2}", Model.Total) &nbsp;
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+    @if (Model.HasFacturaItems)
+    {
         <div class="row">
             <form method="post">
                 <div class="row">
@@ -256,7 +240,7 @@
             </form>
         </div>
     }
-</div>
+    </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

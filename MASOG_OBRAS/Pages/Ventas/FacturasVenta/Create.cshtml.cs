@@ -29,14 +29,16 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
 
         // Variables booleanas para control de flujo de datos
         [BindProperty]
-        public bool HasCliente { get; set; }
+        public bool HasCliente { get; set; } = false;
         [BindProperty]
-        public bool HasProyecto { get; set; }
+        public bool HasProyecto { get; set; } = false;
+        [BindProperty]
+        public bool HasProyectoSelected { get; set; } = false;
 
         [BindProperty]
         public bool HasProduct { get; set; } = false;
         [BindProperty]
-        public bool HasProductList { get; set; }
+        public bool HasProductList { get; set; } = false;
         [BindProperty]
         public bool HasFacturaItems { get; set; } = false;
 
@@ -50,7 +52,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         [BindProperty]
         public string ProductoId { get; set; }
         [BindProperty]
-        public double Total { get; set; }
+        public decimal Total { get; set; }
 
         // Objectos para Trabajar
         [BindProperty]
@@ -69,88 +71,104 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             _context = context;
         }
 
-        //public IActionResult OnGet()
-        //{
-        //    ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
-        //    ViewData["ProyectoId"] = new SelectList(_context.Proyectos, "Id", "Direccion");
-        //    return Page();
-        //}
-
-
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://aka.ms/RazorPagesCRUD.
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    _context.FacturasVenta.Add(FacturaVenta);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToPage("./Index");
-        //}
-
-
         public IActionResult OnGet(string id, string action)
         {
             HttpContext.Session.Remove(FACTURAVENTA_KEY);
             HttpContext.Session.Remove(CLIENTE_KEY);
             ClienteProyecto = new List<Proyecto>();
             LoadCliente();
-            LoadProyecto();
-            LoadFacturaVenta();
-            LoadFacturaItems();
             return Page();
-            //ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
-            //ViewData["ProyectoId"] = new SelectList(_context.Proyectos, "Id", "Direccion");
-            //    return Page();
         }
 
         public void OnPostCliente()
         {
+            FacturaVenta.ClienteId = ClienteId;
             HttpContext.Session.SetInt32(CLIENTE_KEY, ClienteId);
-            HasCliente = true;
-            //HttpContext.Session.SetComplexData(FACTURAVENTA_KEY, FacturaVenta);
-            //FacturaVentaItems = new List<FacturaVentaItem>();
-            HttpContext.Session.SetComplexData(PROYECTO_KEY, ProyectoId);
-            ClienteProyecto = new List<Proyecto>();
             LoadProyecto();
+            if (HasProyecto)
+            {
+                HttpContext.Session.SetComplexData(FACTURAVENTA_KEY, FacturaVenta);
+            }
+            HasCliente = true;
             LoadCliente();
         }
         public void OnPostProyecto()
         {
             HttpContext.Session.SetInt32(PROYECTO_KEY, ProyectoId);
-            HttpContext.Session.SetInt32(FACTURAVENTA_KEY, FacturaVentaId);
-            FacturaVentaItems = _context.FacturaVentaItems.Where(x => x.FacturaVentaId == FacturaVentaId).ToList();
-            HasProyecto = true;
-            HttpContext.Session.SetComplexData(LISTPRODUCTO_KEY, FacturaVentaItems);
-            Total = (double)FacturaVentaItems.Sum(x => x.Precio * x.Cantidad);
+            HasProyectoSelected = true;
             LoadFacturaVenta();
             LoadFacturaItems();
             LoadProyecto();
             LoadCliente();
+            LoadProductos();
         }
-
-        // Declaración de Procedimientos
+        public void OnPostProduct()
+        {
+            Producto = _context.Productos.First(x => x.Id == ProductoId);
+            HasProduct = true;
+            FacturaVentaItem = new FacturaVentaItem();
+            FacturaVentaItem.ProductoId = ProductoId;
+            LoadFacturaItems();
+            LoadFacturaVenta();
+            LoadProyecto();
+            LoadCliente();
+            LoadProductos();
+        }
+        public void OnPostAddItem()
+        {
+            // ADD ORDEN
+            LoadFacturaItems();
+            FacturaVentaItems.Add(FacturaVentaItem);
+            SaveFacturaItems();
+            LoadFacturaVenta();
+            LoadProyecto();
+            LoadCliente();
+            LoadProductos();
+            LoadFacturaItems();
+        }
+        
         private void LoadProyecto()
         {
             int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
             if (clienteId != -1)
             {
-                List<Proyecto> list = _context.Proyectos.Where(x => x.ClienteId == clienteId).ToList();
-                _context.FacturasVenta.ToList().ForEach(x =>
+                int proyectId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
+                if (proyectId != -1)
                 {
-                    list = list.Where(y => y.Id != x.ProyectoId).ToList();
-                });
-                HasProyecto = list.Count != 0;
-                ViewData["ProyectoId"] = new SelectList(list, "Id", "Direccion");
+                    ViewData["ProyectoId"] = new SelectList(_context.Proyectos.Where(x => x.Id == proyectId).ToList(), "Id", "Direccion");
+                    HasProyecto = true;
+                    HasProyectoSelected = true;
+                }
+                else
+                {
+                    List<Proyecto> list = _context.Proyectos.Where(x => x.ClienteId == clienteId).ToList();
+                    HasProyecto = list.Count != 0;
+                    ViewData["ProyectoId"] = new SelectList(list, "Id", "Direccion");
+                }
+                
             }
         }
         private void LoadCliente()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
+            int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
+            if (clienteId != -1)
+            {
+                ViewData["ClienteId"] = new SelectList(_context.Clientes.Where(x => x.Id == clienteId).ToList(), "Id", "Nombre");
+            }
+            else
+            {
+                ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
+            }
+        }
+        private void LoadProductos()
+        {
+            List<Producto> list = _context.Productos.ToList();
+            FacturaVentaItems.ForEach(x =>
+            {
+                list = list.Where(y => y.Id != x.ProductoId).ToList();
+            });
+            HasProductList = list.Count > 0;
+            ViewData["ProductoId"] = new SelectList(list, "Id", "Descripcion");
         }
         private void LoadFacturaVenta()
         {
@@ -162,72 +180,53 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             if (list == null)
             {
                 FacturaVentaItems = new List<FacturaVentaItem>();
+                HasFacturaItems = false;
             }
             else
             {
+                Total = 0;
                 FacturaVentaItems = list;
                 HasFacturaItems = true;
+                FacturaVentaItems.ForEach(x =>
+                {
+                    Total = Total + x.Cantidad * x.Precio;
+                });
             }
-        }
-
-        // Controlar los productos
-
-        public void OnPostProduct()
-        {
-
-            Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
-            HasProduct = true;
-            FacturaVentaItem.Precio = Producto.Precio;
-            FacturaVentaItem.ProductoId = Producto.Id;
-            LoadFacturaVenta();
-            LoadFacturaItems();
-            LoadProyecto();
-            LoadCliente();
         }
         private void SaveFacturaItems()
         {
             HttpContext.Session.SetComplexData(LISTPRODUCTO_KEY, FacturaVentaItems);
         }
 
-        public void OnPostAddItem()
-        {
-            FacturaVentaItem.FacturaVentaId = FacturaVenta.Id;
-            LoadFacturaItems();
-            HasFacturaItems = true;
-            FacturaVentaItems.Add(FacturaVentaItem);
-            SaveFacturaItems();
-            LoadFacturaVenta();
-            LoadFacturaItems();
-            LoadProyecto();
-            LoadCliente();
-        }
         public void OnPostRemoveItem(string id)
         {
             LoadFacturaItems();
             FacturaVentaItems = FacturaVentaItems.Where(x => x.ProductoId != id).ToList();
-            HasFacturaItems = FacturaVentaItems.Count != 0;
             SaveFacturaItems();
-            LoadFacturaVenta();
             LoadFacturaItems();
+            LoadFacturaVenta();
             LoadProyecto();
             LoadCliente();
+            LoadProductos();
+            LoadFacturaItems();
         }
 
         public async Task<IActionResult> OnPostSaveFacturaVenta()
         {
             LoadFacturaItems();
+            LoadFacturaVenta();
+            LoadFacturaItems();
+            LoadProyecto();
+            LoadCliente();
             if (FacturaVentaItems.Count == 0)
             {
                 MessageError = "No hay items en la factura.";
-                LoadFacturaVenta();
-                LoadFacturaItems();
-                LoadProyecto();
-                LoadCliente();
                 return Page();
             }
             else
             {
                 FacturaVenta.FacturaVentaItems = FacturaVentaItems;
+                FacturaVenta.Total = FacturaVenta.PendienteCobrar = (double)Total;
                 FacturaVenta.ClienteId = (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
                 FacturaVenta.ProyectoId = (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
                 _context.FacturasVenta.Add(FacturaVenta);
