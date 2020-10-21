@@ -18,7 +18,23 @@
                     </div>
                     <div class="form-group col-4">
                         <label class="control-label">Tipo de Movimiento</label>
-                        <select class="form-control" disabled="@Model.HasHeader" asp-for="TipoMovimientoId" asp-items="@ViewData["TipoMovimientoId"] as SelectList"></select>
+                        <select class="form-control" disabled="@Model.HasHeader" asp-for="TipoMovimientoId" asp-items="@ViewData["TipoMovimientoId"] as SelectList">
+                            <option value="" selected disabled hidden>Seleccione un tipo de movimiento</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label for="dataCliente" class="control-label">Cliente</label>
+                        <select id="dataCliente" class="form-control" disabled="@Model.HasHeader" asp-for="ClienteId" asp-items="@ViewData["ClienteId"] as SelectList">
+                            <option value="-1" selected hidden>Seleccione un cliente</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="dataProveedor" class="control-label">Proveedor</label>
+                        <select id="dataProveedor" class="form-control" disabled="@Model.HasHeader" asp-for="ProveedorId" asp-items="@ViewData["ProveedorId"] as SelectList">
+                            <option value="-1" selected hidden>Seleccione un proveedor</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -180,3 +196,28 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //agrega Select2 al dropdown Cliente
+            $('#dataCliente').select2({
+                theme: "bootstrap4",
+                language: "es",
+                // minimumInputLength: 2
+            });
+
+            //agrega Select2 al dropdown Proveedor
+            $('#dataProveedor').select2({
+                //theme: "classic",
+                theme: "bootstrap4",
+                language: "es",
+                // minimumInputLength: 2
+            });
+
+        });
+    </script>
+}

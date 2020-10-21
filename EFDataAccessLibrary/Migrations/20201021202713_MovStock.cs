@@ -28,12 +28,26 @@ namespace EFDataAccessLibrary.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TipoMovimientoId = table.Column<int>(nullable: false),
+                    ClienteId = table.Column<int>(nullable: true),
+                    ProveedorId = table.Column<int>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Observacion = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MovsStock", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MovsStock_Clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MovsStock_Proveedores_ProveedorId",
+                        column: x => x.ProveedorId,
+                        principalTable: "Proveedores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MovsStock_TipoMovimiento_TipoMovimientoId",
                         column: x => x.TipoMovimientoId,
@@ -61,7 +75,7 @@ namespace EFDataAccessLibrary.Migrations
                         column: x => x.MovStockId,
                         principalTable: "MovsStock",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MovStockItems_Productos_ProductoId",
                         column: x => x.ProductoId,
@@ -69,6 +83,16 @@ namespace EFDataAccessLibrary.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovsStock_ClienteId",
+                table: "MovsStock",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovsStock_ProveedorId",
+                table: "MovsStock",
+                column: "ProveedorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovsStock_TipoMovimientoId",

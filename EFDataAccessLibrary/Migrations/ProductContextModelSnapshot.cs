@@ -309,16 +309,26 @@ namespace EFDataAccessLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ClienteId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProveedorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoMovimientoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("ProveedorId");
 
                     b.HasIndex("TipoMovimientoId");
 
@@ -655,6 +665,16 @@ namespace EFDataAccessLibrary.Migrations
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Inventarios.MovStock", b =>
                 {
+                    b.HasOne("EFDataAccessLibrary.Models.Clientes.Cliente", "Clientes")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("EFDataAccessLibrary.Models.Proveedores.Proveedor", "Proveedores")
+                        .WithMany()
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("EFDataAccessLibrary.Models.Inventarios.TipoMovimiento", "TipoMovimiento")
                         .WithMany()
                         .HasForeignKey("TipoMovimientoId")

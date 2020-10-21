@@ -33,6 +33,10 @@
     <Compile Remove="Migrations\20201011192938_Proyectos.Designer.cs" />
     <Compile Remove="Migrations\20201015211118_FacturaVenta.cs" />
     <Compile Remove="Migrations\20201015211118_FacturaVenta.Designer.cs" />
+    <Compile Remove="Migrations\20201020155816_MovStock.cs" />
+    <Compile Remove="Migrations\20201020155816_MovStock.Designer.cs" />
+    <Compile Remove="Migrations\20201021202642_MovStc.cs" />
+    <Compile Remove="Migrations\20201021202642_MovStc.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

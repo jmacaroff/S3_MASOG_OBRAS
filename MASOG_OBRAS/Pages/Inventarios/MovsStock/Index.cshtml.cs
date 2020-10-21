@@ -66,7 +66,11 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
 
             // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
 
-            MovsStock = await PaginatedList<MovStock>.CreateAsync(movIQ.Include(c => c.TipoMovimiento).AsNoTracking(), pageIndex ?? 1, pageSize);
+            MovsStock = await PaginatedList<MovStock>.CreateAsync(movIQ
+                .Include(c => c.TipoMovimiento)
+                .Include(c => c.Clientes)
+                .Include(c => c.Proveedores)
+                .AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }
 }

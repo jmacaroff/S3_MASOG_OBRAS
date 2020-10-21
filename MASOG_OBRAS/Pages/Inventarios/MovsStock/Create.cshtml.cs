@@ -20,6 +20,7 @@ using SQLitePCL;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using EFDataAccessLibrary.Models.Clientes;
 
 namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
 {
@@ -27,6 +28,8 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
     {
         private readonly ProductContext _context;
         private readonly string LIST_KEY = "ListKey";
+        private readonly string PROVEEDOR_KEY = "Proveedorey";
+        private readonly string CLIENTE_KEY = "ClienteKey";
         private readonly string TIPOMOV_KEY = "TipoMovKey";
         private readonly string MOV_KEY = "MovKey";
 
@@ -37,6 +40,12 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
 
         [BindProperty]
         public int TipoMovimientoId { get; set; }
+
+        [BindProperty]
+        public int ClienteId { get; set; }
+
+        [BindProperty]
+        public int ProveedorId { get; set; }
 
         [BindProperty]
         public string ProductoId { get; set; }
@@ -57,32 +66,38 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(string id, string action)
         {
             ViewData["TipoMovimientoId"] = new SelectList(_context.Set<TipoMovimiento>(), "Id", "Descripcion");
+            ViewData["ClienteId"] = new SelectList(_context.Set<Cliente>(), "Id", "Nombre");
+            ViewData["ProveedorId"] = new SelectList(_context.Set<Proveedor>(), "Id", "RazonSocial");
             HttpContext.Session.Remove(LIST_KEY);
             HttpContext.Session.Remove(TIPOMOV_KEY);
+            HttpContext.Session.Remove(PROVEEDOR_KEY);
+            HttpContext.Session.Remove(CLIENTE_KEY);
             LoadMovStockItems();
             LoadViewData();
             return Page();
         }
         public void OnPostHeader()
         {
-            if (MovStock.Fecha == null)      // Arreglar validación de fecha no nula!!!!
+            int tipomovId = !HttpContext.Session.Keys.Contains(TIPOMOV_KEY) ? -1 : (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
+            if (tipomovId == -1)
             {
-                MessageError = "Fecha incorrecta";
+                HttpContext.Session.SetInt32(TIPOMOV_KEY, TipoMovimientoId);
             }
-            else
+            int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
+            if (clienteId == -1)
             {
-                MessageError = null;
-                int tipomovId = !HttpContext.Session.Keys.Contains(TIPOMOV_KEY) ? -1 : (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
-                if (tipomovId == -1)
-                {
-                    HttpContext.Session.SetInt32(TIPOMOV_KEY, TipoMovimientoId);
-                }
-                HttpContext.Session.SetComplexData(MOV_KEY, MovStock);
-                HasHeader = true;
+                HttpContext.Session.SetInt32(CLIENTE_KEY, ClienteId);
             }
+            int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+            if (proveedorId == -1)
+            {
+                HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
+            }
+            HttpContext.Session.SetComplexData(MOV_KEY, MovStock);
+            HasHeader = true;
             LoadMovStockItems();
             LoadViewData();
         }
@@ -93,7 +108,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             Producto = _context.Productos.First<Producto>(x => x.Id == ProductoId);
             HasProduct = true;
             MovStockItem.ProductoId = Producto.Id;
-            LoadTipoMovimientoId();
+            LoadHeaderIds();
             LoadMovStockItems();
             LoadViewData();
         }
@@ -105,7 +120,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             HasMovStockItems = true;
             MovStockItems.Add(MovStockItem);
             SaveMovStockItems();
-            LoadTipoMovimientoId();
+            LoadHeaderIds();
             LoadViewData();
         }
         public void OnPostRemoveItem(string id)
@@ -114,7 +129,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             MovStockItems = MovStockItems.Where(x => x.ProductoId != id).ToList();
             HasMovStockItems = MovStockItems.Count != 0;
             SaveMovStockItems();
-            LoadTipoMovimientoId();
+            LoadHeaderIds();
             LoadViewData();
         }
 
@@ -131,14 +146,26 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             {
                 MovStock.MovStockItems = MovStockItems;
                 MovStock.TipoMovimientoId = (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
+                int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
+                if (clienteId != -1)
+                {
+                    MovStock.ClienteId = (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
+                }
+                int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                if (proveedorId != -1)
+                {
+                    MovStock.ProveedorId = (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                }
                 _context.MovsStock.Add(MovStock);
                 return await AddNewValue(_context);
             }
         }
-        private void LoadTipoMovimientoId()
+        private void LoadHeaderIds()
         {
             TipoMovimientoId = !HttpContext.Session.Keys.Contains(TIPOMOV_KEY) ? -1 : (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
             HasHeader = TipoMovimientoId != -1;
+            TipoMovimientoId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
+            TipoMovimientoId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
         }
         private void LoadMovStockItems()
         {
@@ -162,6 +189,22 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             else
             {
                 ViewData["TipoMovimientoId"] = new SelectList(_context.Set<TipoMovimiento>(), "Id", "Descripcion");
+            }
+            if (ClienteId != 0)
+            {
+                ViewData["ClienteId"] = new SelectList(_context.Set<Cliente>().Where(x => x.Id == ClienteId), "Id", "Nombre");
+            }
+            else
+            {
+                ViewData["ClienteId"] = new SelectList(_context.Set<Cliente>(), "Id", "Nombre");
+            }
+            if (ProveedorId != 0)
+            {
+                ViewData["ProveedorId"] = new SelectList(_context.Set<Proveedor>().Where(x => x.Id == ProveedorId), "Id", "RazonSocial");
+            }
+            else
+            {
+                ViewData["ProveedorId"] = new SelectList(_context.Set<Proveedor>(), "Id", "RazonSocial");
             }
             if (MovStockItems.Count > 0)
             {

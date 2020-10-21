@@ -41,7 +41,7 @@ namespace EFDataAccessLibrary.Models.Ventas
         public int Numero { get; set; }
 
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "Ingrese una Fecha")]
+        [Required(ErrorMessage = "Ingrese una fecha.")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha")]
         public DateTime Fecha { get; set; } = DateTime.Now;

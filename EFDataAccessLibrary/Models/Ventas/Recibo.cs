@@ -36,6 +36,7 @@ namespace EFDataAccessLibrary.Models.Ventas
         public string Observacion { get; set; }
 
         // Calculado que es la suma de los importes de todas las facturas seleccionadas
+        [Required(ErrorMessage = "Se requiere un total.")]
         public double Total { get; set; }
 
         public Cliente Cliente { get; set; }

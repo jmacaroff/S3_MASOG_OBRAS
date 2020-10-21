@@ -1,4 +1,6 @@
-﻿using EFDataAccessLibrary.Models.Compras;
+﻿using EFDataAccessLibrary.Models.Clientes;
+using EFDataAccessLibrary.Models.Compras;
+using EFDataAccessLibrary.Models.Proveedores;
 using EFDataAccessLibrary.Models.Ventas;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,12 @@ namespace EFDataAccessLibrary.Models.Inventarios
         [DisplayName("Tipo de Movimiento.")]
         public int TipoMovimientoId { get; set; }
 
+        [DisplayName("Cliente Asociado")]
+        public int? ClienteId { get; set; }
+
+        [DisplayName("Proveedor Asociado")]
+        public int? ProveedorId { get; set; }
+
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Se requiere una fecha.")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -31,6 +39,8 @@ namespace EFDataAccessLibrary.Models.Inventarios
 
         [Required(ErrorMessage = "Se requiere un tipo.")]
         public TipoMovimiento TipoMovimiento { get; set; }
+        public Proveedor Proveedores { get; set; }
+        public Cliente Clientes { get; set; }
         public ICollection<MovStockItem> MovStockItems { get; set; }
 
     }

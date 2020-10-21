@@ -39,7 +39,10 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             }
 
             MovStock = await _context.MovsStock
-                .Include(m => m.TipoMovimiento).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(m => m.TipoMovimiento)
+                .Include(m => m.Clientes)
+                .Include(m => m.Proveedores)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             MovStockItems = await _context.MovStockItems.Where(o => o.MovStockId == MovStock.Id)
                 .Include(o => o.MovStock)

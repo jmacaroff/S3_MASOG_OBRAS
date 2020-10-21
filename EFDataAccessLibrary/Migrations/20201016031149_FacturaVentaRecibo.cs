@@ -89,7 +89,7 @@ namespace EFDataAccessLibrary.Migrations
                         column: x => x.FacturaVentaId,
                         principalTable: "FacturasVenta",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FacturaVentaItems_Productos_ProductoId",
                         column: x => x.ProductoId,
@@ -122,7 +122,7 @@ namespace EFDataAccessLibrary.Migrations
                         column: x => x.ReciboId,
                         principalTable: "Recibos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
