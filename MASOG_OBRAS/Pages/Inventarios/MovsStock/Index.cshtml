@@ -41,7 +41,10 @@
                                 Tipo de Movimiento
                             </th>
                             <th>
-                                Cliente
+                                Depósito
+                            </th>
+                            <th>
+                                Proyecto
                             </th>
                             <th>
                                 Proveedor
@@ -66,10 +69,13 @@
                                 @Html.DisplayFor(modelItem => item.TipoMovimiento.Descripcion)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Clientes.Nombre)
+                                @Html.DisplayFor(modelItem => item.Deposito.Descripcion)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Proveedores.RazonSocial)
+                                @Html.DisplayFor(modelItem => item.Proyecto.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Observacion)

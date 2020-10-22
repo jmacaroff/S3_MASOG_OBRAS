@@ -309,8 +309,9 @@ namespace EFDataAccessLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ClienteId")
-                        .HasColumnType("int");
+                    b.Property<string>("DepositoId")
+                        .IsRequired()
+                        .HasColumnType("nchar(3)");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
@@ -321,14 +322,19 @@ namespace EFDataAccessLibrary.Migrations
                     b.Property<int?>("ProveedorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProyectoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoMovimientoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("DepositoId");
 
                     b.HasIndex("ProveedorId");
+
+                    b.HasIndex("ProyectoId");
 
                     b.HasIndex("TipoMovimientoId");
 
@@ -665,14 +671,20 @@ namespace EFDataAccessLibrary.Migrations
 
             modelBuilder.Entity("EFDataAccessLibrary.Models.Inventarios.MovStock", b =>
                 {
-                    b.HasOne("EFDataAccessLibrary.Models.Clientes.Cliente", "Clientes")
+                    b.HasOne("EFDataAccessLibrary.Models.Inventarios.Deposito", "Deposito")
                         .WithMany()
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("DepositoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.HasOne("EFDataAccessLibrary.Models.Proveedores.Proveedor", "Proveedores")
+                    b.HasOne("EFDataAccessLibrary.Models.Proveedores.Proveedor", "Proveedor")
                         .WithMany()
                         .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("EFDataAccessLibrary.Models.Clientes.Proyecto", "Proyecto")
+                        .WithMany()
+                        .HasForeignKey("ProyectoId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("EFDataAccessLibrary.Models.Inventarios.TipoMovimiento", "TipoMovimiento")

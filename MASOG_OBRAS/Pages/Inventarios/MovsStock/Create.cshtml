@@ -25,9 +25,15 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-4">
-                        <label for="dataCliente" class="control-label">Cliente</label>
-                        <select id="dataCliente" class="form-control" disabled="@Model.HasHeader" asp-for="ClienteId" asp-items="@ViewData["ClienteId"] as SelectList">
-                            <option value="-1" selected hidden>Seleccione un cliente</option>
+                        <label class="control-label">Depósito</label>
+                        <select class="form-control" disabled="@Model.HasHeader" asp-for="DepositoId" asp-items="@ViewData["DepositoId"] as SelectList">
+                            <option value="" selected disabled hidden>Seleccione un depósito</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="dataProyecto" class="control-label">Proyecto</label>
+                        <select id="dataProyecto" class="form-control" disabled="@Model.HasHeader" asp-for="ProyectoId" asp-items="@ViewData["ProyectoId"] as SelectList">
+                            <option value="-1" selected hidden>Seleccione un proyecto</option>
                         </select>
                     </div>
                     <div class="form-group col-4">
@@ -203,8 +209,8 @@
 
         $(document).ready(function () {
 
-            //agrega Select2 al dropdown Cliente
-            $('#dataCliente').select2({
+            //agrega Select2 al dropdown Proyecto
+            $('#dataProyecto').select2({
                 theme: "bootstrap4",
                 language: "es",
                 // minimumInputLength: 2

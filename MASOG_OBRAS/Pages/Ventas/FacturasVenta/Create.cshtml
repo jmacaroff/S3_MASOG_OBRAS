@@ -67,6 +67,7 @@
                     No hay proyectos pendientes para este cliente.
                 </div>
             }
+
             @if (Model.HasProyecto)
             {
                 <form method="post" class="mb-4">
@@ -131,11 +132,12 @@
                                         <span asp-validation-for="FacturaVentaItem.Precio" class="text-danger"></span>
                                     </td>
                                     <td>
-                                        <label asp-for="FacturaVentaItem.Observacion" class="control-label">Observación(*)</label>
+                                        <label asp-for="FacturaVentaItem.Observacion" class="control-label">Observación</label>
                                         <input asp-for="FacturaVentaItem.Observacion" class="form-control" />
                                         <span asp-validation-for="FacturaVentaItem.Observacion" class="text-danger"></span>
                                     </td>
                                     <td>
+                                        <p style="font-size:66.7%;"> - </p>
                                         <input type="submit" value="Agregar Producto" class="btn btn-primary" asp-page-handler="AddItem" />
                                     </td>
                                 </tr>

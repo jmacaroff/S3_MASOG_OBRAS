@@ -28,7 +28,8 @@ namespace EFDataAccessLibrary.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TipoMovimientoId = table.Column<int>(nullable: false),
-                    ClienteId = table.Column<int>(nullable: true),
+                    DepositoId = table.Column<string>(nullable: false),
+                    ProyectoId = table.Column<int>(nullable: true),
                     ProveedorId = table.Column<int>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Observacion = table.Column<string>(nullable: true)
@@ -37,15 +38,21 @@ namespace EFDataAccessLibrary.Migrations
                 {
                     table.PrimaryKey("PK_MovsStock", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MovsStock_Clientes_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "Clientes",
+                        name: "FK_MovsStock_Depositos_DepositoId",
+                        column: x => x.DepositoId,
+                        principalTable: "Depositos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MovsStock_Proveedores_ProveedorId",
                         column: x => x.ProveedorId,
                         principalTable: "Proveedores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MovsStock_Proyectos_ProyectoId",
+                        column: x => x.ProyectoId,
+                        principalTable: "Proyectos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -85,14 +92,19 @@ namespace EFDataAccessLibrary.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovsStock_ClienteId",
+                name: "IX_MovsStock_DepositoId",
                 table: "MovsStock",
-                column: "ClienteId");
+                column: "DepositoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovsStock_ProveedorId",
                 table: "MovsStock",
                 column: "ProveedorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovsStock_ProyectoId",
+                table: "MovsStock",
+                column: "ProyectoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovsStock_TipoMovimientoId",

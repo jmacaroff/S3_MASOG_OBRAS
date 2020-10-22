@@ -68,8 +68,9 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
 
             MovsStock = await PaginatedList<MovStock>.CreateAsync(movIQ
                 .Include(c => c.TipoMovimiento)
-                .Include(c => c.Clientes)
-                .Include(c => c.Proveedores)
+                .Include(c => c.Deposito)
+                .Include(c => c.Proyecto)
+                .Include(c => c.Proveedor)
                 .AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }

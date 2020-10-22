@@ -22,8 +22,12 @@ namespace EFDataAccessLibrary.Models.Inventarios
         [DisplayName("Tipo de Movimiento.")]
         public int TipoMovimientoId { get; set; }
 
-        [DisplayName("Cliente Asociado")]
-        public int? ClienteId { get; set; }
+        [Required(ErrorMessage = "Se requiere un depósito.")]
+        [DisplayName("Depósito")]
+        public string DepositoId { get; set; }
+
+        [DisplayName("Proyecto Asociado")]
+        public int? ProyectoId { get; set; }
 
         [DisplayName("Proveedor Asociado")]
         public int? ProveedorId { get; set; }
@@ -39,8 +43,9 @@ namespace EFDataAccessLibrary.Models.Inventarios
 
         [Required(ErrorMessage = "Se requiere un tipo.")]
         public TipoMovimiento TipoMovimiento { get; set; }
-        public Proveedor Proveedores { get; set; }
-        public Cliente Clientes { get; set; }
+        public Proveedor Proveedor { get; set; }
+        public Proyecto Proyecto { get; set; }
+        public Deposito Deposito { get; set; }
         public ICollection<MovStockItem> MovStockItems { get; set; }
 
     }

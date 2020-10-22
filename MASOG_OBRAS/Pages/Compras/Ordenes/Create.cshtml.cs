@@ -156,7 +156,8 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         }
         private void LoadViewData()
         {
-            if (ProveedorId != 0)
+            int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+            if (proveedorId != -1)
             {
                 ViewData["ProveedorId"] = new SelectList(_context.Proveedores.Where(x => x.Id == ProveedorId), "Id", "RazonSocial");
             }

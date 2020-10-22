@@ -44,7 +44,7 @@
                                 @Html.DisplayNameFor(model => model.Recibos[0].Cliente)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Recibos[0].ConceptoPago)
+                                Concepto
                             </th>
                             <th></th>
                         </tr>
@@ -59,7 +59,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Observacion)
                                 </td>
-                                <td>
+                                <td align="right">
                                     @string.Format("{0:C2}", @item.Total)
                                 </td>
                                 <td>

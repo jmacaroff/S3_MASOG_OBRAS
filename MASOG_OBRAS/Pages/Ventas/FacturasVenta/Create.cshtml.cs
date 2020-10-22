@@ -91,6 +91,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             }
             HasCliente = true;
             LoadCliente();
+            LoadFacturaVenta();
         }
         public void OnPostProyecto()
         {
@@ -136,7 +137,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 int proyectId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
                 if (proyectId != -1)
                 {
-                    ViewData["ProyectoId"] = new SelectList(_context.Proyectos.Where(x => x.Id == proyectId).ToList(), "Id", "Direccion");
+                    ViewData["ProyectoId"] = new SelectList(_context.Proyectos.Where(x => x.Id == proyectId).ToList(), "Id", "Nombre");
                     HasProyecto = true;
                     HasProyectoSelected = true;
                 }
@@ -144,7 +145,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 {
                     List<Proyecto> list = _context.Proyectos.Where(x => x.ClienteId == clienteId).ToList();
                     HasProyecto = list.Count != 0;
-                    ViewData["ProyectoId"] = new SelectList(list, "Id", "Direccion");
+                    ViewData["ProyectoId"] = new SelectList(list, "Id", "Nombre");
                 }
                 
             }
