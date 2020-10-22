@@ -42,7 +42,14 @@
             @Html.DisplayFor(model => model.Proyecto.Observacion)
         </dd>
     </dl>
-    
+
+    @if (Model.MessageError != null)
+    {
+        <div class="alert alert-warning">
+            @Model.MessageError
+        </div>
+    }
+
     <form method="post">
         <input type="hidden" asp-for="Proyecto.Id" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |

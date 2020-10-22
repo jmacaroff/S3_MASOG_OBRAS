@@ -9,6 +9,7 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
 using MASOG_OBRAS.Classes;
 using EFDataAccessLibrary.Models.Compras;
+using EFDataAccessLibrary.Models.Ventas;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Productos
 {
@@ -50,9 +51,19 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
 
             Producto = await _context.Productos.FindAsync(id);
 
-            if (ExistFactura(Producto.Id))
+            if (ExistFacturaCompra(Producto.Id))
             {
-                this.MessageError = "Existe una factura asociada.";
+                this.MessageError = "Existe una factura de compra asociada.";
+                return null;
+            }
+            if (ExistFacturaVenta(Producto.Id))
+            {
+                this.MessageError = "Existe una factura de venta asociada.";
+                return null;
+            }
+            if (ExistMovStock(Producto.Id))
+            {
+                this.MessageError = "Existe un movimiento de stock asociado.";
                 return null;
             }
             if (ExistOC(Producto.Id))
@@ -69,15 +80,25 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
             return RedirectToPage("./Index");
         }
 
-        private bool ExistFactura(string id)
+        private bool ExistFacturaCompra(string id)
         {
             FacturaCompraItem facturaCompraI = _context.FacturaCompraItems.Where(f => f.ProductoId == id).FirstOrDefault<FacturaCompraItem>();
             return facturaCompraI != null;
+        }
+        private bool ExistFacturaVenta(string id)
+        {
+            FacturaVentaItem facturaVentaI = _context.FacturaVentaItems.Where(f => f.ProductoId == id).FirstOrDefault<FacturaVentaItem>();
+            return facturaVentaI != null;
         }
         private bool ExistOC(string id)
         {
             OrdenItem orden = _context.OrdenItems.Where(o => o.ProductoId == id).FirstOrDefault<OrdenItem>();
             return orden != null;
+        }
+        private bool ExistMovStock(string id)
+        {
+            MovStockItem movStockI = _context.MovStockItems.Where(f => f.ProductoId == id).FirstOrDefault<MovStockItem>();
+            return movStockI != null;
         }
     }
 }

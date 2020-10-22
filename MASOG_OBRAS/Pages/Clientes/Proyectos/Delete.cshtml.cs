@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Clientes;
 using MASOG_OBRAS.Classes;
+using EFDataAccessLibrary.Models.Ventas;
 
 namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 {
@@ -48,6 +49,11 @@ namespace MASOG_OBRAS.Pages.Clientes.Proyectos
 
             Proyecto = await _context.Proyectos.FindAsync(id);
 
+            if (ExistFactura(Proyecto.Id))
+            {
+                this.MessageError = "Existe una factura de venta asociada al proyecto.";
+                return null;
+            }
             if (Proyecto != null)
             {
                 _context.Proyectos.Remove(Proyecto);
@@ -57,6 +63,12 @@ namespace MASOG_OBRAS.Pages.Clientes.Proyectos
             {
                 return Page();
             }
+        }
+
+        private bool ExistFactura(int id)
+        {
+            FacturaVenta factura = _context.FacturasVenta.Where(o => o.ProyectoId == id).FirstOrDefault<FacturaVenta>();
+            return factura != null;
         }
     }
 }

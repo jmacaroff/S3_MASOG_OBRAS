@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models.Inventarios;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Inventarios.Depositos
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BaseDeletePage
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
@@ -47,13 +48,26 @@ namespace MASOG_OBRAS.Pages.Inventarios.Depositos
 
             Deposito = await _context.Depositos.FindAsync(id);
 
+            if (ExistMovStock(Deposito.Id))
+            {
+                this.MessageError = "Existe un movimiento de stock asociado.";
+                return null;
+            }
             if (Deposito != null)
             {
                 _context.Depositos.Remove(Deposito);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
             }
+            else
+            {
+                return Page();
+            }
+        }
 
-            return RedirectToPage("./Index");
+        private bool ExistMovStock(string id)
+        {
+            MovStock movStock = _context.MovsStock.Where(f => f.DepositoId == id).FirstOrDefault<MovStock>();
+            return movStock != null;
         }
     }
 }

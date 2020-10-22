@@ -43,17 +43,18 @@
             @Html.DisplayFor(model => model.Recibo.ConceptoPago.Descripcion)
         </dd>
     </dl>
-    
+
+    @if (Model.MessageError != null)
+    {
+        <div class="alert alert-warning">
+            @Model.MessageError
+        </div>
+    }
+
     <form method="post">
         <input type="hidden" asp-for="Recibo.Id" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |
         <a asp-page="./Details" asp-route-id="@Model.Recibo.Id">Detalles</a> |
         <a asp-page="./Index">Volver a la lista</a>
-        @if (Model.MessageError != null)
-        {
-            <div class="alert alert-warning">
-                @Model.MessageError
-            </div>
-        }
     </form>
 </div>
