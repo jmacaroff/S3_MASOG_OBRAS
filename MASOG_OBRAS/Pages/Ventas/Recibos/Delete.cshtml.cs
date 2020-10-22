@@ -52,11 +52,18 @@ namespace MASOG_OBRAS.Pages.Ventas.Recibos
 
             if (Recibo != null)
             {
+                List<int> list = _context.ReciboItems.Where(z => z.ReciboId == id).Select(x => x.FacturaVentaId).ToList();
+                list.ForEach(x =>
+                {
+                    _context.FacturasVenta.First(y => y.Id == x).PendienteCobrar = _context.FacturasVenta.First(y => y.Id == x).Total;
+                });
                 _context.Recibos.Remove(Recibo);
-                await _context.SaveChangesAsync();
+                return await RemoveValue(_context);
             }
-
-            return RedirectToPage("./Index");
+            else
+            {
+                return Page();
+            }
         }
     }
 }

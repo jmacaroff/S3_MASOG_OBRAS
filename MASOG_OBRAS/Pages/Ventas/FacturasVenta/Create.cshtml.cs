@@ -108,6 +108,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             HasProduct = true;
             FacturaVentaItem = new FacturaVentaItem();
             FacturaVentaItem.ProductoId = ProductoId;
+            FacturaVentaItem.Precio = Producto.Precio;
             LoadFacturaItems();
             LoadFacturaVenta();
             LoadProyecto();
@@ -157,7 +158,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             }
             else
             {
-                ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
+                ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");              
             }
         }
         private void LoadProductos()

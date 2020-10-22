@@ -22,6 +22,8 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
 
         [BindProperty]
         public FacturaVenta FacturaVenta { get; set; }
+        [BindProperty]
+        public List<FacturaVentaItem> FacturaVentaItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -50,13 +52,26 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
 
             FacturaVenta = await _context.FacturasVenta.FindAsync(id);
 
+            if (ExistRecibo(FacturaVenta.Id))
+            {
+                this.MessageError = "Existe una Recibo asociado.";
+                return null;
+            }
+
             if (FacturaVenta != null)
             {
                 _context.FacturasVenta.Remove(FacturaVenta);
-                await _context.SaveChangesAsync();
+                return await this.RemoveValue(_context);
+                //await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");
+        }
+
+        private bool ExistRecibo(int id)
+        {
+            ReciboItem reciboItem = _context.ReciboItems.Where(o => o.FacturaVentaId == id).FirstOrDefault<ReciboItem>();
+            return reciboItem != null;
         }
     }
 }

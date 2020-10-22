@@ -5,9 +5,9 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Eliminar</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>¿Estás seguro de que quieres eliminar este Recibo?</h3>
 <div>
     <h4>Recibo</h4>
     <hr />
@@ -47,6 +47,13 @@
     <form method="post">
         <input type="hidden" asp-for="Recibo.Id" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-page="./Index">Regresar</a>
+        <a asp-page="./Details" asp-route-id="@Model.Recibo.Id">Detalles</a> |
+        <a asp-page="./Index">Volver a la lista</a>
+        @if (Model.MessageError != null)
+        {
+            <div class="alert alert-warning">
+                @Model.MessageError
+            </div>
+        }
     </form>
 </div>

@@ -20,6 +20,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         }
 
         public FacturaVenta FacturaVenta { get; set; }
+        public List<FacturaVentaItem> FacturaVentaItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,6 +32,10 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             FacturaVenta = await _context.FacturasVenta
                 .Include(f => f.Cliente)
                 .Include(f => f.Proyecto).FirstOrDefaultAsync(m => m.Id == id);
+
+            FacturaVentaItems = await _context.FacturaVentaItems.Where(f => f.FacturaVentaId == FacturaVenta.Id)
+                .Include(f => f.FacturaVenta)
+                .Include(f => f.Producto).ToListAsync();
 
             if (FacturaVenta == null)
             {

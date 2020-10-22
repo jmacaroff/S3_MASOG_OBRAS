@@ -5,23 +5,158 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1> Detalles Factura </h1>
 
-<div>
-    <h4>FacturaVenta</h4>
+<div class="invoice p-3 mb-3">
+    <!-- Title Row-->
+    <div class="row">
+        <div class="col-12">
+            <h4>
+                <i class="fas fa-globe"></i> MASOG OBRAS
+                <small class="float-right"> Fecha: @Html.DisplayFor(model => model.FacturaVenta.Fecha) </small>
+            </h4>
+        </div>
+    </div>
+    <br />
+    <div class="row invoice-info">
+        <div class="col-sm-6 invoice-col">
+            <b>DATOS DEL CLIENTE</b>
+            <br>
+            <br>
+            <b>
+                @Html.DisplayNameFor(model => model.FacturaVenta.ClienteId): 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Cliente.Nombre)
+            <br>
+            <b>
+                DNI: 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Cliente.DNI)
+            <br>
+            <b>
+                Telefono: 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Cliente.Telefono)
+            <br />
+            <b>
+                Correo: 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Cliente.Correo)
+            <br />
+            <b>
+                @Html.DisplayNameFor(model => model.FacturaVenta.ProyectoId): 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Proyecto.Nombre)
+            <br>
+            <b>
+                Dirección Proyecto: 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Proyecto.Direccion)
+            <br>
+        </div>
+
+        <div class="col-sm-6 invoice-col">
+            <b>DATOS DE LA FACTURA</b>
+            <br>
+            <br>
+            <b>
+                N° Factura: 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Id)
+            <br>
+            <b>
+                Punto de Venta: 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.PuntoVenta)
+            <br>
+            <b>
+                @Html.DisplayNameFor(model => model.FacturaVenta.Numero): 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Numero)
+            <br>
+            <b>
+                @Html.DisplayNameFor(model => model.FacturaVenta.TipoFactura): 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.TipoFactura)
+            <br>
+            <b>
+                @Html.DisplayNameFor(model => model.FacturaVenta.Observacion): 
+            </b>
+            @Html.DisplayFor(model => model.FacturaVenta.Observacion)
+            <br>
+            <b>
+                @Html.DisplayNameFor(model => model.FacturaVenta.Total): 
+            </b>
+            @string.Format("{0:C2}", Model.FacturaVenta.Total)
+            <br>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Codigo
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Producto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Cantidad)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Precio)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Observacion)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.FacturaVentaItems)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cantidad)
+                            </td>
+                            <td align="right">
+                                @string.Format("{0:C2}", item.Precio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Observacion)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@*<div>
+    <h4>Factura de Venta</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.Id)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaVenta.PuntoVenta)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FacturaVenta.PuntoVenta)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FacturaVenta.TipoFactura)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FacturaVenta.TipoFactura)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaVenta.Numero)
@@ -30,10 +165,34 @@
             @Html.DisplayFor(model => model.FacturaVenta.Numero)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.ClienteId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.Cliente.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.ProyectoId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.Proyecto.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.TipoFactura)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FacturaVenta.TipoFactura)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaVenta.Fecha)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FacturaVenta.Fecha)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FacturaVenta.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @string.Format("{0:C2}", Model.FacturaVenta.Total)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FacturaVenta.Observacion)
@@ -41,33 +200,50 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FacturaVenta.Observacion)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FacturaVenta.Total)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FacturaVenta.Total)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FacturaVenta.PendienteCobrar)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FacturaVenta.PendienteCobrar)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FacturaVenta.Cliente)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FacturaVenta.Cliente.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FacturaVenta.Proyecto)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FacturaVenta.Proyecto.Direccion)
-        </dd>
     </dl>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Producto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Precio)
+            </th>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacturaVentaItems[0].Observacion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FacturaVentaItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td align="right">
+                    @string.Format("{0:C2}", item.Precio)
+                </td>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.FacturaVenta.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Volver a la Lista</a> |
+    <a asp-page="./Delete" class="btn btn-danger" asp-route-id="@Model.FacturaVenta.Id">Eliminar</a>
 </div>

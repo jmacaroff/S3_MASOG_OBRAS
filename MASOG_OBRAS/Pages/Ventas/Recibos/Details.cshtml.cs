@@ -21,6 +21,7 @@ namespace MASOG_OBRAS.Pages.Ventas.Recibos
         }
 
         public Recibo Recibo { get; set; }
+        public List<ReciboItem> ReciboItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,6 +33,10 @@ namespace MASOG_OBRAS.Pages.Ventas.Recibos
             Recibo = await _context.Recibos
                 .Include(r => r.Cliente)
                 .Include(r => r.ConceptoPago).FirstOrDefaultAsync(m => m.Id == id);
+
+            ReciboItems = await _context.ReciboItems.Where(o => o.ReciboId == Recibo.Id)
+                .Include(o => o.Recibo)
+                .Include(o => o.FacturaVenta).ToListAsync();
 
             if (Recibo == null)
             {

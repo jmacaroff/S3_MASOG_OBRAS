@@ -5,46 +5,146 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Nuevo Recibo</h2>
-
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Recibo.ClienteId" class="control-label"></label>
-                <select asp-for="Recibo.ClienteId" class ="form-control" asp-items="ViewBag.ClienteId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Recibo.FechaEmision" class="control-label"></label>
-                <input asp-for="Recibo.FechaEmision" class="form-control" />
-                <span asp-validation-for="Recibo.FechaEmision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Recibo.ConceptoPagoId" class="control-label"></label>
-                <select asp-for="Recibo.ConceptoPagoId" class ="form-control" asp-items="ViewBag.ConceptoPagoId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Recibo.Observacion" class="control-label"></label>
-                <input asp-for="Recibo.Observacion" class="form-control" />
-                <span asp-validation-for="Recibo.Observacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Recibo.Total" class="control-label"></label>
-                <input asp-for="Recibo.Total" class="form-control" />
-                <span asp-validation-for="Recibo.Total" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <form method="post">
+                <h2>Nueva Recibo</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Recibo.ClienteId" class="control-label"></label>
+                    <select id="ddClientes" asp-for="Recibo.ClienteId" class="form-control" asp-items="ViewBag.ClienteId" disabled="@Model.HasCliente">
+                        <option value="" selected disabled hidden></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Recibo.FechaEmision" class="control-label"></label>
+                    <input asp-for="Recibo.FechaEmision" class="form-control" disabled="@Model.HasCliente" />
+                    <span asp-validation-for="Recibo.FechaEmision" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Recibo.ConceptoPagoId" class="control-label"></label>
+                    <select asp-for="Recibo.ConceptoPagoId" class="form-control" asp-items="ViewBag.ConceptoPagoId" disabled="@Model.HasCliente"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Recibo.Observacion" class="control-label"></label>
+                    <input asp-for="Recibo.Observacion" class="form-control" disabled="@Model.HasCliente" />
+                    <span asp-validation-for="Recibo.Observacion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Confirmar" class="btn btn-primary" asp-page-handler="Cliente" />
+                </div>
+                @if (Model.MessageError != null)
+                {
+                    <div class="alert alert-warning">
+                        @Model.MessageError
+                    </div>
+                }
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Regresar</a>
+    @if (Model.HasCliente && !Model.HasFacturas)
+    {
+        <div class="alert alert-warning">
+            No existen facturas pendientes.
+        </div>
+    }
+    @if (Model.HasFacturas)
+    {
+        <div class="row">
+            <div class="col-12">
+                <form method="post" class="mb-4">
+                    <div class="form-group">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                    <th>
+                                        Importe
+                                    </th>
+                                    <th>
+                                        Seleccionar
+                                    </th>
+                                </tr>
+                            </thead>
+                            @for (int i = 0; i < Model.FacturaItems.Count; i++)
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @Model.FacturaItems[i].Id
+                                        </td>
+                                        <td>
+                                            @Model.FacturaItems[i].FechaFactura
+                                        </td>
+                                        <td align="right">
+                                            @string.Format("{0:C2}", Model.FacturaItems[i].Total) &nbsp;
+                                        </td>
+                                        <td>
+                                            <div class="form-group form-check">
+                                                <input class="form-check-input" asp-for="@Model.FacturaItems[i].IsSelected" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                        <div class="row">
+                            <div class="col-2">
+                                @if (Model.MessageError != null)
+                                {
+                                    <div class="alert alert-warning" role="alert">
+                                        @Model.MessageError
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <a asp-page="Index" class="btn btn-danger">Cancelar</a>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveRecibo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+
+    //$('#ddClientes').on('change', function () {
+    //    // Save value in localstorage
+    //    localStorage.setItem("#ddClientes", $(this).val());
+    //});
+
+    $(document).ready(function () {
+        //Guardar datos despues del refresco
+        //if ($('#ddClientes').length) {
+        //    $('#ddClientes').val(localStorage.getItem("#ddClientes"));
+        //}
+
+        $('#ddClientes').select2({
+            theme: "bootstrap4",
+            language: "es",
+            placeholder: "Seleccione Cliente",
+        })
+
+    });
+</script>
 }

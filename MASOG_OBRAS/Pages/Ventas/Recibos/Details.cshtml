@@ -5,12 +5,18 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalle</h1>
 
 <div>
     <h4>Recibo</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Recibo.Id)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Recibo.FechaEmision)
         </dt>
@@ -27,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Recibo.Total)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Recibo.Total)
+            @string.Format("{0:C2}", Model.Recibo.Total)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Recibo.Cliente)
@@ -43,7 +49,45 @@
         </dd>
     </dl>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReciboItems[0].FacturaVenta.PuntoVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReciboItems[0].FacturaVenta.Numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReciboItems[0].Importe)
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ReciboItems)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.FacturaVenta.PuntoVenta)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.FacturaVenta.Numero)
+                </th>
+                <td align="right">
+                    @string.Format("{0:C2}", item.Importe)
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Recibo.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Delete" asp-route-id="@Model.Recibo.Id">Eliminar</a> |
+    <a asp-page="./Index">Regresar a la Lista</a>
 </div>
