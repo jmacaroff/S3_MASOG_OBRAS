@@ -46,6 +46,13 @@
         <div class="alert alert-warning">
             No hay facturas pendientes.
         </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <a asp-page="Create" class="btn btn-danger">Cancelar</a>
+                </div>
+            </div>
+        </div>
     }
     @if (Model.HasFacturas)
     {
@@ -57,7 +64,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        ID 
+                                        ID
                                     </th>
                                     <th>
                                         Fecha
@@ -78,9 +85,9 @@
                                             @Model.FacturaItems[i].Id
                                         </td>
                                         <td>
-                                           @Model.FacturaItems[i].FechaFactura
+                                            @Model.FacturaItems[i].FechaFactura
                                         </td>
-                                        <td align="right">
+                                        <td>
                                             @string.Format("{0:C2}", Model.FacturaItems[i].Total) &nbsp;
                                         </td>
                                         <td>
@@ -120,6 +127,7 @@
         </div>
     }
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 

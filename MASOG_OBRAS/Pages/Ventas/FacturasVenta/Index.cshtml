@@ -80,10 +80,12 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Observacion)
                                 </td>
-                                <td align="right">
+                                <td>
                                     @string.Format("{0:C2}", @item.Total)
                                 </td>
-                                <td align="right">
+                                <!--Quito un alling right porque resulta molesto-->
+                                <td>
+                                    <td>
                                     @string.Format("{0:C2}", @item.PendienteCobrar)
                                 </td>
                                 <td>
