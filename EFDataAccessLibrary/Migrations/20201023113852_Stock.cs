@@ -53,16 +53,6 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
 
-            query = query + "CREATE TRIGGER [dbo].[InsertProducto] ";
-            query = query + "ON [dbo].[Productos] ";
-            query = query + "FOR INSERT ";
-            query = query + "AS ";
-            query = query + "INSERT INTO Stock (ProductoId, DepositoId, Cantidad) ";
-            query = query + "Select (SELECT Id FROM Inserted), Id, 0 from Depositos ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-
             query = query + "INSERT [dbo].[Productos] ([Id], [Descripcion], [Precio], [Observacion], [Activo]) VALUES  ";
             query = query + "(N'DUR001', N'Placa Durlock Interior', CAST(1230.20 AS Decimal(18, 2)), N'No usar para techos!', 1)  ";
 
@@ -292,6 +282,49 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "INSERT [dbo].[TipoMovimiento] ([EsEgreso], [Descripcion]) " +
                 "VALUES (0, 'Ingreso por Ajuste'), (0, 'Remito de Proveedor'), (0, 'Devolución de Obra')," +
                 "(1, 'Egreso por Ajuste'), (1, 'Remito a Obra'), (1, 'Material Defectuoso')";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "CREATE TRIGGER InsertStock ";
+            query = query + "ON MovStockItems ";
+            query = query + "FOR INSERT ";
+            query = query + "AS BEGIN ";
+            query = query + "DECLARE @MovStockId int ";
+            query = query + "DECLARE @DepositoId nchar(3) ";
+            query = query + "DECLARE @ProductoId varchar(6) ";
+            query = query + "DECLARE @Cantidad int ";
+            query = query + "SET @MovStockId = (SELECT MovStockId from inserted) ";
+            query = query + "SET @DepositoId = (SELECT DepositoId from MovsStock ";
+            query = query + "                   where Id = @MovStockId) ";
+            query = query + "SET @ProductoId = (SELECT ProductoId from inserted) ";
+            query = query + "BEGIN ";
+            query = query + "IF(SELECT EsEgreso from TipoMovimiento where Id = (SELECT TipoMovimientoId from MovsStock where Id = @MovStockId)) = 0 ";
+            query = query + "   BEGIN ";
+            query = query + "   SET @Cantidad = (SELECT Cantidad from inserted) ";
+            query = query + "   END ";
+            query = query + "ELSE ";
+            query = query + "   BEGIN ";
+            query = query + "   SET @Cantidad = (SELECT(Cantidad * (-1)) from inserted) ";
+            query = query + "   END ";
+            query = query + "END ";
+            query = query + "BEGIN ";
+            query = query + "IF(SELECT Cantidad from Stock Where ProductoId = @ProductoId and DepositoId = @DepositoId) is null ";
+            query = query + "    BEGIN ";
+            query = query + "    BEGIN TRAN ";
+            query = query + "    INSERT INTO Stock(ProductoId, DepositoId, Cantidad) ";
+            query = query + "    VALUES(@ProductoId, @DepositoId, @Cantidad) ";
+            query = query + "    COMMIT TRAN ";
+            query = query + "    END ";
+            query = query + "ELSE ";
+            query = query + "    BEGIN ";
+            query = query + "    BEGIN TRAN ";
+            query = query + "    UPDATE STOCK SET Cantidad = Cantidad + @Cantidad ";
+            query = query + "    WHERE DepositoId = @DepositoId and ProductoId = @ProductoId ";
+            query = query + "    COMMIT TRAN ";
+            query = query + "    END ";
+            query = query + "END ";
+            query = query + "END ";
 
             migrationBuilder.Sql(query);
         }
