@@ -124,7 +124,7 @@ namespace EFDataAccessLibrary.Migrations
             string query = "";
 
             query = query + "INSERT [dbo].[TipoMovimiento] ([EsEgreso], [Descripcion]) " +
-                "VALUES (0, 'Ingreso por Ajuste'), (0, 'Remito de Proveedor'), (0, 'Devolución de Cliente')," +
+                "VALUES (0, 'Ingreso por Ajuste'), (0, 'Remito de Proveedor'), (0, 'Devolución de Obra')," +
                 "(1, 'Egreso por Ajuste'), (1, 'Remito a Obra'), (1, 'Material Defectuoso')";
 
             migrationBuilder.Sql(query);

@@ -16,7 +16,7 @@
                         <input asp-for="MovStock.Fecha" class="form-control" disabled="@Model.HasHeader" />
                         <span asp-validation-for="MovStock.Fecha" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-5">
                         <label class="control-label">Tipo de Movimiento</label>
                         <select class="form-control" disabled="@Model.HasHeader" asp-for="TipoMovimientoId" asp-items="@ViewData["TipoMovimientoId"] as SelectList">
                             <option value="" selected disabled hidden>Seleccione un tipo de movimiento</option>
@@ -24,19 +24,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         <label class="control-label">Depósito</label>
                         <select class="form-control" disabled="@Model.HasHeader" asp-for="DepositoId" asp-items="@ViewData["DepositoId"] as SelectList">
                             <option value="" selected disabled hidden>Seleccione un depósito</option>
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         <label for="dataProyecto" class="control-label">Proyecto</label>
                         <select id="dataProyecto" class="form-control" disabled="@Model.HasHeader" asp-for="ProyectoId" asp-items="@ViewData["ProyectoId"] as SelectList">
                             <option value="-1" selected hidden>Seleccione un proyecto</option>
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         <label for="dataProveedor" class="control-label">Proveedor</label>
                         <select id="dataProveedor" class="form-control" disabled="@Model.HasHeader" asp-for="ProveedorId" asp-items="@ViewData["ProveedorId"] as SelectList">
                             <option value="-1" selected hidden>Seleccione un proveedor</option>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-8">
+                    <div class="form-group col-9">
                         <label asp-for="MovStock.Observacion" class="control-label">Observación</label>
                         <input asp-for="MovStock.Observacion" class="form-control" disabled="@Model.HasHeader" />
                         <span asp-validation-for="MovStock.Observacion" class="text-danger"></span>
