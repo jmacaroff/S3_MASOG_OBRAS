@@ -8,17 +8,16 @@
 
 <!-- Campo de Búsqueda por Id o Descipcion Producto -->
 
-<p>
-    <a asp-page="Index" class="btn btn-primary">Movimientos Stocks</a>
-</p>
 
 <form asp-page="./StockItems" method="get">
     <div class="form-actions no-color">
         <p>
             Buscar por ID o Descipción Producto:&nbsp;
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Buscar" class="btn btn-primary" /> |
-            <a asp-page="./StockItems">Volver a la Lista Completa</a>
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+            <br />
+            <a asp-page="./StockItems">Volver a la Lista Completa</a> |
+            <a asp-page="Index">Regresar a Movimientos Stocks</a>
         </p>
     </div>
 </form>
