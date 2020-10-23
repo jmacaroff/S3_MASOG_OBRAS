@@ -39,6 +39,8 @@
     <Compile Remove="Migrations\20201021202642_MovStc.Designer.cs" />
     <Compile Remove="Migrations\20201021202713_MovStock.cs" />
     <Compile Remove="Migrations\20201021202713_MovStock.Designer.cs" />
+    <Compile Remove="Migrations\20201023113618_Stock.cs" />
+    <Compile Remove="Migrations\20201023113618_Stock.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

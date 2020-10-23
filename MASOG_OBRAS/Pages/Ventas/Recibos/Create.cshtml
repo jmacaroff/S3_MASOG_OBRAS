@@ -24,7 +24,9 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Recibo.ConceptoPagoId" class="control-label"></label>
-                    <select asp-for="Recibo.ConceptoPagoId" class="form-control" asp-items="ViewBag.ConceptoPagoId" disabled="@Model.HasCliente"></select>
+                    <select asp-for="Recibo.ConceptoPagoId" class="form-control" asp-items="ViewBag.ConceptoPagoId" disabled="@Model.HasCliente">
+                        <option value="-1" selected disabled hidden>Seleccione una forma de pago</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="Recibo.Observacion" class="control-label"></label>
@@ -43,7 +45,7 @@
             </form>
         </div>
     </div>
-    @if (Model.HasCliente && !Model.HasFacturas)
+    @if (Model.HasCancelButton)
     {
         <div class="alert alert-warning">
             No existen facturas pendientes.

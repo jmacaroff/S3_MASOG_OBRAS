@@ -76,6 +76,7 @@ namespace EFDataAccessLibrary.Models.Inventarios
         public Producto Producto { get; set; }
 
     }
+
     public class TipoMovimiento : BaseModel
     {
         [Key]
@@ -87,6 +88,29 @@ namespace EFDataAccessLibrary.Models.Inventarios
         [DisplayName("Descripción")]
         [Required(ErrorMessage = "Se requiere una descipción.")]
         public string Descripcion { get; set; }
+    }
+
+    public class Stock : BaseModel
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [DisplayName("Producto")]
+        [Required(ErrorMessage = "Se requiere un producto.")]
+        [Column(TypeName = "varchar(6)")]
+        [RegularExpression(@"^[a-zA-Z0-9]{1,6}$", ErrorMessage = "Sólo se aceptan 6 caracteres alfanuméricos.")]
+        public string ProductoId { get; set; }
+
+        [Required(ErrorMessage = "Se requiere un depósito.")]
+        [DisplayName("Depósito")]
+        public string DepositoId { get; set; }
+
+        [Required(ErrorMessage = "Se requiere una cantidad.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Sólo se aceptan números positivos.")]
+        public int Cantidad { get; set; }
+
+        public Deposito Deposito { get; set; }
+        public Producto Producto { get; set; }
     }
 }
 

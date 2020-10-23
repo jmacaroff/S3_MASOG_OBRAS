@@ -29,7 +29,6 @@ namespace EFDataAccessLibrary.Models.Ventas
 
         // Foma de pago (Efectivo, Débito, Crédito, Cheque). Se debe seleccionar con un drop down
         [Required(ErrorMessage = "Se requiere una forma de pago.")]
-        [DisplayName("Forma de Pago.")]
         public int ConceptoPagoId { get; set; }
 
         [DisplayName("Observación")]

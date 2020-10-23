@@ -19,9 +19,11 @@ namespace MASOG_OBRAS.Pages.Ventas.Recibos
         private readonly string RECIBO_KEY = "ReciboKey";
         private readonly string CLIENTE_KEY = "ClienteKey";
         [BindProperty]
-        public bool HasCliente { get; set; }
+        public bool HasCliente { get; set; } = false;
         [BindProperty]
-        public bool HasFacturas { get; set; }
+        public bool HasFacturas { get; set; } = false;
+        [BindProperty]
+        public bool HasCancelButton { get; set; } = false;
         [BindProperty]
         public List<FacturaSelectedItem> FacturaItems { get; set; }
 
@@ -45,11 +47,11 @@ namespace MASOG_OBRAS.Pages.Ventas.Recibos
         {
             List<FacturaVenta> list = _context.FacturasVenta.Where(x => x.ClienteId == Recibo.ClienteId && x.PendienteCobrar != 0).ToList();
             HasFacturas = list.Count != 0;
-            HasCliente = true;
             if (!HasFacturas)
             {
                 ViewData["ConceptoPagoId"] = new SelectList(_context.Set<ConceptoPago>(), "Id", "Descripcion");
                 ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
+                HasCancelButton = true;
             }
             else
             {
@@ -68,6 +70,7 @@ namespace MASOG_OBRAS.Pages.Ventas.Recibos
                 });
                 ViewData["ConceptoPagoId"] = new SelectList(_context.Set<ConceptoPago>().Where(x => x.Id == Recibo.ConceptoPagoId), "Id", "Descripcion");
                 ViewData["ClienteId"] = new SelectList(_context.Clientes.Where(x => x.Id == Recibo.ClienteId), "Id", "Nombre");
+                HasCliente = true;
             }
         }
 

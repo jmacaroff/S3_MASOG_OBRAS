@@ -152,14 +152,18 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         }
         private void LoadCliente()
         {
-            int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
-            if (clienteId != -1)
-            {
-                ViewData["ClienteId"] = new SelectList(_context.Clientes.Where(x => x.Id == clienteId).ToList(), "Id", "Nombre");
-            }
+            if (HasProyecto == false) ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
             else
             {
-                ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");              
+                int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
+                if (clienteId != -1)
+                {
+                    ViewData["ClienteId"] = new SelectList(_context.Clientes.Where(x => x.Id == clienteId).ToList(), "Id", "Nombre");
+                }
+                else
+                {
+                    ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre");
+                }
             }
         }
         private void LoadProductos()
