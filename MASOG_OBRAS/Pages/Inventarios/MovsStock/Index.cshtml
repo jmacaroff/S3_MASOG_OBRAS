@@ -8,7 +8,7 @@
 <h1>Movimientos de Stock</h1>
 
 <p>
-    <a asp-page="Create">Nuevo Movimiento</a>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Movimiento</a>
 </p>
 
 <!-- Campo de Búsqueda por Fecha -->
@@ -19,7 +19,8 @@
             Buscar por Fecha:&nbsp;
             <input type="date" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Buscar" class="btn btn-primary" /> |
-            <a asp-page="./Index">Volver a la Lista Completa</a>
+            <a asp-page="./Index">Volver a la Lista Completa</a> |
+            <a asp-page="StockItems">Ir a Resumen Stock</a>
         </p>
     </div>
 </form>
@@ -58,33 +59,33 @@
                     <tbody>
                         @foreach (var item in Model.MovsStock)
                         {
-                        <tr>
-                            <th>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </th>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Fecha)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TipoMovimiento.Descripcion)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Deposito.Descripcion)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Proyecto.Nombre)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Observacion)
-                            </td>
-                            <td>
-                                <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
-                                <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Fecha)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoMovimiento.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Deposito.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Proyecto.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observacion)
+                                </td>
+                                <td>
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -98,6 +99,7 @@
     var prevDisabled = !Model.MovsStock.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.MovsStock.HasNextPage ? "disabled" : "";
 }
+
 
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
