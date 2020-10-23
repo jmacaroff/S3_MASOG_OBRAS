@@ -1,0 +1,102 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Inventarios.MovsStock.StockItemsModel
+@{
+    ViewData["Title"] = "Stock";
+}
+
+<h1>Resumen Stock</h1>
+
+<!-- Campo de Búsqueda por Id o Descipcion Producto -->
+
+<p>
+    <a asp-page="Index" class="btn btn-primary">Movimientos Stocks</a>
+</p>
+
+<form asp-page="./StockItems" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por ID o Descipción Producto:&nbsp;
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./StockItems">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                Codigo Producto
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Stocks[0].DepositoId)
+                            </th>
+                            <th>
+                                Descripción Deposito
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Stocks[0].Cantidad)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Stocks)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.ProductoId)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DepositoId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Deposito.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cantidad)
+                                </td>
+                                @*<td>
+                                    <a asp-page="./Details" asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                                </td>*@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{
+    var prevDisabled = !Model.Stocks.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Stocks.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./StockItems"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Stocks.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./StockItems"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Stocks.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>
