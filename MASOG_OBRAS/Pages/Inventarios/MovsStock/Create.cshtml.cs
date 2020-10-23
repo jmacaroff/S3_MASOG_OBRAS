@@ -87,34 +87,45 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
         }
         public void OnPostHeader()
         {
-            if (DepositoId == null)
+            if ((TipoMovimientoId == 5 || TipoMovimientoId == 3) && ProyectoId == -1)
             {
-                MessageError = "Debe ingresar un depósito.";
+                MessageError = "Debe ingresar un proyecto para envíos y devoluciones de obra.";
+            }
+            else if (TipoMovimientoId == 2 && ProveedorId == -1)
+            {
+                MessageError = "Debe ingresar un proveedor para los remitos de proveedor.";
             }
             else
             {
-                int tipomovId = !HttpContext.Session.Keys.Contains(TIPOMOV_KEY) ? -1 : (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
-                if (tipomovId == -1)
+                if (DepositoId == null)
                 {
-                    HttpContext.Session.SetInt32(TIPOMOV_KEY, TipoMovimientoId);
+                    MessageError = "Debe ingresar un depósito.";
                 }
-                int proyectoId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
-                if (proyectoId == -1)
+                else
                 {
-                    HttpContext.Session.SetInt32(PROYECTO_KEY, ProyectoId);
+                    int tipomovId = !HttpContext.Session.Keys.Contains(TIPOMOV_KEY) ? -1 : (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
+                    if (tipomovId == -1)
+                    {
+                        HttpContext.Session.SetInt32(TIPOMOV_KEY, TipoMovimientoId);
+                    }
+                    int proyectoId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
+                    if (proyectoId == -1)
+                    {
+                        HttpContext.Session.SetInt32(PROYECTO_KEY, ProyectoId);
+                    }
+                    int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                    if (proveedorId == -1)
+                    {
+                        HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
+                    }
+                    string depositoId = !HttpContext.Session.Keys.Contains(DEPOSITO_KEY) ? "-1" : (string)HttpContext.Session.GetString(DEPOSITO_KEY);
+                    if (depositoId == "-1")
+                    {
+                        HttpContext.Session.SetString(DEPOSITO_KEY, DepositoId.Substring(0, 3));
+                    }
+                    HttpContext.Session.SetComplexData(MOV_KEY, MovStock);
+                    HasHeader = true;
                 }
-                int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
-                if (proveedorId == -1)
-                {
-                    HttpContext.Session.SetInt32(PROVEEDOR_KEY, ProveedorId);
-                }
-                string depositoId = !HttpContext.Session.Keys.Contains(DEPOSITO_KEY) ? "-1" : (string)HttpContext.Session.GetString(DEPOSITO_KEY);
-                if (depositoId == "-1")
-                {
-                    HttpContext.Session.SetString(DEPOSITO_KEY, DepositoId.Substring(0, 3));
-                }
-                HttpContext.Session.SetComplexData(MOV_KEY, MovStock);
-                HasHeader = true;
             }
             LoadMovStockItems();
             LoadViewData();
