@@ -77,9 +77,9 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             HttpContext.Session.Remove(CLIENTE_KEY);
             ClienteProyecto = new List<Proyecto>();
             LoadCliente();
+            LoadProyecto();
             return Page();
         }
-
         public void OnPostCliente()
         {
             FacturaVenta.ClienteId = ClienteId;
@@ -110,8 +110,8 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             FacturaVentaItem = new FacturaVentaItem();
             FacturaVentaItem.ProductoId = ProductoId;
             FacturaVentaItem.Precio = Producto.Precio;
-            LoadFacturaItems();
             LoadFacturaVenta();
+            LoadFacturaItems();
             LoadProyecto();
             LoadCliente();
             LoadProductos();
@@ -123,12 +123,24 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             FacturaVentaItems.Add(FacturaVentaItem);
             SaveFacturaItems();
             LoadFacturaVenta();
+            LoadFacturaItems();
             LoadProyecto();
             LoadCliente();
             LoadProductos();
-            LoadFacturaItems();
         }
-        
+
+        public void OnPostRemoveItem(string id)
+        {
+            LoadFacturaItems();
+            FacturaVentaItems = FacturaVentaItems.Where(x => x.ProductoId != id).ToList();
+            SaveFacturaItems();
+            LoadFacturaVenta();
+            LoadFacturaItems();
+            LoadProyecto();
+            LoadCliente();
+            LoadProductos();
+        }
+
         private void LoadProyecto()
         {
             int clienteId = !HttpContext.Session.Keys.Contains(CLIENTE_KEY) ? -1 : (int)HttpContext.Session.GetInt32(CLIENTE_KEY);
@@ -202,19 +214,6 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         private void SaveFacturaItems()
         {
             HttpContext.Session.SetComplexData(LISTPRODUCTO_KEY, FacturaVentaItems);
-        }
-
-        public void OnPostRemoveItem(string id)
-        {
-            LoadFacturaItems();
-            FacturaVentaItems = FacturaVentaItems.Where(x => x.ProductoId != id).ToList();
-            SaveFacturaItems();
-            LoadFacturaItems();
-            LoadFacturaVenta();
-            LoadProyecto();
-            LoadCliente();
-            LoadProductos();
-            LoadFacturaItems();
         }
 
         public async Task<IActionResult> OnPostSaveFacturaVenta()

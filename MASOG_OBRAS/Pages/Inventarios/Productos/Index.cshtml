@@ -72,8 +72,8 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Descripcion)
                                 </td>
-                                <td>
-                                    $ @Html.DisplayFor(modelItem => item.Precio)
+                                <td align="right">
+                                    @string.Format("{0:C2}", @item.Precio)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Observacion)

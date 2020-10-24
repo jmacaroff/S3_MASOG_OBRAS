@@ -84,12 +84,12 @@
 
         </div>
     </div>
-    @if (Model.HasOrdenItem)
-    {
-        <div class="row">
-            <div class="col-12">
-                <form method="post" class="mb-4">
-                    <div class="form-group">
+    <div class="row">
+        <div class="col-12">
+            <form method="post" class="mb-4">
+                <div class="form-group">
+                    @if (Model.HasOrdenItem)
+                    {
                         <table class="table">
                             <thead>
                                 <tr>
@@ -140,39 +140,32 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
-                </form>
-            </div>
+                    }
+                </div>
+            </form>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <form method="post">
-                    <div class="row">
-                        <div class="col-2">
-                            @if (Model.MessageError != null)
-                            {
-                                <div class="alert alert-warning" role="alert">
-                                    @Model.MessageError
-                                </div>
-                            }
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form method="post">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <a asp-page="Index" class="btn btn-danger">Cancelar</a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="form-group">
-                                <a asp-page="Index" class="btn btn-danger">Cancelar</a>
-                            </div>
-                        </div>
+                    @if (Model.HasOrdenItem)
+                    {
                         <div class="col-3">
                             <div class="form-group">
                                 <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveFactura" />
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    }
+                </div>
+            </form>
         </div>
-    }
+    </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

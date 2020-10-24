@@ -279,6 +279,11 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
 
+            query = query + "SET IDENTITY_INSERT [dbo].[Proyectos] OFF  ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
             query = query + "INSERT [dbo].[TipoMovimiento] ([EsEgreso], [Descripcion]) " +
                 "VALUES (0, 'Ingreso por Ajuste'), (0, 'Remito de Proveedor'), (0, 'Devolución de Obra')," +
                 "(1, 'Egreso por Ajuste'), (1, 'Remito a Obra'), (1, 'Material Defectuoso')";
@@ -289,44 +294,294 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "CREATE TRIGGER InsertStock ";
             query = query + "ON MovStockItems ";
             query = query + "FOR INSERT ";
-            query = query + "AS BEGIN ";
-            query = query + "DECLARE @MovStockId int ";
-            query = query + "DECLARE @DepositoId nchar(3) ";
-            query = query + "DECLARE @ProductoId varchar(6) ";
-            query = query + "DECLARE @Cantidad int ";
-            query = query + "SET @MovStockId = (SELECT MovStockId from inserted) ";
-            query = query + "SET @DepositoId = (SELECT DepositoId from MovsStock ";
+            query = query + "AS ";
+            query = query + "declare @ProductoId varchar(6) ";
+            query = query + "declare @DepositoId nchar(3) ";
+            query = query + "declare @Cant int ";
+            query = query + "declare @MovStockId int ";
+            query = query + "declare @TMovId int ";
+            query = query + "declare @Signo int ";
+            query = query + "set @MovStockId = (SELECT TOP 1 MovStockId from inserted) ";
+            query = query + "set @DepositoId = (SELECT DepositoId from MovsStock ";
             query = query + "                   where Id = @MovStockId) ";
-            query = query + "SET @ProductoId = (SELECT ProductoId from inserted) ";
+            query = query + "set @TMovId = (SELECT TipoMovimientoId from MovsStock where Id = @MovStockId) ";
+            query = query + "set @Signo = CASE ";
+            query = query + "             WHEN((SELECT EsEgreso from TipoMovimiento where Id = @TMovId) = 1) THEN - 1 ";
+            query = query + "             ELSE 1 END ";
+            query = query + "declare cur CURSOR LOCAL for ";
+            query = query + "    select ProductoId, Cantidad from inserted ";
+            query = query + "open cur ";
+            query = query + "fetch next from cur into @ProductoId, @Cant ";
+            query = query + "while @@FETCH_STATUS = 0 ";
             query = query + "BEGIN ";
-            query = query + "IF(SELECT EsEgreso from TipoMovimiento where Id = (SELECT TipoMovimientoId from MovsStock where Id = @MovStockId)) = 0 ";
-            query = query + "   BEGIN ";
-            query = query + "   SET @Cantidad = (SELECT Cantidad from inserted) ";
-            query = query + "   END ";
-            query = query + "ELSE ";
-            query = query + "   BEGIN ";
-            query = query + "   SET @Cantidad = (SELECT(Cantidad * (-1)) from inserted) ";
-            query = query + "   END ";
+            query = query + "    IF(SELECT Cantidad from Stock Where ProductoId = @ProductoId and DepositoId = @DepositoId) is null ";
+            query = query + "        BEGIN ";
+            query = query + "        BEGIN TRAN ";
+            query = query + "        INSERT INTO Stock(ProductoId, DepositoId, Cantidad) ";
+            query = query + "        VALUES(@ProductoId, @DepositoId, @Cant * @Signo) ";
+            query = query + "        COMMIT TRAN ";
+            query = query + "        END ";
+            query = query + "    ELSE ";
+            query = query + "        BEGIN ";
+            query = query + "        BEGIN TRAN ";
+            query = query + "        UPDATE STOCK ";
+            query = query + "        SET Cantidad = Cantidad + @Cant  * @Signo ";
+            query = query + "        WHERE DepositoId = @DepositoId and ProductoId = @ProductoId ";
+            query = query + "        COMMIT TRAN ";
+            query = query + "        END ";
+            query = query + "    fetch next from cur into @ProductoId, @Cant ";
             query = query + "END ";
-            query = query + "BEGIN ";
-            query = query + "IF(SELECT Cantidad from Stock Where ProductoId = @ProductoId and DepositoId = @DepositoId) is null ";
-            query = query + "    BEGIN ";
-            query = query + "    BEGIN TRAN ";
-            query = query + "    INSERT INTO Stock(ProductoId, DepositoId, Cantidad) ";
-            query = query + "    VALUES(@ProductoId, @DepositoId, @Cantidad) ";
-            query = query + "    COMMIT TRAN ";
-            query = query + "    END ";
-            query = query + "ELSE ";
-            query = query + "    BEGIN ";
-            query = query + "    BEGIN TRAN ";
-            query = query + "    UPDATE STOCK SET Cantidad = Cantidad + @Cantidad ";
-            query = query + "    WHERE DepositoId = @DepositoId and ProductoId = @ProductoId ";
-            query = query + "    COMMIT TRAN ";
-            query = query + "    END ";
-            query = query + "END ";
-            query = query + "END ";
+            query = query + "close cur ";
+            query = query + "deallocate cur ";
 
             migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "SET IDENTITY_INSERT[dbo].[OrdenesPago] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "INSERT[dbo].[OrdenesPago] ([Id], [ProveedorId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES(1, 4, CAST(N'2020-10-23T00:00:00.0000000' AS DateTime2), 1, NULL, 2600) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "INSERT[dbo].[OrdenesPago]([Id], [ProveedorId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES(2, 3, CAST(N'2020-10-22T00:00:00.0000000' AS DateTime2), 1, NULL, 178709) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "SET IDENTITY_INSERT[dbo].[OrdenesPago] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[OrdenPagoItems] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[OrdenPagoItems]([Id], [OrdenPagoId], [FacturaCompraId], [Importe]) VALUES(1, 1, 13, 2600) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[OrdenPagoItems] ([Id], [OrdenPagoId], [FacturaCompraId], [Importe]) VALUES(2, 2, 8, 178709) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[OrdenPagoItems] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[FacturasVenta] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturasVenta]([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(1, 1, 1, N'1    ', N'A', 456, CAST(N'2020-10-23T00:00:00.0000000' AS DateTime2), NULL, 61510, 0) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturasVenta] ([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(2, 4, 3, N'1    ', N'A', 457, CAST(N'2020-10-24T00:00:00.0000000' AS DateTime2), NULL, 73812, 0) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturasVenta] ([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(3, 1, 1, N'1    ', N'A', 458, CAST(N'2020-10-24T00:00:00.0000000' AS DateTime2), NULL, 31625.55, 0) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturasVenta] ([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(4, 8, 4, N'1    ', N'B', 1256, CAST(N'2020-10-23T00:00:00.0000000' AS DateTime2), NULL, 193418.5, 193418.5) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[FacturasVenta] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[FacturaVentaItems] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturaVentaItems]([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(1, 1, N'DUR001', CAST(1230.20 AS Decimal(18, 2)), 50, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(2, 2, N'DUR001', CAST(1230.20 AS Decimal(18, 2)), 60, N'Finalización etapa exterior') ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(3, 3, N'DUR101', CAST(1698.37 AS Decimal(18, 2)), 15, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(4, 3, N'TOR001', CAST(12.30 AS Decimal(18, 2)), 500, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(5, 4, N'DUR101', CAST(1698.37 AS Decimal(18, 2)), 50, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(6, 4, N'TOR002', CAST(15.50 AS Decimal(18, 2)), 7000, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[FacturaVentaItems] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[Recibos] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[Recibos]([Id], [ClienteId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES(2, 4, CAST(N'2020-10-23T00:00:00.0000000' AS DateTime2), 1, NULL, 73812) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[Recibos] ([Id], [ClienteId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES(3, 1, CAST(N'2020-10-23T00:00:00.0000000' AS DateTime2), 1, NULL, 93135.55) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[Recibos] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[ReciboItems] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[ReciboItems]([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES(2, 2, 2, 73812) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[ReciboItems] ([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES(3, 3, 1, 61510) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[ReciboItems] ([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES(4, 3, 3, 31625.55) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[ReciboItems] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[MovsStock] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovsStock]([Id], [TipoMovimientoId], [DepositoId], [ProyectoId], [ProveedorId], [Fecha], [Observacion]) VALUES(5, 2, N'002', NULL, 3, CAST(N'2020-10-23T21:24:10.8511128' AS DateTime2), NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovsStock] ([Id], [TipoMovimientoId], [DepositoId], [ProyectoId], [ProveedorId], [Fecha], [Observacion]) VALUES(6, 2, N'001', NULL, 9, CAST(N'2020-10-23T21:25:05.2544693' AS DateTime2), NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovsStock] ([Id], [TipoMovimientoId], [DepositoId], [ProyectoId], [ProveedorId], [Fecha], [Observacion]) VALUES(7, 5, N'002', 1, NULL, CAST(N'2020-10-23T21:26:02.3147253' AS DateTime2), NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[MovsStock] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "SET IDENTITY_INSERT[dbo].[MovStockItems] ON ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems]([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(16, 5, N'DUR001', 1500, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(17, 5, N'DUR002', 200, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(18, 5, N'DUR003', 500, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(19, 5, N'DUR101', 2000, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(20, 5, N'DUR102', 30, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(21, 5, N'DUR103', 1200, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(22, 6, N'TOR001', 20000, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+            
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(23, 6, N'TOR002', 15000, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+          
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(24, 6, N'TOR101', 17000, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+          
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(25, 7, N'DUR001', 70, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+     
+            query = query + "INSERT[dbo].[MovStockItems] ([Id], [MovStockId], [ProductoId], [Cantidad], [Observacion]) VALUES(26, 7, N'DUR002', 5, NULL) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+        
+            query = query + "SET IDENTITY_INSERT[dbo].[MovStockItems] OFF ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

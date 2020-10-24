@@ -63,10 +63,10 @@
                             </div>
                         </div>
                     </form>
-                    @if (Model.HasProduct)
-                    {
-                        <div class="row">
-                            <div class="col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            @if (Model.HasProduct)
+                            {
                                 <form method="post" class="mb-4">
                                     <div class="form-group">
                                         <h3>Producto</h3>
@@ -106,78 +106,66 @@
                                         </table>
                                     </div>
                                 </form>
-                            </div>
+                            }
                         </div>
-                    }
-                }
-                <div class="row">
-                    <div class="col-12">
-                        <form method="post" class="mb-4">
-                            <div class="form-group">
-                                @if (Model.HasOrdenItems)
-                                {
-                                    <h2>Productos de la orden</h2>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.OrdenItem.Precio)
-                                                </th>
-                                                <th></th>
-                                                <th>
-                                                    Observación
-                                                </th>
-                                                <th>
-                                                    Eliminar producto
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        @foreach (var item in Model.OrdenItems)
-                                        {
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        @item.ProductoId
-                                                    </td>
-                                                    <td>
-                                                        @item.Cantidad
-                                                    </td>
-                                                    <td align="right">
-                                                        @string.Format("{0:C2}", item.Precio)
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                        @item.Observacion
-                                                    </td>
-                                                    <td>
-                                                        <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        }
-                                    </table>
-                                }
-                            </div>
-                        </form>
+
                     </div>
-                </div>
-                <div class="row">
-                    <form method="post">
-                        <div class="row">
-                            <div class="col-3">
-                                @if (Model.MessageError != null)
-                                {
-                                    <div class="alert alert-warning" role="alert">
-                                        @Model.MessageError
-                                    </div>
-                                }
-                            </div>
+
+                }
+            }
+            <div class="row">
+                <div class="col-12">
+                    <form method="post" class="mb-4">
+                        <div class="form-group">
+                            @if (Model.HasOrdenItems)
+                            {
+                                <h2>Productos de la orden</h2>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.ProductoId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.Cantidad)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OrdenItem.Precio)
+                                            </th>
+                                            <th></th>
+                                            <th>
+                                                Observación
+                                            </th>
+                                            <th>
+                                                Eliminar producto
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.OrdenItems)
+                                    {
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    @item.ProductoId
+                                                </td>
+                                                <td>
+                                                    @item.Cantidad
+                                                </td>
+                                                <td align="right">
+                                                    @string.Format("{0:C2}", item.Precio)
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    @item.Observacion
+                                                </td>
+                                                <td>
+                                                    <input type="submit" value="Eliminar" class="btn btn-danger" asp-page-handler="RemoveItem" asp-route-id="@item.ProductoId" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    }
+                                </table>
+                            }
                         </div>
                         <div class="row">
                             <div class="col-6">
@@ -185,15 +173,18 @@
                                     <a asp-page="Index" class="btn btn-danger">Cancelar</a>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
+                            @if (Model.HasOrdenItems)
+                            {
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </form>
                 </div>
-            }
+            </div>
         </div>
     </div>
 </div>

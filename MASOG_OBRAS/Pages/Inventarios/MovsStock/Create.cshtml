@@ -174,31 +174,26 @@
                 </div>
                 <div class="row">
                     <form method="post">
-                        <div class="row">
-                            <div class="col-3">
-                                @if (Model.MessageError != null)
-                                {
-                                    <div class="alert alert-warning" role="alert">
-                                        @Model.MessageError
-                                    </div>
-                                }
+                        @if (Model.HasMovStockItems)
+                        {
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <a asp-page="Index" class="btn btn-danger">Cancelar</a>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrder" />
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </form>
                 </div>
             }
+            <div class="row">
+                <form method="post">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <a asp-page="Index" class="btn btn-danger">Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -218,6 +213,14 @@
 
             //agrega Select2 al dropdown Proveedor
             $('#dataProveedor').select2({
+                //theme: "classic",
+                theme: "bootstrap4",
+                language: "es",
+                // minimumInputLength: 2
+            });
+
+            //agrega Select2 al dropdown Producto
+            $('#dataProducto').select2({
                 //theme: "classic",
                 theme: "bootstrap4",
                 language: "es",

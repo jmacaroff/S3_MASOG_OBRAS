@@ -34,10 +34,27 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
         private readonly string TIPOMOV_KEY = "TipoMovKey";
         private readonly string MOV_KEY = "MovKey";
 
+        // Variables para manejo de HTML
         public bool HasHeader { get; set; } = false;
         public bool HasProduct { get; set; } = false;
         public bool HasProductList { get; set; }
         public bool HasMovStockItems { get; set; } = false;
+
+        // Variables para validar stock negativo
+
+        [BindProperty]
+        public int CantidadOri { get; set; }
+
+        [BindProperty]
+        public int Cantidad { get; set; }
+
+        [BindProperty]
+        public bool CantidadNeg { get; set; }
+
+        [BindProperty]
+        public string ProdNeg { get; set; }
+
+        // Variables para seguimiento de FK
 
         [BindProperty]
         public int TipoMovimientoId { get; set; }
@@ -53,6 +70,8 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
 
         [BindProperty]
         public string ProductoId { get; set; }
+
+        // Clases
 
         [BindProperty]
         public MovStock MovStock { get; set; }
@@ -169,26 +188,66 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
             if (MovStockItems.Count == 0)
             {
                 MessageError = "No hay items en el movimiento.";
+                LoadHeaderIds();
                 LoadViewData();
                 return Page();
             }
             else
             {
-                MovStock.MovStockItems = MovStockItems;
-                MovStock.TipoMovimientoId = (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
-                MovStock.DepositoId = HttpContext.Session.GetString(DEPOSITO_KEY).Substring(0,3);
-                int clienteId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
-                if (clienteId != -1)
+                foreach (MovStockItem item in MovStockItems)
                 {
-                    MovStock.ProyectoId = (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
+                    int tipomovId = !HttpContext.Session.Keys.Contains(TIPOMOV_KEY) ? -1 : (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
+                    TipoMovimiento tipmov = _context.Set<TipoMovimiento>().Where(x => x.Id == tipomovId).FirstOrDefault<TipoMovimiento>();
+                    if (tipmov.EsEgreso)
+                    {
+                        CantidadOri = (item.Cantidad * (-1));
+                    }
+                    else
+                    {
+                        CantidadOri = (item.Cantidad);
+                    }
+                    string depositoId = !HttpContext.Session.Keys.Contains(DEPOSITO_KEY) ? "-1" : (string)HttpContext.Session.GetString(DEPOSITO_KEY);
+                    Stock stock = _context.Stock.Where(x => x.DepositoId == depositoId && x.ProductoId == item.ProductoId).FirstOrDefault<Stock>();
+                    if (stock != null)
+                    {
+
+                        Cantidad = stock.Cantidad + CantidadOri;
+                    }
+                    else
+                    {
+                        Cantidad = CantidadOri;
+                    }
+                    if (Cantidad < 0) 
+                    {
+                        CantidadNeg = true;
+                        ProdNeg = item.ProductoId; 
+                    }
                 }
-                int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
-                if (proveedorId != -1)
+                if (CantidadNeg)
                 {
-                    MovStock.ProveedorId = (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                    MessageError = "No hay stock suficiente para el producto " + ProdNeg + ".";
+                    LoadHeaderIds();
+                    LoadViewData();
+                    return Page();
                 }
-                _context.MovsStock.Add(MovStock);
-                return await AddNewValue(_context);
+                else
+                {
+                    MovStock.MovStockItems = MovStockItems;
+                    MovStock.TipoMovimientoId = (int)HttpContext.Session.GetInt32(TIPOMOV_KEY);
+                    MovStock.DepositoId = HttpContext.Session.GetString(DEPOSITO_KEY).Substring(0, 3);
+                    int clienteId = !HttpContext.Session.Keys.Contains(PROYECTO_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
+                    if (clienteId != -1)
+                    {
+                        MovStock.ProyectoId = (int)HttpContext.Session.GetInt32(PROYECTO_KEY);
+                    }
+                    int proveedorId = !HttpContext.Session.Keys.Contains(PROVEEDOR_KEY) ? -1 : (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                    if (proveedorId != -1)
+                    {
+                        MovStock.ProveedorId = (int)HttpContext.Session.GetInt32(PROVEEDOR_KEY);
+                    }
+                    _context.MovsStock.Add(MovStock);
+                    return await AddNewValue(_context);
+                }
             }
         }
         private void LoadHeaderIds()

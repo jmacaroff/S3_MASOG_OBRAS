@@ -54,12 +54,12 @@
             </div>
         </div>
     }
-    @if (Model.HasFacturas)
-    {
-        <div class="row">
-            <div class="col-12">
-                <form method="post" class="mb-4">
-                    <div class="form-group">
+    <div class="row">
+        <div class="col-12">
+            <form method="post" class="mb-4">
+                <div class="form-group">
+                    @if (Model.HasFacturas)
+                    {
                         <table class="table">
                             <thead>
                                 <tr>
@@ -99,33 +99,26 @@
                                 </tbody>
                             }
                         </table>
-                        <div class="row">
-                            <div class="col-2">
-                                @if (Model.MessageError != null)
-                                {
-                                    <div class="alert alert-warning" role="alert">
-                                        @Model.MessageError
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <a asp-page="Index" class="btn btn-danger">Cancelar</a>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrden" />
-                                </div>
-                            </div>
+                    }
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <a asp-page="Index" class="btn btn-danger">Cancelar</a>
                         </div>
                     </div>
-                </form>
-            </div>
+                    @if (Model.HasFacturas)
+                    {
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="submit" value="Guardar" class="btn btn-primary" asp-page-handler="SaveOrden" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                </div>
+            </form>
         </div>
-    }
+    </div>
 </div>
 
 @section Scripts {
