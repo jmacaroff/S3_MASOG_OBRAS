@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace EFDataAccessLibrary.Models.Ventas
@@ -65,11 +66,22 @@ namespace EFDataAccessLibrary.Models.Ventas
     }
     public class RecibosDet
     {
+
+        [Required(ErrorMessage = "Se requiere una fecha de emisión.")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Fecha de Emision")]
+        [DataType(DataType.Date)]
+        public DateTime FechaRecibo { get; set; }
         public int ClienteId { get; set; }
         public string ClienteNombre { get; set; }
         public int FacturaVentaNumero { get; set; }
         public string ProductoId { get; set; }
         public string ProductoDescripcion { get; set; }
-        public double Total { get; set; }
+
+        [DisplayName("Precio")]
+        [Required(ErrorMessage = "Se requiere un importe.")]
+        [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Total { get; set; }
     }
 }

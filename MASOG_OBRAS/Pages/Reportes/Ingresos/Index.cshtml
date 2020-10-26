@@ -7,13 +7,18 @@
 
 <h1>Ingresos</h1>
 
-<!-- Campo de Búsqueda por Fecha -->
-
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
+        <h4>Filtros</h4>
         <p>
-            Buscar por Fecha:&nbsp;
-            <input type="date" name="SearchString" value="@Model.CurrentFilter" />
+            Cliente:&nbsp;
+            <input type="search" name="SearchString" value="@Model.CurrentFilter" /> &nbsp; | &nbsp;
+            Producto:
+            <input type="search" name="SearchString2" value="@Model.CurrentFilter2" /> &nbsp; <br />
+            Fecha desde:
+            <input type="date" name="SearchDateFrom" value="@Model.DateFilterFrom" /> &nbsp; | &nbsp;
+            Fecha hasta:
+            <input type="date" name="SearchDateTo" value="@Model.DateFilterTo" /> &nbsp; | &nbsp;
             <input type="submit" value="Buscar" class="btn btn-primary" /> |
             <a asp-page="./Index">Volver a la Lista Completa</a>
         </p>
@@ -27,6 +32,9 @@
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
+                            <th>
+                                Fecha
+                            </th>
                             <th>
                                 Cliente
                             </th>
@@ -52,6 +60,9 @@
                         @foreach (var item in Model.RecibosDet)
                         {
                         <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaRecibo)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ClienteId)
                             </td>
@@ -88,6 +99,9 @@
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.RecibosDet.PageIndex - 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-currentFilter2="@Model.CurrentFilter2"
+   asp-route-dateFilterFrom="@Model.DateFilterFrom"
+   asp-route-dateFilterTo="@Model.DateFilterTo"
    class="btn btn-primary @prevDisabled">
     Anterior
 </a>
@@ -95,6 +109,9 @@
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.RecibosDet.PageIndex + 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-currentFilter2="@Model.CurrentFilter2"
+   asp-route-dateFilterFrom="@Model.DateFilterFrom"
+   asp-route-dateFilterTo="@Model.DateFilterTo"
    class="btn btn-primary @nextDisabled">
     Siguiente
 </a>

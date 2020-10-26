@@ -584,12 +584,12 @@ namespace EFDataAccessLibrary.Migrations
 
             query = query + "create view [dbo].[RecibosDet]  ";
             query = query + "as ";
-            query = query + "select R.ClienteId as ClienteId, C.Nombre as ClienteNombre, F.Numero as FacturaVentaNumero,  ";
-            query = query + "FI.ProductoId as ProductoId, P.Descripcion as ProductoDescripcion, SUM(RI.Importe) as Total ";
+            query = query + "select R.FechaEmision as FechaRecibo, R.ClienteId as ClienteId, C.Nombre as ClienteNombre, F.Numero as FacturaVentaNumero,  ";
+            query = query + "FI.ProductoId as ProductoId, P.Descripcion as ProductoDescripcion, SUM(FI.Precio*Cantidad) as Total ";
             query = query + "from Recibos R, ReciboItems RI, FacturasVenta F, FacturaVentaItems FI, Clientes C, Productos P ";
             query = query + "where RI.ReciboId = R.Id ";
             query = query + "and RI.FacturaVentaId = F.Id and FI.FacturaVentaId = F.Id and R.ClienteId = C.Id and FI.ProductoId = P.Id ";
-            query = query + "GROUP BY R.ClienteId, C.Nombre, F.Numero, FI.ProductoId, P.Descripcion ";
+            query = query + "GROUP BY R.FechaEmision, R.ClienteId, C.Nombre, F.Numero, FI.ProductoId, P.Descripcion ";
 
             migrationBuilder.Sql(query);
             query = "";

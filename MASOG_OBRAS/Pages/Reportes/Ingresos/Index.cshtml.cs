@@ -24,10 +24,14 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
         // public IList<Cliente> Clientes { get;set; }
 
         public PaginatedList<RecibosDet> RecibosDet { get; set; }
-        public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentFilter2 { get; set; }
+        public string DateFilterFrom { get; set; }
+        public string DateFilterTo { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder, string searchDateFrom, string searchDateTo, string searchString, string searchString2, 
+                                     string dateFilterFrom, string dateFilterTo, string currentFilter, string currentFilter2, int? pageIndex)
         {
             //inicializo el orden actual
             CurrentSort = sortOrder;
@@ -41,18 +45,58 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
             {
                 searchString = currentFilter;
             }
+            if (searchString2 != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchString2 = currentFilter2;
+            }
+            if (searchDateFrom != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchDateFrom = dateFilterFrom;
+            }
+            if (searchDateTo != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchDateTo = dateFilterTo;
+            }
 
-            //Agrego filtro de busqueda
             CurrentFilter = searchString;
+            CurrentFilter2 = searchString2;
+            DateFilterFrom = searchDateFrom;
+            DateFilterTo = searchDateTo;
 
-            IQueryable<RecibosDet> recibosIQ = from o in _context.RecibosDet select o;
+            IQueryable<RecibosDet> recibosIQ = from r in _context.RecibosDet select r;
 
             //veo si el buscador esta vacio para poder realizar la búsqueda
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                recibosIQ = recibosIQ
-                    .Where(c => c.ClienteNombre.ToString().Contains(searchString));
+                recibosIQ = recibosIQ.Where(c => c.ClienteNombre.Contains(searchString));                  
+            }
+
+            if (!String.IsNullOrEmpty(searchString2))
+            {
+                recibosIQ = recibosIQ.Where(c => c.ProductoId.Contains(searchString2) || c.ProductoDescripcion.Contains(searchString2));
+            }
+
+            if (!String.IsNullOrEmpty(searchDateFrom))
+            {
+                recibosIQ = recibosIQ.Where(c => c.FechaRecibo > Convert.ToDateTime(searchDateFrom));
+            }
+
+            if (!String.IsNullOrEmpty(searchDateTo))
+            {
+                recibosIQ = recibosIQ.Where(c => c.FechaRecibo < Convert.ToDateTime(searchDateTo));
             }
 
             ////analizo los casos para el ordenamiento

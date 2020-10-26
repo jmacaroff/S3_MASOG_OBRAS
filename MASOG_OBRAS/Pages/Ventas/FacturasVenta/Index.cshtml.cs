@@ -65,7 +65,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 5;
 
             FacturaVenta = await PaginatedList<FacturaVenta>.CreateAsync(
                 facturasIQ.Include(c => c.Cliente)

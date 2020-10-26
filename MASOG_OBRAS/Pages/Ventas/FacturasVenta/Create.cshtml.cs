@@ -63,6 +63,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         public FacturaVenta FacturaVenta { get; set; }
         [BindProperty]
         public FacturaVentaItem FacturaVentaItem { get; set; }
+        [BindProperty]
         public List<FacturaVentaItem> FacturaVentaItems { get; set; }
 
 
@@ -76,6 +77,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
             HttpContext.Session.Remove(FACTURAVENTA_KEY);
             HttpContext.Session.Remove(CLIENTE_KEY);
             HttpContext.Session.Remove(PROYECTO_KEY);
+            HttpContext.Session.Remove(LISTPRODUCTO_KEY);
             ClienteProyecto = new List<Proyecto>();
             LoadCliente();
             LoadProyecto();
