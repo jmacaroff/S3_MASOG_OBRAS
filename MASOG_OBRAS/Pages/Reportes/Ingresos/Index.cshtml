@@ -1,0 +1,100 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Reportes.Ingresos.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Ingresos</h1>
+
+<!-- Campo de Búsqueda por Fecha -->
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Buscar por Fecha:&nbsp;
+            <input type="date" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                Cliente
+                            </th>
+                            <th>
+                                Nombre
+                            </th>
+                            <th>
+                                Factura
+                            </th>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RecibosDet)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClienteId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClienteNombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FacturaVentaNumero)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductoId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductoDescripcion)
+                            </td>
+                            <td align="right">
+                                @string.Format("{0:C2}", @item.Total)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.RecibosDet.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.RecibosDet.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.RecibosDet.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.RecibosDet.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>

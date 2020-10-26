@@ -146,14 +146,40 @@
                     </ul>
                 <li />
 
-                <li class="nav-item">
+                <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            New
+                            Reportes
                             <span class="right badge badge-danger">New</span>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-page="/Reportes/Ingresos/Index" class="nav-link @Html.ActiveClass("/Reportes/Ingresos/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ingresos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Reportes/Gastos/Index" class="nav-link @Html.ActiveClass("/Reportes/Gastos/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Gastos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Reportes/RankingP/Index" class="nav-link @Html.ActiveClass("/Reportes/RankingP/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ranking Productos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Reportes/Dashboard/Index" class="nav-link @Html.ActiveClass("/Reportes/Dashboard/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

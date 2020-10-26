@@ -40,6 +40,7 @@ namespace EFDataAccessLibrary.DataAccess
         public DbSet<FacturaVentaItem> FacturaVentaItems { get; set; }
         public DbSet<Recibo> Recibos { get; set; }
         public DbSet<ReciboItem> ReciboItems { get; set; }
+        public DbQuery<RecibosDet> RecibosDet { get; private set; }
 
 
 

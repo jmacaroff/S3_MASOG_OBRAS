@@ -63,4 +63,13 @@ namespace EFDataAccessLibrary.Models.Ventas
         public FacturaVenta FacturaVenta { get; set; }
 
     }
+    public class RecibosDet
+    {
+        public int ClienteId { get; set; }
+        public string ClienteNombre { get; set; }
+        public int FacturaVentaNumero { get; set; }
+        public string ProductoId { get; set; }
+        public string ProductoDescripcion { get; set; }
+        public double Total { get; set; }
+    }
 }
