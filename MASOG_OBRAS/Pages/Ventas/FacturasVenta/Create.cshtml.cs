@@ -75,6 +75,7 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
         {
             HttpContext.Session.Remove(FACTURAVENTA_KEY);
             HttpContext.Session.Remove(CLIENTE_KEY);
+            HttpContext.Session.Remove(PROYECTO_KEY);
             ClienteProyecto = new List<Proyecto>();
             LoadCliente();
             LoadProyecto();
