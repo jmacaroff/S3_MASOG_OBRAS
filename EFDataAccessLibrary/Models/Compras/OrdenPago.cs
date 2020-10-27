@@ -74,4 +74,23 @@ namespace EFDataAccessLibrary.Models.Compras
         public string Descripcion { get; set; }
     }
 
+    public class OrdenesPagoDet
+    {
+        [Required(ErrorMessage = "Se requiere una fecha de emisión.")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Fecha de Emision")]
+        [DataType(DataType.Date)]
+        public DateTime FechaOrdenPago { get; set; }
+        public int ProveedorId { get; set; }
+        public string ProveedorNombre { get; set; }
+        public int FacturaCompraNumero { get; set; }
+        public string ProductoId { get; set; }
+        public string ProductoDescripcion { get; set; }
+
+        [DisplayName("Precio")]
+        [Required(ErrorMessage = "Se requiere un importe.")]
+        [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Total { get; set; }
+    }
 }

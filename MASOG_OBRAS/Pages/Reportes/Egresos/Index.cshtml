@@ -1,0 +1,123 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Reportes.Egresos.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <h4>Filtros</h4>
+        <p>
+            Proveedor:&nbsp;
+            <input type="search" name="SearchString" value="@Model.CurrentFilter" /> &nbsp; | &nbsp;
+            Producto:
+            <input type="search" name="SearchString2" value="@Model.CurrentFilter2" /> &nbsp; <br />
+            Fecha desde:
+            <input type="date" name="SearchDateFrom" value="@Model.DateFilterFrom" /> &nbsp; | &nbsp;
+            Fecha hasta:
+            <input type="date" name="SearchDateTo" value="@Model.DateFilterTo" /> &nbsp; | &nbsp;
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<h1>Gastos</h1>
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+                                    Fecha
+                                </a>
+                            </th>
+                            <th>
+                                Proveedor
+                            </th>
+                            <th>
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.CustomerName">
+                                    Nombre
+                                </a>
+                            </th>
+                            <th>
+                                Factura
+                            </th>
+                            <th>
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.ProductID">
+                                    Producto
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.ProductDescription">
+                                    Descripción
+                                </a>
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrdenesPagoDet)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaOrdenPago)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProveedorId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProveedorNombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FacturaCompraNumero)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductoId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductoDescripcion)
+                                </td>
+                                <td align="right">
+                                    @string.Format("{0:C2}", @item.Total)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.OrdenesPagoDet.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.OrdenesPagoDet.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.OrdenesPagoDet.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-currentFilter2="@Model.CurrentFilter2"
+   asp-route-dateFilterFrom="@Model.DateFilterFrom"
+   asp-route-dateFilterTo="@Model.DateFilterTo"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.OrdenesPagoDet.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-currentFilter2="@Model.CurrentFilter2"
+   asp-route-dateFilterFrom="@Model.DateFilterFrom"
+   asp-route-dateFilterTo="@Model.DateFilterTo"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>

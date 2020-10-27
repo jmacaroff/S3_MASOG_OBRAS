@@ -594,6 +594,18 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
 
+            query = query + "create view [dbo].[OrdenesPagoDet]  ";
+            query = query + "as ";
+            query = query + "select OP.FechaEmision as FechaOrdenPago, OP.ProveedorId as ProveedorId, PR.RazonSocial as ProveedorNombre, F.Numero as FacturaCompraNumero,  ";
+            query = query + "FI.ProductoId as ProductoId, P.Descripcion as ProductoDescripcion, SUM(FI.Precio*Cantidad) as Total ";
+            query = query + "from OrdenesPago OP, OrdenPagoItems OPI, FacturasCompra F, FacturaCompraItems FI, Proveedores PR, Productos P ";
+            query = query + "where OPI.OrdenPagoId = OP.Id ";
+            query = query + "and OPI.FacturaCompraId = F.Id and FI.FacturaCompraId = F.Id and OP.ProveedorId = PR.Id and FI.ProductoId = P.Id ";
+            query = query + "GROUP BY OP.FechaEmision, OP.ProveedorId, PR.RazonSocial, F.Numero, FI.ProductoId, P.Descripcion ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

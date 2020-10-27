@@ -41,6 +41,7 @@ namespace EFDataAccessLibrary.DataAccess
         public DbSet<Recibo> Recibos { get; set; }
         public DbSet<ReciboItem> ReciboItems { get; set; }
         public DbQuery<RecibosDet> RecibosDet { get; private set; }
+        public DbQuery<OrdenesPagoDet> OrdenesPagoDet { get; private set; }
 
 
 
