@@ -33,22 +33,30 @@
                     <thead>
                         <tr>
                             <th>
-                                Fecha
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+                                    Fecha
+                                </a>
                             </th>
                             <th>
                                 Cliente
                             </th>
                             <th>
-                                Nombre
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.CustomerName">
+                                    Nombre
+                                </a>                             
                             </th>
                             <th>
                                 Factura
                             </th>
                             <th>
-                                Producto
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.ProductID">
+                                    Producto
+                                </a>
                             </th>
                             <th>
-                                Descripción
+                                <a asp-page="./Index" asp-route-sortOrder="@Model.ProductDescription">
+                                    Descripción
+                                </a>                              
                             </th>
                             <th>
                                 Total

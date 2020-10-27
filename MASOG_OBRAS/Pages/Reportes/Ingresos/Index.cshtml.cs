@@ -24,6 +24,12 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
         // public IList<Cliente> Clientes { get;set; }
 
         public PaginatedList<RecibosDet> RecibosDet { get; set; }
+        //Sort
+        public string CustomerName { get; set; }
+        public string ProductDescription { get; set; }
+        public string ProductID { get; set; }
+        public string DateSort { get; set; }
+        //Search
         public string CurrentSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentFilter2 { get; set; }
@@ -33,6 +39,11 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
         public async Task OnGetAsync(string sortOrder, string searchDateFrom, string searchDateTo, string searchString, string searchString2, 
                                      string dateFilterFrom, string dateFilterTo, string currentFilter, string currentFilter2, int? pageIndex)
         {
+            CustomerName = String.IsNullOrEmpty(sortOrder) ? "customerName_desc" : "";
+            ProductDescription = String.IsNullOrEmpty(sortOrder) ? "productDesciption_desc" : "";
+            ProductID = String.IsNullOrEmpty(sortOrder) ? "productId_desc" : "";
+            DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+
             //inicializo el orden actual
             CurrentSort = sortOrder;
 
@@ -81,7 +92,7 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                recibosIQ = recibosIQ.Where(c => c.ClienteNombre.Contains(searchString));                  
+                recibosIQ = recibosIQ.Where(c => c.ClienteNombre.Contains(searchString) || c.ClienteId.ToString().Contains(searchString));                  
             }
 
             if (!String.IsNullOrEmpty(searchString2))
@@ -102,12 +113,21 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
             ////analizo los casos para el ordenamiento
             switch (sortOrder)
             {
-                //    case "precio_desc":
-                //        productosIQ = productosIQ.OrderBy(p => p.Precio);
-                //        break;
-                //    case "name_dec":
-                //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
-                //        break;
+                case "customerName_desc":
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.ClienteNombre);
+                    break;
+                case "productDesciption_desc":
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.ProductoDescripcion);
+                    break;
+                case "productId_desc":
+                    recibosIQ = recibosIQ.OrderBy(p => p.ProductoId);
+                    break;
+                case "Date":
+                    recibosIQ = recibosIQ.OrderBy(p => p.FechaRecibo);
+                    break;
+                case "date_desc":
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.FechaRecibo);
+                    break;
                 default:
                     recibosIQ = recibosIQ.OrderByDescending(c => c.ClienteId);
                     break;
