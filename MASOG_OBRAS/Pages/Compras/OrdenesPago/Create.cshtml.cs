@@ -43,11 +43,11 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
         {
             List<FacturaCompra> list = _context.FacturasCompra.Where(x => x.ProveedorId == OrdenPago.ProveedorId && x.PendientePago != 0).ToList();
             HasFacturas = list.Count != 0;
-            HasProveedor = true;
             if (!HasFacturas)
             {
                 ViewData["ConceptoPagoId"] = new SelectList(_context.Set<ConceptoPago>(), "Id", "Descripcion");
                 ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "RazonSocial");
+                MessageError = "No hay facturas pendientes para el proveedor.";
             }
             else
             {
@@ -66,6 +66,7 @@ namespace MASOG_OBRAS.Pages.Compras.OrdenesPago
                 });
                 ViewData["ConceptoPagoId"] = new SelectList(_context.Set<ConceptoPago>().Where(x => x.Id == OrdenPago.ConceptoPagoId), "Id", "Descripcion");
                 ViewData["ProveedorId"] = new SelectList(_context.Proveedores.Where(x => x.Id == OrdenPago.ProveedorId), "Id", "RazonSocial");
+                HasProveedor = true;
             }
         }
         public async Task<IActionResult> OnPostSaveOrden()

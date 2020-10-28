@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EFDataAccessLibrary.Models.Compras;
-using MASOG_OBRAS.Classes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using EFDataAccessLibrary.DataAccess;
+using EFDataAccessLibrary.Models.Compras;
+using MASOG_OBRAS.Classes;
 
 namespace MASOG_OBRAS.Pages.Reportes.Egresos
 {
@@ -25,6 +27,7 @@ namespace MASOG_OBRAS.Pages.Reportes.Egresos
         public string ProductDescription { get; set; }
         public string ProductID { get; set; }
         public string DateSort { get; set; }
+
         //Search
         public string CurrentSort { get; set; }
         public string CurrentFilter { get; set; }
@@ -117,10 +120,10 @@ namespace MASOG_OBRAS.Pages.Reportes.Egresos
                     recibosIQ = recibosIQ.OrderByDescending(p => p.ProductoDescripcion);
                     break;
                 case "productId_desc":
-                    recibosIQ = recibosIQ.OrderBy(p => p.ProductoId);
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.ProductoId);
                     break;
                 case "Date":
-                    recibosIQ = recibosIQ.OrderBy(p => p.FechaOrdenPago);
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.FechaOrdenPago);
                     break;
                 case "date_desc":
                     recibosIQ = recibosIQ.OrderByDescending(p => p.FechaOrdenPago);

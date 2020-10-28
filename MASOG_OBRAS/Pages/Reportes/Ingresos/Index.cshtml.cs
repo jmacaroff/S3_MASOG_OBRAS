@@ -20,15 +20,14 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
             _context = context;
         }
 
-
-        // public IList<Cliente> Clientes { get;set; }
-
         public PaginatedList<RecibosDet> RecibosDet { get; set; }
+
         //Sort
         public string CustomerName { get; set; }
         public string ProductDescription { get; set; }
         public string ProductID { get; set; }
         public string DateSort { get; set; }
+
         //Search
         public string CurrentSort { get; set; }
         public string CurrentFilter { get; set; }
@@ -38,6 +37,7 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
 
         public async Task OnGetAsync(string sortOrder, string searchDateFrom, string searchDateTo, string searchString, string searchString2, 
                                      string dateFilterFrom, string dateFilterTo, string currentFilter, string currentFilter2, int? pageIndex)
+
         {
             CustomerName = String.IsNullOrEmpty(sortOrder) ? "customerName_desc" : "";
             ProductDescription = String.IsNullOrEmpty(sortOrder) ? "productDesciption_desc" : "";
@@ -120,10 +120,10 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
                     recibosIQ = recibosIQ.OrderByDescending(p => p.ProductoDescripcion);
                     break;
                 case "productId_desc":
-                    recibosIQ = recibosIQ.OrderBy(p => p.ProductoId);
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.ProductoId);
                     break;
                 case "Date":
-                    recibosIQ = recibosIQ.OrderBy(p => p.FechaRecibo);
+                    recibosIQ = recibosIQ.OrderByDescending(p => p.FechaRecibo);
                     break;
                 case "date_desc":
                     recibosIQ = recibosIQ.OrderByDescending(p => p.FechaRecibo);

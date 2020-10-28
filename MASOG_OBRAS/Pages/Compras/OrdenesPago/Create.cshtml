@@ -41,19 +41,6 @@
             </form>
         </div>
     </div>
-    @if (Model.HasProveedor && !Model.HasFacturas)
-    {
-        <div class="alert alert-warning">
-            No hay facturas pendientes.
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    <a asp-page="Create" class="btn btn-danger">Cancelar</a>
-                </div>
-            </div>
-        </div>
-    }
     <div class="row">
         <div class="col-12">
             <form method="post" class="mb-4">
