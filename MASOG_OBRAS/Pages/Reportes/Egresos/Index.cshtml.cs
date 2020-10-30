@@ -123,13 +123,13 @@ namespace MASOG_OBRAS.Pages.Reportes.Egresos
                     recibosIQ = recibosIQ.OrderByDescending(p => p.ProductoId);
                     break;
                 case "Date":
-                    recibosIQ = recibosIQ.OrderByDescending(p => p.FechaOrdenPago);
+                    recibosIQ = recibosIQ.OrderBy(p => p.FechaOrdenPago);
                     break;
                 case "date_desc":
                     recibosIQ = recibosIQ.OrderByDescending(p => p.FechaOrdenPago);
                     break;
                 default:
-                    recibosIQ = recibosIQ.OrderByDescending(c => c.ProveedorId);
+                    recibosIQ = recibosIQ.OrderBy(p => p.ProveedorId);
                     break;
             }
 

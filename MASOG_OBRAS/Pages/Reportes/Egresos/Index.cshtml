@@ -85,7 +85,7 @@
                                     @Html.DisplayFor(modelItem => item.ProductoDescripcion)
                                 </td>
                                 <td align="right">
-                                    @string.Format("{0:C2}", @item.Total)
+                                    -(@string.Format("{0:C2}", @item.Total))
                                 </td>
                             </tr>
                         }
