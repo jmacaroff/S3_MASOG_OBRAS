@@ -606,6 +606,69 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
 
+            query = query + " CREATE TABLE dbo.Dates( ";
+            query = query + " DateID int NOT NULL IDENTITY(1, 1), ";
+            query = query + "  [Date] date NOT NULL, ";
+            query = query + "  [Year] int NOT NULL, ";
+            query = query + "  [Month] int NOT NULL, ";
+            query = query + "  [Day] int NOT NULL, ";
+            query = query + "  [QuarterNumber] int NOT NULL, ";
+            query = query + "  CONSTRAINT PK_Dates PRIMARY KEY CLUSTERED(DateID) ";
+            query = query + " ) ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + " DECLARE @StartDate date ";
+            query = query + " DECLARE @EndDate date ";
+            query = query + " SET @StartDate = { d'2018-01-01' } ";
+            query = query + " SET @EndDate = { d'2021-12-31' } ";
+            query = query + " DECLARE @LoopDate date ";
+            query = query + " SET @LoopDate = @StartDate ";
+            query = query + " WHILE @LoopDate <= @EndDate ";
+            query = query + " BEGIN ";
+            query = query + "  INSERT INTO Dates VALUES( ";
+            query = query + "   @LoopDate, ";
+            query = query + "   Year(@LoopDate), ";
+            query = query + "   Month(@LoopDate), ";
+            query = query + "   Day(@LoopDate), ";
+            query = query + "   CASE WHEN Month(@LoopDate) IN(1, 2, 3) THEN 1 ";
+            query = query + "    WHEN Month(@LoopDate) IN(4, 5, 6) THEN 2 ";
+            query = query + "    WHEN Month(@LoopDate) IN(7, 8, 9) THEN 3 ";
+            query = query + "    WHEN Month(@LoopDate) IN(10, 11, 12) THEN 4 ";
+            query = query + "   END ";
+            query = query + "  ) ";
+            query = query + "  SET @LoopDate = DateAdd(M, 1, @LoopDate) ";
+            query = query + " END ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "create view [dbo].[Comparativo]  ";
+            query = query + "as ";
+            query = query + " SELECT [Year] Año, [Month] Mes,  ";
+            query = query + " IsNull((SELECT SUM(Total) FROM Recibos ";
+            query = query + " WHERE MONTH(FechaEmision) = [Month] ";
+            query = query + " AND YEAR(FechaEmision) = [Year]), 0) Ingresos,  ";
+            query = query + " IsNull((SELECT SUM(Total) FROM OrdenesPago ";
+            query = query + " WHERE MONTH(FechaEmision) = [Month] ";
+            query = query + " AND YEAR(FechaEmision) = [Year]), 0) Egresos ";
+            query = query + " FROM Dates ";
+            query = query + " GROUP BY [Year], [Month] ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + " create view [dbo].[RankingProductos]    ";
+            query = query + " as  ";
+            query = query + " select FI.ProductoId ProductoId, P.Descripcion Descripcion, SUM(FI.Cantidad) Ventas  ";
+            query = query + " from FacturaVentaItems FI, Productos P  ";
+            query = query + " where FI.ProductoId = P.Id  ";
+            query = query + " group by FI.ProductoId, P.Descripcion  ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

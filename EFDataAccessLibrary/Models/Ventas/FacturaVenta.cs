@@ -92,4 +92,22 @@ namespace EFDataAccessLibrary.Models.Ventas
         public FacturaVenta FacturaVenta { get; set; }
         public Producto Producto { get; set; }
     }
+
+    public class RankingProductos : BaseModel
+    {
+
+        [DisplayName("Producto")]
+        [Required(ErrorMessage = "Se requiere un producto.")]
+        [Column(TypeName = "varchar(6)")]
+        [RegularExpression(@"^[a-zA-Z0-9]{1,6}$", ErrorMessage = "Sólo se aceptan 6 caracteres alfanuméricos.")]
+        public string ProductoId { get; set; }
+
+        [DisplayName("Descripción")]
+        [Required(ErrorMessage = "Se requiere una descipción.")]
+        public string Descripcion { get; set; }
+
+        public int Ventas { get; set; }
+
+        public Producto Producto { get; set; }
+    }
 }
