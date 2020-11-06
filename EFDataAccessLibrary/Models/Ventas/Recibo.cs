@@ -94,13 +94,15 @@ namespace EFDataAccessLibrary.Models.Ventas
         [DisplayName("Egresos")]
         [Required(ErrorMessage = "Se requiere un importe.")]
         [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Egresos { get; set; }
+        //[Column(TypeName = "decimal(18,2)")]
+        //public decimal Egresos { get; set; }
+        public double Egresos { get; set; }
+
 
         [DisplayName("Ingresos")]
         [Required(ErrorMessage = "Se requiere un importe.")]
         [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Ingresos { get; set; }
+        //[Column(TypeName = "decimal(18,2)")]
+        public double Ingresos { get; set; }
     }
 }
