@@ -1,0 +1,81 @@
+﻿@page
+@model MASOG_OBRAS.Pages.Reportes.RankingProductos.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Ranking de Productos Vendidos</h1>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <h4>Filtros</h4>
+        <p>
+            Producto:
+            <input type="search" name="SearchString" value="@Model.CurrentFilter" /> &nbsp; | &nbsp;
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Volver a la Lista Completa</a>
+        </p>
+    </div>
+</form>
+
+<div class=" row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RankingProductos)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductoId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </td>
+                            <td align="right">
+                                @Html.DisplayFor(modelItem => item.Ventas)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.RankingProductos.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.RankingProductos.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.RankingProductos.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Anterior
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.RankingProductos.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Siguiente
+</a>
