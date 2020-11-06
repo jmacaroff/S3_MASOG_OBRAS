@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex">
+                        @*<div class="d-flex">
                             <p class="d-flex flex-column">
                                 <span class="text-bold text-lg">820</span>
                                 <span>Operaciones</span>
@@ -88,7 +88,7 @@
                                 </span>
                                 <span class="text-muted">Ingresos ultima semana</span>
                             </p>
-                        </div>
+                        </div>*@
                         <!-- /.d-flex -->
 
                         <div class="position-relative mb-4">
@@ -132,19 +132,18 @@
     var myMonthList = [];
     var myResum;
 
-
     function showChart() {
 
-        myAmountEntry = myResum.AmountEntryList;
-        myAmountEgress = myResum.AmountEgressList;
-        myMonthList = myResum.MonthList;
+        myAmountEntry = myResum.amountEntryList;
+        myAmountEgress = myResum.amountEgressList;
+        myMonthList = myResum.monthList;
 
         let popCanvasName = document.getElementById("ingresosegresos-chart");
         let lineChartName = new Chart(popCanvasName, {          
             data: {
                 labels: myMonthList,
                 datasets: [{
-                    label: 'Ingresos',
+                    //label: 'Ingresos',
                     type: 'line',
                     data: myAmountEntry,
                     backgroundColor: 'transparent',
