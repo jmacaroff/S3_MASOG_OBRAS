@@ -92,7 +92,8 @@
                         <!-- /.d-flex -->
 
                         <div class="position-relative mb-4">
-                            <canvas id="visitors-chart" height="200"></canvas>
+                            <canvas id="ingresosegresos-chart" height="300"></canvas>
+                            <!-- <canvas id="visitors-chart" height="200"></canvas> -->
                         </div>
 
                         <div class="d-flex flex-row justify-content-end">
@@ -112,6 +113,127 @@
         <!-- ./row -->
     </div>
 </section>
-@section Scripts {
+@*@section Scripts {
     <script src="~/js/ReportesVentaGastos.js"></script>
-}
+}*@
+
+<script>
+
+    var ticksStyle = {
+        fontColor: '#495057',
+        fontStyle: 'bold'
+    }
+
+    var mode = 'index'
+    var intersect = true
+
+    var myAmountEntry = [];
+    var myAmountEgress = [];
+    var myMonthList = [];
+    var myResum;
+
+
+    function showChart() {
+
+        myAmountEntry = myResum.AmountEntryList;
+        myAmountEgress = myResum.AmountEgressList;
+        myMonthList = myResum.MonthList;
+
+        let popCanvasName = document.getElementById("ingresosegresos-chart");
+        let lineChartName = new Chart(popCanvasName, {          
+            data: {
+                labels: myMonthList,
+                datasets: [{
+                    label: 'Ingresos',
+                    type: 'line',
+                    data: myAmountEntry,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    pointBorderColor: '#007bff',
+                    pointBackgroundColor: '#007bff',
+                    fill: false
+                    // pointHoverBackgroundColor: '#007bff',
+                    // pointHoverBorderColor    : '#007bff'
+                },
+                {
+                    label: 'Egreso',
+                    type: 'line',
+                    data: myAmountEgress,
+                    backgroundColor: 'tansparent',
+                    borderColor: '#ced4da',
+                    pointBorderColor: '#ced4da',
+                    pointBackgroundColor: '#ced4da',
+                    fill: false
+                    // pointHoverBackgroundColor: '#ced4da',
+                    // pointHoverBorderColor    : '#ced4da'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                hover: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        // display: false,
+                        gridLines: {
+                            display: true,
+                            lineWidth: '4px',
+                            color: 'rgba(0, 0, 0, .2)',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: $.extend({
+                            beginAtZero: true,
+                        }, ticksStyle)
+                    }],
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: ticksStyle
+                    }]
+                }
+            }
+        });
+    }
+
+    function getChartData() {
+        return fetch('./Dashboard?handler=InvoiceChartData',
+            {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                }
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw Error('Response Not OK');
+                }
+            })
+            .then(function (text) {
+                try {
+                    return JSON.parse(text);
+                } catch (err) {
+                    throw Error('Method Not Found');
+                }
+            })
+            .then(function (responseJSON) {
+                myResum = responseJSON;
+                showChart();
+            })
+    }
+
+    getChartData();
+
+</script>

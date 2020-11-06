@@ -1,5 +1,6 @@
 ﻿using EFDataAccessLibrary.Models.Clientes;
 using EFDataAccessLibrary.Models.Compras;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -104,5 +105,17 @@ namespace EFDataAccessLibrary.Models.Ventas
         [RegularExpression(@"^\d+\.{0,1}\d{0,2}$", ErrorMessage = "Se aceptan 2 decimales. Ingrese el valor decimal con ' . '.")]
         //[Column(TypeName = "decimal(18,2)")]
         public double Ingresos { get; set; }
+    }
+
+    public class CategoryChartModel
+    {
+        [JsonProperty(PropertyName = "MonthList")]
+        public List<string> MonthList { get; set; }
+
+        [JsonProperty(PropertyName = "AmountEntryList")]
+        public List<double> AmountEntryList { get; set; }
+
+        [JsonProperty(PropertyName = "AmountEgressList")]
+        public List<double> AmountEgressList { get; set; }
     }
 }
