@@ -62,7 +62,7 @@ namespace MASOG_OBRAS.Pages.Reportes.RankingProductos
                     break;
             }
 
-            int pageSize = 10;
+            int pageSize = 8;
 
             // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
 

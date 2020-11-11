@@ -4,6 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
+<h1>Egresos</h1>
+
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <h4>Filtros</h4>
@@ -22,7 +24,6 @@
     </div>
 </form>
 
-<h1>Gastos</h1>
 <div class=" row">
     <div class="col-12">
         <div class="card">
@@ -85,7 +86,7 @@
                                     @Html.DisplayFor(modelItem => item.ProductoDescripcion)
                                 </td>
                                 <td align="right">
-                                    -(@string.Format("{0:C2}", @item.Total))
+                                    @string.Format("{0:C2}", @item.Total)
                                 </td>
                             </tr>
                         }

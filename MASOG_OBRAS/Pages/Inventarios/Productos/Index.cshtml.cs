@@ -75,7 +75,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.Productos
                       break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
             Productos = await PaginatedList<Producto>.CreateAsync(productosIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
 

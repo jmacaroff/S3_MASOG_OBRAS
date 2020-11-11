@@ -62,7 +62,7 @@ namespace MASOG_OBRAS.Pages.Inventarios.MovsStock
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
 
             // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
 

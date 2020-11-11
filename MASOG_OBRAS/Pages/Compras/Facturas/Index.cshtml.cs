@@ -64,11 +64,11 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
                 //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
                 //        break;
                 default:
-                    facturaIQ = facturaIQ.OrderBy(c => c.Id);
+                    facturaIQ = facturaIQ.OrderByDescending(c => c.FechaFactura);
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
 
             // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
 

@@ -69,7 +69,7 @@ namespace MASOG_OBRAS.Pages.Proveedores.Proveedores
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
             Proveedores = await PaginatedList<Proveedor>.CreateAsync(proveedoresIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
         }

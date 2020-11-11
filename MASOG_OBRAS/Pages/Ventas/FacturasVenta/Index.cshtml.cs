@@ -61,11 +61,11 @@ namespace MASOG_OBRAS.Pages.Ventas.FacturasVenta
                 //        productosIQ = productosIQ.OrderByDescending(p => p.Descripcion);
                 //        break;
                 default:
-                    facturasIQ = facturasIQ.OrderByDescending(c => c.Id);
+                    facturasIQ = facturasIQ.OrderByDescending(c => c.Fecha);
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
 
             FacturaVenta = await PaginatedList<FacturaVenta>.CreateAsync(
                 facturasIQ.Include(c => c.Cliente)

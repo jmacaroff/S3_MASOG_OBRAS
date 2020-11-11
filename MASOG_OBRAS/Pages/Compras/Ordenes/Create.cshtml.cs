@@ -64,6 +64,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             HttpContext.Session.Remove(LIST_KEY);
             HttpContext.Session.Remove(PROVEEDOR_KEY);
             LoadOrdenItems();
+            LoadProveedorId();
             LoadViewData();
             return Page();
         }
@@ -123,10 +124,10 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
         public async Task<IActionResult> OnPostSaveOrder()
         {
             LoadOrdenItems();
+            LoadViewData();
             if (OrdenItems.Count == 0)
             {
                 MessageError = "No hay items en la orden.";
-                LoadViewData();
                 return Page();
             }
             else
@@ -160,6 +161,7 @@ namespace MASOG_OBRAS.Pages.Compras.Ordenes
             if (proveedorId != -1)
             {
                 ViewData["ProveedorId"] = new SelectList(_context.Proveedores.Where(x => x.Id == ProveedorId), "Id", "RazonSocial");
+                Orden = HttpContext.Session.GetComplexData<Orden>(ORDER_KEY);
             }
             else
             {
