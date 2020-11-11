@@ -54,6 +54,12 @@ namespace EFDataAccessLibrary.Migrations
             query = "";
 
             query = query + "INSERT [dbo].[Productos] ([Id], [Descripcion], [Precio], [Observacion], [Activo]) VALUES  ";
+            query = query + "(N'GV0001', N'Informática', CAST(50000 AS Decimal(18, 2)), N'Todo lo relacionado con informática', 1)  ";
+
+            migrationBuilder.Sql(query);
+            query = "";
+
+            query = query + "INSERT [dbo].[Productos] ([Id], [Descripcion], [Precio], [Observacion], [Activo]) VALUES  ";
             query = query + "(N'LNV001', N'Lana de Vidrio Fieltro Liviano', CAST(789.20 AS Decimal(18, 2)), N'', 1)  ";
 
             migrationBuilder.Sql(query);
@@ -155,7 +161,8 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "(6, N'Banco Credicoop', 39038948298, NULL, NULL, NULL, NULL), ";
             query = query + "(7, N'Aerolíneas Argentinas', 27354618293, NULL, NULL, N'info@aerolineas.com.ar', NULL), ";
             query = query + "(8, N'Tel-Fix', 23923494739, NULL, NULL, NULL, N'Tornillos'), ";
-            query = query + "(9, N'Isover', 30636243601, N'Congreso 2832, CABA', 541145647896, N'info @saintgobain.com', N'Lanas de vidrio') ";
+            query = query + "(9, N'Isover', 30636243601, N'Congreso 2832, CABA', 541145647896, N'info @saintgobain.com', N'Lanas de vidrio'), ";
+            query = query + "(10, N'Balder SRL', 24851582692, N'Indalecio Gomez 226', 3874522805, N'info @balder.com', N'Desarrollo sistema gestión') ";
 
             migrationBuilder.Sql(query);
             query = "";
@@ -219,9 +226,9 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "(15, 19, N'TOR001', 15000, CAST(8.92 AS Decimal(18, 2)), NULL),  ";
             query = query + "(16, 20, N'FLT001', 1, CAST(2650.00 AS Decimal(18, 2)), NULL),  ";
             query = query + "(20, 24, N'FLT001', 1, CAST(1986.00 AS Decimal(18, 2)), NULL),  ";
-            query = query + "(21, 25, N'DUR001', 2000, CAST(1230.20 AS Decimal(18, 2)), NULL),  ";
-            query = query + "(22, 25, N'DUR002', 300, CAST(1305.83 AS Decimal(18, 2)), NULL),  ";
-            query = query + "(23, 25, N'DUR003', 600, CAST(1356.23 AS Decimal(18, 2)), NULL),  ";
+            query = query + "(21, 25, N'DUR001', 500, CAST(1230.20 AS Decimal(18, 2)), NULL),  ";
+            query = query + "(22, 25, N'DUR002', 150, CAST(1305.83 AS Decimal(18, 2)), NULL),  ";
+            query = query + "(23, 25, N'DUR003', 200, CAST(1356.23 AS Decimal(18, 2)), NULL),  ";
             query = query + "(24, 26, N'TOR001', 30000, CAST(12.30 AS Decimal(18, 2)), NULL),  ";
             query = query + "(25, 26, N'TOR002', 25000, CAST(15.50 AS Decimal(18, 2)), NULL),  ";
             query = query + "(26, 27, N'FLT001', 1, CAST(1700.78 AS Decimal(18, 2)), NULL),  ";
@@ -291,7 +298,7 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "(11, 8, 14, N'1356 ', 2343564, N'A', CAST(N'2020-02-02T00:00:00.0000000' AS DateTime2), CAST(N'2020-02-04T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por rep. tornillos', 257500, 0),  ";
             query = query + "(13, 4, 18, N'8    ', 10867, N'A', CAST(N'2020-02-20T00:00:00.0000000' AS DateTime2), CAST(N'2020-02-25T00:00:00.0000000' AS DateTime2), N'Concepto de Pago por flete Ord. 14', 2600, 0),  ";
             query = query + "(15, 7, 17, N'345  ', 756753, N'A', CAST(N'2020-02-03T00:00:00.0000000' AS DateTime2), CAST(N'2020-02-05T00:00:00.0000000' AS DateTime2), NULL, 6890.58, 0),  ";
-            query = query + "(16, 3, 25, N'167  ', 51200, N'A', CAST(N'2020-03-05T00:00:00.0000000' AS DateTime2), CAST(N'2020-03-11T00:00:00.0000000' AS DateTime2), NULL, 3665887, 0),  ";
+            query = query + "(16, 3, 25, N'167  ', 51200, N'A', CAST(N'2020-03-05T00:00:00.0000000' AS DateTime2), CAST(N'2020-03-11T00:00:00.0000000' AS DateTime2), NULL, 378720.5, 0),  ";
             query = query + "(17, 8, 19, N'1356 ', 2343579, N'A', CAST(N'2020-03-12T00:00:00.0000000' AS DateTime2), CAST(N'2020-11-15T00:00:00.0000000' AS DateTime2), N'Tornillos H1', 320600, 0),  ";
             query = query + "(18, 4, 20, N'8    ', 11006, N'A', CAST(N'2020-04-08T00:00:00.0000000' AS DateTime2), CAST(N'2020-04-11T00:00:00.0000000' AS DateTime2), N'Flete', 2650, 0),  ";
             query = query + "(19, 3, 33, N'167  ', 51345, N'A', CAST(N'2020-04-22T00:00:00.0000000' AS DateTime2), CAST(N'2020-04-25T00:00:00.0000000' AS DateTime2), N'Durlock Exteriores', 690748.52, 0),  ";
@@ -331,9 +338,9 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "(12, 11, N'TOR101', 10000, CAST(9.45 AS Decimal(18, 2)), NULL),  ";
             query = query + "(14, 13, N'FLT001', 1, CAST(2600.00 AS Decimal(18, 2)), NULL),  ";
             query = query + "(16, 15, N'PAS001', 1, CAST(6890.58 AS Decimal(18, 2)), NULL),  ";
-            query = query + "(17, 16, N'DUR001', 2000, CAST(1230.20 AS Decimal(18, 2)), NULL),  ";
-            query = query + "(18, 16, N'DUR002', 300, CAST(1305.83 AS Decimal(18, 2)), NULL),  ";
-            query = query + "(19, 16, N'DUR003', 600, CAST(1356.23 AS Decimal(18, 2)), NULL),  ";
+            query = query + "(17, 16, N'DUR001', 500, CAST(1230.20 AS Decimal(18, 2)), NULL),  ";
+            query = query + "(18, 16, N'DUR002', 150, CAST(1305.83 AS Decimal(18, 2)), NULL),  ";
+            query = query + "(19, 16, N'DUR003', 200, CAST(1356.23 AS Decimal(18, 2)), NULL),  ";
             query = query + "(20, 17, N'TOR002', 20000, CAST(9.34 AS Decimal(18, 2)), NULL),  ";
             query = query + "(21, 17, N'TOR001', 15000, CAST(8.92 AS Decimal(18, 2)), NULL),  ";
             query = query + "(22, 18, N'FLT001', 1, CAST(2650.00 AS Decimal(18, 2)), NULL),  ";
@@ -448,9 +455,9 @@ namespace EFDataAccessLibrary.Migrations
             query = "";
 
             query = query + "INSERT [dbo].[OrdenesPago] ([Id], [ProveedorId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES   ";
-            query = query + "(1, 4, CAST(N'2020-01-31T00:00:00.0000000' AS DateTime2), 1, NULL, 2600),   ";
+            query = query + "(1, 4, CAST(N'2020-02-15T00:00:00.0000000' AS DateTime2), 1, NULL, 2600),   ";
             query = query + "(2, 3, CAST(N'2020-02-22T00:00:00.0000000' AS DateTime2), 1, NULL, 178709),   ";
-            query = query + "(3, 3, CAST(N'2020-03-11T00:00:00.0000000' AS DateTime2), 4, NULL, 3665887),   ";
+            query = query + "(3, 3, CAST(N'2020-03-11T00:00:00.0000000' AS DateTime2), 4, NULL, 378720.5),   ";
             query = query + "(4, 8, CAST(N'2020-02-13T00:00:00.0000000' AS DateTime2), 1, NULL, 257500),   ";
             query = query + "(5, 8, CAST(N'2020-03-12T00:00:00.0000000' AS DateTime2), 4, NULL, 320600),   ";
             query = query + "(6, 4, CAST(N'2020-04-15T00:00:00.0000000' AS DateTime2), 3, NULL, 2650),   ";
@@ -485,7 +492,7 @@ namespace EFDataAccessLibrary.Migrations
             query = query + "INSERT [dbo].[OrdenPagoItems] ([Id], [OrdenPagoId], [FacturaCompraId], [Importe]) VALUES   ";
             query = query + "(1, 1, 13, 2600),   ";
             query = query + "(2, 2, 8, 178709),   ";
-            query = query + "(3, 3, 16, 3665887),   ";
+            query = query + "(3, 3, 16, 378720.5),   ";
             query = query + "(4, 4, 11, 257500),   ";
             query = query + "(5, 5, 17, 320600),   ";
             query = query + "(6, 6, 18, 2650),   ";
@@ -518,23 +525,25 @@ namespace EFDataAccessLibrary.Migrations
 
             migrationBuilder.Sql(query);
             query = "";
-            
-            query = query + "INSERT[dbo].[FacturasVenta]([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(1, 1, 1, N'1    ', N'B', 456, CAST(N'2020-01-18T00:00:00.0000000' AS DateTime2), NULL, 61510, 0) ";
 
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturasVenta] ([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(2, 4, 3, N'1    ', N'B', 457, CAST(N'2020-01-24T00:00:00.0000000' AS DateTime2), NULL, 73812, 0) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturasVenta] ([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(3, 1, 1, N'1    ', N'B', 458, CAST(N'2020-01-27T00:00:00.0000000' AS DateTime2), NULL, 31625.55, 0) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturasVenta] ([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES(4, 8, 4, N'1    ', N'A', 1256, CAST(N'2020-02-02T00:00:00.0000000' AS DateTime2), NULL, 193418.5, 193418.5) ";
+            query = query + "INSERT[dbo].[FacturasVenta]([Id], [ClienteId], [ProyectoId], [PuntoVenta], [TipoFactura], [Numero], [Fecha], [Observacion], [Total], [PendienteCobrar]) VALUES  ";
+            query = query + "(5, 1, 1, N'5    ', N'B', 456, CAST(N'2020-02-04T00:00:00.0000000' AS DateTime2), NULL, 218406.6, 0),  ";
+            query = query + "(6, 4, 3, N'5    ', N'B', 457, CAST(N'2020-02-14T00:00:00.0000000' AS DateTime2), NULL, 333014.1, 0),  ";
+            query = query + "(8, 1, 1, N'5    ', N'B', 455, CAST(N'2020-02-04T00:00:00.0000000' AS DateTime2), N'Tornillos Obra Braga', 21840, 0),  ";
+            query = query + "(9, 4, 3, N'5    ', N'B', 458, CAST(N'2020-02-14T00:00:00.0000000' AS DateTime2), N'Tornillos Obra Urribarri', 27300, 0),  ";
+            query = query + "(11, 8, 4, N'5    ', N'A', 158, CAST(N'2020-03-11T00:00:00.0000000' AS DateTime2), N'Factura inicial LP SRL', 1557076.6, 0),  ";
+            query = query + "(12, 9, 5, N'5    ', N'A', 159, CAST(N'2020-04-15T00:00:00.0000000' AS DateTime2), N'Factura inicial Carrefour', 3658004, 0),  ";
+            query = query + "(13, 1, 1, N'5    ', N'B', 459, CAST(N'2020-05-13T00:00:00.0000000' AS DateTime2), N'Factura 50% (20%)', 58895.76, 0),  ";
+            query = query + "(14, 4, 3, N'5    ', N'B', 460, CAST(N'2020-05-28T00:00:00.0000000' AS DateTime2), N'Pago 60%', 114444.83, 0),  ";
+            query = query + "(15, 8, 4, N'7    ', N'A', 1, CAST(N'2020-06-03T00:00:00.0000000' AS DateTime2), NULL, 800856, 0),  ";
+            query = query + "(16, 9, 5, N'7    ', N'A', 2, CAST(N'2020-06-15T00:00:00.0000000' AS DateTime2), N'Factura 75%', 1512060, 0),  ";
+            query = query + "(17, 1, 1, N'5    ', N'B', 461, CAST(N'2020-07-11T00:00:00.0000000' AS DateTime2), N'Factura 75%', 535724, 0),  ";
+            query = query + "(18, 4, 3, N'5    ', N'B', 462, CAST(N'2020-08-11T00:00:00.0000000' AS DateTime2), N'Factura 75%', 823037, 0),  ";
+            query = query + "(19, 8, 4, N'7    ', N'A', 3, CAST(N'2020-08-26T00:00:00.0000000' AS DateTime2), N'Factura 80%', 259059.6, 0),  ";
+            query = query + "(20, 1, 1, N'5    ', N'B', 463, CAST(N'2020-09-22T00:00:00.0000000' AS DateTime2), NULL, 42282.3, 0),  ";
+            query = query + "(21, 4, 3, N'5    ', N'B', 463, CAST(N'2020-10-08T00:00:00.0000000' AS DateTime2), N'Pago 100%', 87641.6, 0),  ";
+            query = query + "(22, 8, 4, N'7    ', N'A', 4, CAST(N'2020-10-15T00:00:00.0000000' AS DateTime2), N'Pago final.', 418320, 0),  ";
+            query = query + "(23, 9, 5, N'7    ', N'A', 5, CAST(N'2020-11-06T00:00:00.0000000' AS DateTime2), N'Reiniciación obra Carrefour ', 706312, 0)  ";
 
             migrationBuilder.Sql(query);
             query = "";
@@ -549,32 +558,43 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
             
-            query = query + "INSERT[dbo].[FacturaVentaItems]([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(1, 1, N'DUR001', CAST(1230.20 AS Decimal(18, 2)), 50, NULL) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(2, 2, N'DUR001', CAST(1230.20 AS Decimal(18, 2)), 60, N'Finalización etapa exterior') ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(3, 3, N'DUR101', CAST(1698.37 AS Decimal(18, 2)), 15, NULL) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(4, 3, N'TOR001', CAST(12.30 AS Decimal(18, 2)), 500, NULL) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(5, 4, N'DUR101', CAST(1698.37 AS Decimal(18, 2)), 50, NULL) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES(6, 4, N'TOR002', CAST(15.50 AS Decimal(18, 2)), 7000, NULL) ";
+            query = query + "INSERT [dbo].[FacturaVentaItems] ([Id], [FacturaVentaId], [ProductoId], [Precio], [Cantidad], [Observacion]) VALUES   ";
+            query = query + "(7, 5, N'DUR101', CAST(3109.26 AS Decimal(18, 2)), 50, NULL),  ";
+            query = query + "(8, 5, N'DUR001', CAST(2098.12 AS Decimal(18, 2)), 30, NULL),  ";
+            query = query + "(9, 6, N'DUR001', CAST(2101.56 AS Decimal(18, 2)), 50, NULL),  ";
+            query = query + "(10, 6, N'DUR101', CAST(3256.23 AS Decimal(18, 2)), 70, NULL),  ";
+            query = query + "(13, 8, N'TOR001', CAST(18.20 AS Decimal(18, 2)), 1200, NULL),  ";
+            query = query + "(14, 9, N'TOR001', CAST(18.20 AS Decimal(18, 2)), 1500, NULL),  ";
+            query = query + "(17, 11, N'DUR001', CAST(1630.20 AS Decimal(18, 2)), 300, NULL),  ";
+            query = query + "(18, 11, N'DUR101', CAST(2351.23 AS Decimal(18, 2)), 420, NULL),  ";
+            query = query + "(19, 11, N'TOR001', CAST(16.10 AS Decimal(18, 2)), 5000, NULL),  ";
+            query = query + "(20, 12, N'DUR001', CAST(1830.20 AS Decimal(18, 2)), 600, NULL),  ";
+            query = query + "(21, 12, N'DUR101', CAST(3005.23 AS Decimal(18, 2)), 800, NULL),  ";
+            query = query + "(22, 12, N'TOR001', CAST(17.30 AS Decimal(18, 2)), 9000, NULL),  ";
+            query = query + "(23, 13, N'TOR101', CAST(21.50 AS Decimal(18, 2)), 1350, NULL),  ";
+            query = query + "(24, 13, N'DUR003', CAST(2489.23 AS Decimal(18, 2)), 12, NULL),  ";
+            query = query + "(25, 14, N'DUR002', CAST(2515.30 AS Decimal(18, 2)), 10, NULL),  ";
+            query = query + "(26, 14, N'DUR003', CAST(2489.21 AS Decimal(18, 2)), 23, NULL),  ";
+            query = query + "(27, 14, N'TOR101', CAST(21.36 AS Decimal(18, 2)), 1500, NULL),  ";
+            query = query + "(28, 15, N'DUR104', CAST(2115.36 AS Decimal(18, 2)), 350, NULL),  ";
+            query = query + "(29, 15, N'TOR101', CAST(18.90 AS Decimal(18, 2)), 3200, NULL),  ";
+            query = query + "(30, 16, N'DUR104', CAST(2340.60 AS Decimal(18, 2)), 600, NULL),  ";
+            query = query + "(31, 16, N'TOR101', CAST(17.95 AS Decimal(18, 2)), 6000, NULL),  ";
+            query = query + "(32, 17, N'DUR104', CAST(2356.12 AS Decimal(18, 2)), 200, NULL),  ";
+            query = query + "(33, 17, N'TOR101', CAST(21.50 AS Decimal(18, 2)), 3000, NULL),  ";
+            query = query + "(34, 18, N'DUR104', CAST(2135.02 AS Decimal(18, 2)), 350, NULL),  ";
+            query = query + "(35, 18, N'TOR101', CAST(21.05 AS Decimal(18, 2)), 3600, NULL),  ";
+            query = query + "(36, 19, N'DUR003', CAST(1963.23 AS Decimal(18, 2)), 120, NULL),  ";
+            query = query + "(37, 19, N'TOR101', CAST(19.56 AS Decimal(18, 2)), 1200, NULL),  ";
+            query = query + "(38, 20, N'DUR102', CAST(3580.23 AS Decimal(18, 2)), 10, NULL),  ";
+            query = query + "(39, 20, N'TOR001', CAST(21.60 AS Decimal(18, 2)), 300, NULL),  ";
+            query = query + "(40, 21, N'DUR102', CAST(3523.60 AS Decimal(18, 2)), 15, NULL),  ";
+            query = query + "(41, 21, N'TOR101', CAST(21.20 AS Decimal(18, 2)), 320, NULL),  ";
+            query = query + "(42, 21, N'DUR003', CAST(2800.36 AS Decimal(18, 2)), 10, NULL),  ";
+            query = query + "(43, 22, N'LNV001', CAST(1321.20 AS Decimal(18, 2)), 300, NULL),  ";
+            query = query + "(44, 22, N'TOR101', CAST(18.30 AS Decimal(18, 2)), 1200, NULL),  ";
+            query = query + "(45, 23, N'DUR103', CAST(3102.56 AS Decimal(18, 2)), 200, NULL),  ";
+            query = query + "(46, 23, N'TOR002', CAST(28.60 AS Decimal(18, 2)), 3000, NULL) ";
 
             migrationBuilder.Sql(query);
             query = "";
@@ -589,12 +609,22 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
             
-            query = query + "INSERT[dbo].[Recibos]([Id], [ClienteId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES(2, 4, CAST(N'2020-02-07T00:00:00.0000000' AS DateTime2), 1, NULL, 73812) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[Recibos] ([Id], [ClienteId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES(3, 1, CAST(N'2020-01-29T00:00:00.0000000' AS DateTime2), 1, NULL, 93135.55) ";
+            query = query + "INSERT [dbo].[Recibos] ([Id], [ClienteId], [FechaEmision], [ConceptoPagoId], [Observacion], [Total]) VALUES   ";
+            query = query + "(8, 1, CAST(N'2020-02-10T00:00:00.0000000' AS DateTime2), 4, NULL, 240246.6),  ";
+            query = query + "(9, 4, CAST(N'2020-02-14T00:00:00.0000000' AS DateTime2), 1, N'Primer pago', 360314.1),  ";
+            query = query + "(10, 8, CAST(N'2020-03-26T00:00:00.0000000' AS DateTime2), 4, NULL, 1557076.6),  ";
+            query = query + "(11, 9, CAST(N'2020-04-30T00:00:00.0000000' AS DateTime2), 4, N'Pago 35%', 3658004),  ";
+            query = query + "(12, 1, CAST(N'2020-05-15T00:00:00.0000000' AS DateTime2), 4, N'Pago 50%', 58895.76),  ";
+            query = query + "(13, 4, CAST(N'2020-05-29T00:00:00.0000000' AS DateTime2), 1, N'Pago 60%', 114444.83),  ";
+            query = query + "(14, 8, CAST(N'2020-06-18T00:00:00.0000000' AS DateTime2), 4, N'Pago 50%', 800856),  ";
+            query = query + "(15, 9, CAST(N'2020-06-30T00:00:00.0000000' AS DateTime2), 4, N'Pago 75%', 1512060),  ";
+            query = query + "(17, 1, CAST(N'2020-07-27T00:00:00.0000000' AS DateTime2), 4, NULL, 535724),  ";
+            query = query + "(18, 4, CAST(N'2020-08-26T00:00:00.0000000' AS DateTime2), 4, N'Pago 75%', 823037),  ";
+            query = query + "(19, 8, CAST(N'2020-09-10T00:00:00.0000000' AS DateTime2), 4, NULL, 259059.6),  ";
+            query = query + "(20, 1, CAST(N'2020-10-11T00:00:00.0000000' AS DateTime2), 4, N'Pago final', 42282.3),  ";
+            query = query + "(21, 4, CAST(N'2020-10-23T00:00:00.0000000' AS DateTime2), 1, N'Pago final.', 87641.6),  ";
+            query = query + "(22, 8, CAST(N'2020-10-30T00:00:00.0000000' AS DateTime2), 1, N'Pago final.', 418320),  ";
+            query = query + "(23, 9, CAST(N'2020-11-06T00:00:00.0000000' AS DateTime2), 4, N'Reiniciación obra Carrefour.', 706312) ";
 
             migrationBuilder.Sql(query);
             query = "";
@@ -609,17 +639,24 @@ namespace EFDataAccessLibrary.Migrations
             migrationBuilder.Sql(query);
             query = "";
             
-            query = query + "INSERT[dbo].[ReciboItems]([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES(2, 2, 2, 73812) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[ReciboItems] ([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES(3, 3, 1, 61510) ";
-
-            migrationBuilder.Sql(query);
-            query = "";
-            
-            query = query + "INSERT[dbo].[ReciboItems] ([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES(4, 3, 3, 31625.55) ";
+            query = query + "INSERT [dbo].[ReciboItems] ([Id], [ReciboId], [FacturaVentaId], [Importe]) VALUES  ";
+            query = query + "(9, 8, 5, 218406.6),  ";
+            query = query + "(10, 8, 8, 21840),  ";
+            query = query + "(11, 9, 6, 333014.1),  ";
+            query = query + "(12, 9, 9, 27300),  ";
+            query = query + "(13, 10, 11, 1557076.6),  ";
+            query = query + "(14, 11, 12, 3658004),  ";
+            query = query + "(15, 12, 13, 58895.76),  ";
+            query = query + "(16, 13, 14, 114444.83),  ";
+            query = query + "(17, 14, 15, 800856),  ";
+            query = query + "(18, 15, 16, 1512060),  ";
+            query = query + "(20, 17, 17, 535724),  ";
+            query = query + "(21, 18, 18, 823037),  ";
+            query = query + "(22, 19, 19, 259059.6),  ";
+            query = query + "(23, 20, 20, 42282.3),  ";
+            query = query + "(24, 21, 21, 87641.6),  ";
+            query = query + "(25, 22, 22, 418320),  ";
+            query = query + "(26, 23, 23, 706312) ";
 
             migrationBuilder.Sql(query);
             query = "";

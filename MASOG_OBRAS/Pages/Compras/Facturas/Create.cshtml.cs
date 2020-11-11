@@ -139,6 +139,7 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
         private void LoadFactura()
         {
             FacturaCompra = HttpContext.Session.GetComplexData<FacturaCompra>(FACTURA_KEY);
+            HasProveedor = true;
         }
     }
 }

@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Confirmar Cliente" class="btn btn-primary" asp-page-handler="Cliente" />
+                    <input type="submit" value="Confirmar Cliente" class="btn btn-primary" asp-page-handler="Cliente" disabled="@Model.HasProyecto" />
                 </div>
                 @if (Model.MessageError != null)
                 {

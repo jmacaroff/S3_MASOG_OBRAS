@@ -51,23 +51,31 @@
                     <tbody>
                         @foreach (var item in Model.Comparativo)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Año)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Mes)
-                                </td>
-                                <td align="right">
-                                    @string.Format("{0:C2}", @item.Ingresos)
-                                </td><td></td>
-                                <td align="right">
-                                    @string.Format("{0:C2}", @item.Egresos)
-                                </td><td></td>
-                                <td align="right">
-                                    @string.Format("{0:$#,##0.00}", item.Ingresos - item.Egresos)
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Año)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mes)
+                            </td>
+                            <td align="right">
+                                @string.Format("{0:C2}", @item.Ingresos)
+                            </td>
+                            <td></td>
+                            <td align="right">
+                                @string.Format("{0:C2}", @item.Egresos)
+                            </td><td></td>
+                            <td align="right">
+                                @if (item.Ingresos > item.Egresos)
+                                {
+                                    <span class="span-activo">@string.Format("{0:$#,##0.00}", item.Ingresos - item.Egresos)</span>
+                                }
+                                else
+                                {
+                                    <span class="span-no-activo">@string.Format("{0:$#,##0.00}", item.Ingresos - item.Egresos)</span>
+                                }
+                            </td><td></td>
+                        </tr>
                         }
                     </tbody>
                 </table>
