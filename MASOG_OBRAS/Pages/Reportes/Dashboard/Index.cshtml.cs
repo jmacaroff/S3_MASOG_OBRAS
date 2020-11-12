@@ -19,6 +19,13 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
         }
         [BindProperty]
         Comparativo Comparativos { get; set; }
+
+        //Search
+        public string CurrentAF { get; set; }
+        public string CurrentAT { get; set; }
+        public string CurrentMF { get; set; }
+        public string CurrentMT { get; set; }
+
         //Variables
         [BindProperty]
         List<Comparativo> ComparativosList { get; set; }
@@ -33,25 +40,100 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
         [BindProperty]
         public RecibosDet RecibosDet { get; set; }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string searchAF, string searchAT, string currentAF, string currentAT,
+                              string searchMF, string searchMT, string currentMF, string currentMT)
         {
             // TotalVentas = _context.RecibosDet.Select(r => r.FacturaVentaNumero).Distinct().Count();
             // TotalVentas = _context.RecibosDet.Select(r => r.Total).Sum(); => esto tira el total de toda la tabla
             // TotalCompra = _context.OrdenesPagoDet.Select(o => o.FacturaCompraNumero).Distinct().Count();
 
-            // Usando Comparativos y Obteniendo los ultimos datos del mes
-            Comparativos = await _context.Comparativo.OrderByDescending(c => c.Año).ThenBy(c => c.Mes).Where(c => c.Ingresos != 0 || c.Egresos != 0).FirstOrDefaultAsync();
-            TotalIngresos = await _context.Comparativo.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos)).FirstOrDefaultAsync();
-            TotalEgresos = await _context.Comparativo.GroupBy(o => "1").Select(c => c.Sum(i => i.Egresos)).FirstOrDefaultAsync();
-            BalancePeriodo = await _context.Comparativo.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos - i.Egresos)).FirstOrDefaultAsync();
+
+            // controlamos los filtros de busqueda
+            if (searchAF == null)
+            {
+                searchAF = currentAF;
+            }
+            if (searchAT == null)
+            {
+                searchAT = currentAT;
+            }
+            if (searchMF == null)
+            {
+                searchMF = currentMF;
+            }
+            if (searchMT == null)
+            {
+                searchMT = currentMT;
+            }
+
+            CurrentAF = searchAF;
+            CurrentAT = searchAT;
+            CurrentMF = searchMF;
+            CurrentMT = searchMT;
+
+            IQueryable<Comparativo> comparativosIQ = from c in _context.Comparativo where (c.Egresos != 0 || c.Ingresos != 0) select c;
+
+            if (!String.IsNullOrEmpty(searchAF))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Año >= int.Parse(searchAF));
+
+            }
+
+            if (!String.IsNullOrEmpty(searchAT))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Año <= int.Parse(searchAT));
+            }
+
+            if (!String.IsNullOrEmpty(searchMF))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Mes >= int.Parse(searchMF));
+
+            }
+
+            if (!String.IsNullOrEmpty(searchMT))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Mes <= int.Parse(searchMT));
+            }
+
+            Comparativos = await comparativosIQ.FirstOrDefaultAsync();
+            TotalIngresos = await comparativosIQ.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos)).FirstOrDefaultAsync();
+            TotalEgresos = await comparativosIQ.GroupBy(o => "1").Select(c => c.Sum(i => i.Egresos)).FirstOrDefaultAsync();
+            BalancePeriodo = await comparativosIQ.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos - i.Egresos)).FirstOrDefaultAsync();
+
 
             TotalProyecto = await _context.Proyectos.Distinct().CountAsync();
             return Page();
         }
 
-        public JsonResult OnGetInvoiceChartData()
+        public JsonResult OnGetInvoiceChartData(string searchAF, string searchAT, string currentAF, string currentAT,
+                              string searchMF, string searchMT, string currentMF, string currentMT)
         {
-            ComparativosList = _context.Comparativo.Where(c => c.Ingresos != 0 || c.Egresos != 0).ToList();
+
+            IQueryable<Comparativo> comparativosIQ = from c in _context.Comparativo where (c.Egresos != 0 || c.Ingresos != 0) select c;
+
+            if (!String.IsNullOrEmpty(searchAF))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Año >= int.Parse(searchAF));
+
+            }
+
+            if (!String.IsNullOrEmpty(searchAT))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Año <= int.Parse(searchAT));
+            }
+
+            if (!String.IsNullOrEmpty(searchMF))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Mes >= int.Parse(searchMF));
+
+            }
+
+            if (!String.IsNullOrEmpty(searchMT))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Mes <= int.Parse(searchMT));
+            }
+
+            ComparativosList = comparativosIQ.ToList();
             var resumenChart = new CategoryChartModel();
             resumenChart.AmountEntryList = new List<double>();
             resumenChart.AmountEgressList = new List<double>();

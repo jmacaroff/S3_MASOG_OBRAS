@@ -4,6 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
+<h1>Dashboard</h1>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <h4>Filtros</h4>
+        <p>
+            Año desde:&nbsp;
+            <input type="search" name="SearchAF" value="@Model.CurrentAF" /> &nbsp; | &nbsp;
+            Año hasta:
+            <input type="search" name="SearchAT" value="@Model.CurrentAT" /> &nbsp; <br />
+            Mes desde:
+            <input type="search" name="SearchMF" value="@Model.CurrentMF" /> &nbsp; | &nbsp;
+            Mes hasta:
+            <input type="search" name="SearchMT" value="@Model.CurrentMT" /> &nbsp; | &nbsp;
+            <input type="submit" value="Buscar" class="btn btn-primary" /> |
+            <a asp-page="./Index">Limpiar filtros</a>
+        </p>
+    </div>
+</form>
+
 <section class="content">
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
@@ -12,7 +31,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3> @string.Format("{0:C2}", @Model.TotalIngresos)</h3> 
+                        <h3> @string.Format("{0:C2}", @Model.TotalIngresos)</h3>
 
                         <p>Ingresos del período.</p>
                     </div>
@@ -80,9 +99,9 @@
                     <div class="card-body">
                         <div class="d-flex">
                             @*<p class="d-flex flex-column">
-                                <span class="text-bold text-lg">820</span>
-                                <span>Operaciones</span>
-                            </p>*@
+                                    <span class="text-bold text-lg">820</span>
+                                    <span>Operaciones</span>
+                                </p>*@
                             <p class="ml-auto d-flex flex-column text-right">
                                 @if (Model.BalancePeriodo > 0)
                                 {
@@ -124,8 +143,8 @@
     </div>
 </section>
 @*@section Scripts {
-    <script src="~/js/ReportesVentaGastos.js"></script>
-}*@
+        <script src="~/js/ReportesVentaGastos.js"></script>
+    }*@
 
 <script>
 
@@ -150,7 +169,7 @@
         myMonthList = myResum.monthList;
 
         let popCanvasName = document.getElementById("ingresosegresos-chart");
-        let lineChartName = new Chart(popCanvasName, {          
+        let lineChartName = new Chart(popCanvasName, {
             data: {
                 labels: myMonthList,
                 datasets: [{
@@ -182,7 +201,7 @@
                     // color rojo
                     borderColor: '#e60000',
                     pointBorderColor: '#e60000',
-                    pointBackgroundColor: '#e60000', 
+                    pointBackgroundColor: '#e60000',
                     fill: false
                     // pointHoverBackgroundColor: '#ced4da',
                     // pointHoverBorderColor    : '#ced4da'
