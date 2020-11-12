@@ -156,6 +156,18 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a asp-page="/Reportes/Dashboard/Index" class="nav-link @Html.ActiveClass("/Reportes/Dashboard/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Reportes/IngresosVsEgresos/Index" class="nav-link @Html.ActiveClass("/Reportes/IngresosVsEgresos/Index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Comparativo</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a asp-page="/Reportes/Ingresos/Index" class="nav-link @Html.ActiveClass("/Reportes/Ingresos/Index")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ingresos</p>
@@ -168,21 +180,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a asp-page="/Reportes/IngresosVsEgresos/Index" class="nav-link @Html.ActiveClass("/Reportes/IngresosVsEgresos/Index")">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Resumen</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a asp-page="/Reportes/RankingProductos/Index" class="nav-link @Html.ActiveClass("/Reportes/RankingProductos/Index")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ranking Productos</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-page="/Reportes/Dashboard/Index" class="nav-link @Html.ActiveClass("/Reportes/Dashboard/Index")">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard</p>
                             </a>
                         </li>
                     </ul>

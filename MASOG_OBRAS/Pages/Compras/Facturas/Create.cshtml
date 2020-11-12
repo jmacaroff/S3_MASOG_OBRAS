@@ -61,12 +61,6 @@
                     </div>
                 }
             </form>
-            @if (Model.HasProveedor && !Model.HasOrden)
-            {
-                <div class="alert alert-warning">
-                    No hay órdenes pendientes para este proveedor.
-                </div>
-            }
             @if (Model.HasOrden)
             {
                 <form method="post" class="mb-4">

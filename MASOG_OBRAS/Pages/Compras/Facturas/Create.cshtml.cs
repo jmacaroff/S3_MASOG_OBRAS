@@ -129,6 +129,11 @@ namespace MASOG_OBRAS.Pages.Compras.Facturas
                     list = list.Where(y => y.Id != x.OrdenId).ToList();
                 });
                 HasOrden = list.Count != 0;
+                if (!HasOrden)
+                {
+                    HasProveedor = false;
+                    MessageError = "No hay órdenes pendientes para este proveedor.";
+                }
                 ViewData["OrdenId"] = new SelectList(list, "Id", "Id");
             }
         }

@@ -110,16 +110,19 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
                 TotalIngresosS = (TotalIngresos / 1000000D).ToString("0.##") + "M";
             else if (TotalIngresos >= 1000)
                 TotalIngresosS = (TotalIngresos / 1000D).ToString("0.##") + "K";
+            else TotalIngresosS = TotalIngresos.ToString();
 
             if (TotalEgresos >= 1000000)
                 TotalEgresosS = (TotalEgresos / 1000000D).ToString("0.##") + "M";
             else if (TotalEgresos >= 1000)
                 TotalEgresosS = (TotalEgresos / 1000D).ToString("0.##") + "K";
+            else TotalEgresosS = TotalEgresos.ToString();
 
-            if (BalancePeriodo >= 1000000)
+            if (Math.Abs(BalancePeriodo) >= 1000000)
                 BalancePeriodoS = (BalancePeriodo / 1000000D).ToString("0.##") + "M";
-            else if (BalancePeriodo >= 1000)
+            else if (Math.Abs(BalancePeriodo) >= 1000)
                 BalancePeriodoS = (BalancePeriodo / 1000D).ToString("0.##") + "K";
+            else BalancePeriodoS = BalancePeriodo.ToString();
 
 
 
