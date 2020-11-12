@@ -127,7 +127,7 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
             return Page();
         }
 
-        public JsonResult OnGetInvoiceChartData(string searchAF, string searchAT, string currentAF, string currentAT,
+        public async Task<JsonResult> OnGetInvoiceChartData(string searchAF, string searchAT, string currentAF, string currentAT,
                               string searchMF, string searchMT, string currentMF, string currentMT)
         {
 
@@ -155,7 +155,7 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
                 comparativosIQ = comparativosIQ.Where(c => c.Mes <= int.Parse(searchMT));
             }
 
-            ComparativosList = comparativosIQ.ToList();
+            ComparativosList = await comparativosIQ.ToListAsync();
             var resumenChart = new CategoryChartModel();
             resumenChart.AmountEntryList = new List<double>();
             resumenChart.AmountEgressList = new List<double>();

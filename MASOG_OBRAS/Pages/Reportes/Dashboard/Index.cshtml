@@ -10,13 +10,13 @@
         <h4>Filtros</h4>
         <p>
             Año desde:&nbsp;
-            <input type="search" name="SearchAF" value="@Model.CurrentAF" /> &nbsp; | &nbsp;
+            <input type="search" name="SearchAF" id="SearchAF" value="@Model.CurrentAF" /> &nbsp; | &nbsp;
             Año hasta:
-            <input type="search" name="SearchAT" value="@Model.CurrentAT" /> &nbsp; <br />
+            <input type="search" name="SearchAT" id="SearchAT" value="@Model.CurrentAT" /> &nbsp; <br />
             Mes desde:
-            <input type="search" name="SearchMF" value="@Model.CurrentMF" /> &nbsp; | &nbsp;
+            <input type="search" name="SearchMF" id="SearchMF" value="@Model.CurrentMF" /> &nbsp; | &nbsp;
             Mes hasta:
-            <input type="search" name="SearchMT" value="@Model.CurrentMT" /> &nbsp; | &nbsp;
+            <input type="search" name="SearchMT" id="SearchMT" value="@Model.CurrentMT" /> &nbsp; | &nbsp;
             <input type="submit" value="Buscar" class="btn btn-primary" /> |
             <a asp-page="./Index">Limpiar filtros</a>
         </p>
@@ -148,6 +148,11 @@
 
 <script>
 
+    var searchAF = document.getElementById("SearchAF").value;
+    var searchAT = document.getElementById("SearchAT").value;
+    var searchMF = document.getElementById("SearchMF").value;
+    var searchMT = document.getElementById("SearchMT").value;
+
     var ticksStyle = {
         fontColor: '#495057',
         fontStyle: 'bold',
@@ -261,7 +266,8 @@
     }
 
     function getChartData() {
-        return fetch('./Dashboard?handler=InvoiceChartData',
+        //return fetch('./Dashboard?handler=InvoiceChartData',
+        return fetch('./Dashboard?handler=InvoiceChartData&SearchAF=' + searchAF + '&SearchAT=' + searchAT + '&SearchMF=' + searchMF + '&SearchMT=' + searchMT,
             {
                 method: 'get',
                 headers: {
@@ -288,6 +294,6 @@
             })
     }
 
-    getChartData();
+     getChartData();
 
 </script>
