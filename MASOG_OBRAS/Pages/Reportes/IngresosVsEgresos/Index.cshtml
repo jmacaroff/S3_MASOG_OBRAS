@@ -9,10 +9,14 @@
     <div class="form-actions no-color">
         <h4>Filtros</h4>
         <p>
-            Año:
-            <input type="search" name="SearchDateFrom" value="@Model.DateFilterAño" /> &nbsp; | &nbsp;
-            Mes:
-            <input type="search" name="SearchDateTo" value="@Model.DateFilterMes" /> &nbsp; | &nbsp;
+            Año desde:&nbsp;
+            <input type="search" name="SearchAF" value="@Model.CurrentAF" /> &nbsp; | &nbsp;
+            Año hasta:
+            <input type="search" name="SearchAT" value="@Model.CurrentAT" /> &nbsp; <br />
+            Mes desde:
+            <input type="search" name="SearchMF" value="@Model.CurrentMF" /> &nbsp; | &nbsp;
+            Mes hasta:
+            <input type="search" name="SearchMT" value="@Model.CurrentMT" /> &nbsp; | &nbsp;
             <input type="submit" value="Buscar" class="btn btn-primary" /> |
             <a asp-page="./Index">Volver a la Lista Completa</a>
         </p>
@@ -98,18 +102,20 @@
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.Comparativo.PageIndex - 1)"
-   asp-route-currentFilter="@Model.CurrentFilter"
-   asp-route-dateFilterFrom="@Model.DateFilterAño"
-   asp-route-dateFilterTo="@Model.DateFilterMes"
+   asp-route-currentAF="@Model.CurrentAF"
+   asp-route-currentAT="@Model.CurrentAT"
+   asp-route-currentMF="@Model.CurrentMF"
+   asp-route-currentMT="@Model.CurrentMT"
    class="btn btn-primary @prevDisabled">
     Anterior
 </a>
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.Comparativo.PageIndex + 1)"
-   asp-route-currentFilter="@Model.CurrentFilter"
-   asp-route-dateFilterFrom="@Model.DateFilterAño"
-   asp-route-dateFilterTo="@Model.DateFilterMes"
+   asp-route-currentAF="@Model.CurrentAF"
+   asp-route-currentAT="@Model.CurrentAT"
+   asp-route-currentMF="@Model.CurrentMF"
+   asp-route-currentMT="@Model.CurrentMT"
    class="btn btn-primary @nextDisabled">
     Siguiente
 </a>

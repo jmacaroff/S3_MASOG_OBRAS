@@ -102,12 +102,12 @@ namespace MASOG_OBRAS.Pages.Reportes.Ingresos
 
             if (!String.IsNullOrEmpty(searchDateFrom))
             {
-                recibosIQ = recibosIQ.Where(c => c.FechaRecibo > Convert.ToDateTime(searchDateFrom));
+                recibosIQ = recibosIQ.Where(c => c.FechaRecibo > Convert.ToDateTime(searchDateFrom).AddDays(-1));
             }
 
             if (!String.IsNullOrEmpty(searchDateTo))
             {
-                recibosIQ = recibosIQ.Where(c => c.FechaRecibo < Convert.ToDateTime(searchDateTo));
+                recibosIQ = recibosIQ.Where(c => c.FechaRecibo < Convert.ToDateTime(searchDateTo).AddDays(1));
             }
 
             ////analizo los casos para el ordenamiento

@@ -13,8 +13,6 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
     {
         private readonly EFDataAccessLibrary.DataAccess.ProductContext _context;
 
-
-
         public IndexModel(EFDataAccessLibrary.DataAccess.ProductContext context)
         {
             _context = context;
@@ -25,11 +23,11 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
         [BindProperty]
         List<Comparativo> ComparativosList { get; set; }
         [BindProperty]
-        public double TotalVentas { get; set; }
+        public double TotalIngresos { get; set; }
         [BindProperty]
-        public double TotalCompra { get; set; }
+        public double TotalEgresos { get; set; }
         [BindProperty]
-        public double BalanceUltimoMes { get; set; }
+        public double BalancePeriodo { get; set; }
         [BindProperty]
         public int TotalProyecto { get; set; }
         [BindProperty]
@@ -42,10 +40,10 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
             // TotalCompra = _context.OrdenesPagoDet.Select(o => o.FacturaCompraNumero).Distinct().Count();
 
             // Usando Comparativos y Obteniendo los ultimos datos del mes
-            Comparativos = await _context.Comparativo.OrderByDescending(c => c.Mes).ThenBy(c => c.Año).Where(c => c.Ingresos != 0 || c.Egresos != 0).FirstOrDefaultAsync();
-            TotalVentas = Comparativos.Ingresos;
-            TotalCompra = Comparativos.Egresos;
-            BalanceUltimoMes = TotalVentas - TotalCompra;
+            Comparativos = await _context.Comparativo.OrderByDescending(c => c.Año).ThenBy(c => c.Mes).Where(c => c.Ingresos != 0 || c.Egresos != 0).FirstOrDefaultAsync();
+            TotalIngresos = await _context.Comparativo.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos)).FirstOrDefaultAsync();
+            TotalEgresos = await _context.Comparativo.GroupBy(o => "1").Select(c => c.Sum(i => i.Egresos)).FirstOrDefaultAsync();
+            BalancePeriodo = await _context.Comparativo.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos - i.Egresos)).FirstOrDefaultAsync();
 
             TotalProyecto = await _context.Proyectos.Distinct().CountAsync();
             return Page();

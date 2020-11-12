@@ -12,9 +12,9 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3> @string.Format("{0:C2}", @Model.TotalVentas)</h3> 
+                        <h3> @string.Format("{0:C2}", @Model.TotalIngresos)</h3> 
 
-                        <p>Ingresos del ultimo mes</p>
+                        <p>Ingresos del período.</p>
                     </div>
                     <div class="icon">
                         <i class="ion-arrow-graph-up-right"></i>
@@ -27,8 +27,8 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>@string.Format("{0:C2}", @Model.TotalCompra)</h3>
-                        <p>Egresos del ultimo mes</p>
+                        <h3>@string.Format("{0:C2}", @Model.TotalEgresos)</h3>
+                        <p>Egresos del período.</p>
                     </div>
                     <div class="icon">
                         <i class="ion-arrow-graph-down-right"></i>
@@ -42,7 +42,7 @@
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3>Top Productos</h3>
-                        <p>Los productos que más hemos vendido</p>
+                        <p>Los productos que más hemos vendido.</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-social-buffer-outline"></i>
@@ -55,8 +55,8 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>Nuestro trabajos: @Model.TotalProyecto</h3>
-                        <p>Proyectos Totales Realizados</p>
+                        <h3>Proyectos: @Model.TotalProyecto</h3>
+                        <p>Proyectos totales realizados.</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-hammer"></i>
@@ -84,19 +84,19 @@
                                 <span>Operaciones</span>
                             </p>*@
                             <p class="ml-auto d-flex flex-column text-right">
-                                @if (Model.BalanceUltimoMes > 0)
+                                @if (Model.BalancePeriodo > 0)
                                 {
                                     <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i>@string.Format("{0:C2}", @Model.BalanceUltimoMes)
+                                        <i class="fas fa-arrow-up"></i>@string.Format("{0:C2}", @Model.BalancePeriodo)
                                     </span>
                                 }
                                 else
                                 {
                                     <span class="text-danger">
-                                        <i class="fas fa-arrow-down"></i>@string.Format("{0:C2}", @Model.BalanceUltimoMes)
+                                        <i class="fas fa-arrow-down"></i>@string.Format("{0:C2}", @Model.BalancePeriodo)
                                     </span>
                                 }
-                                <span class="text-muted">Balance Ultimo Mes</span>
+                                <span class="text-muted">Balance del período.</span>
                             </p>
                         </div>
                         <!-- /.d-flex -->

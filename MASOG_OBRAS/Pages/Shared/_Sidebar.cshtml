@@ -27,8 +27,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
-
+    with font-awesome or any other icon font library -->
                 <!-- Proveedores-->
                 <li class="nav-item">
                     <a asp-page="/Proveedores/Proveedores/Index" class="nav-link @Html.ActiveClass("/Proveedores/Proveedores/Index")">
@@ -146,6 +145,7 @@
                     </ul>
                 <li />
 
+                <!-- Reportes -->
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -164,7 +164,7 @@
                         <li class="nav-item">
                             <a asp-page="/Reportes/Egresos/Index" class="nav-link @Html.ActiveClass("/Reportes/Egresos/Index")">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Gastos</p>
+                                <p>Egresos</p>
                             </a>
                         </li>
                         <li class="nav-item">

@@ -29,12 +29,13 @@ namespace MASOG_OBRAS.Pages.Reportes.IngresosVsEgresos
 
         //Search
 
-        public string CurrentFilter { get; set; }
-        public string DateFilterAño { get; set; }
-        public string DateFilterMes { get; set; }
+        public string CurrentAF { get; set; }
+        public string CurrentAT { get; set; }
+        public string CurrentMF { get; set; }
+        public string CurrentMT { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string searchDateFrom, string searchDateTo,
-                              string dateFilterFrom, string dateFilterTo, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder, string searchAF, string searchAT, string currentAF, string currentAT,
+                              string searchMF, string searchMT, string currentMF, string currentMT, int? pageIndex)
 
         {
             SortAño = String.IsNullOrEmpty(sortOrder) ? "sortAño_desc" : "";
@@ -44,40 +45,70 @@ namespace MASOG_OBRAS.Pages.Reportes.IngresosVsEgresos
             CurrentSort = sortOrder;
 
             // controlamos los filtros de busqueda
-            if (searchDateFrom != null)
+            if (searchAF != null)
             {
                 pageIndex = 1;
             }
             else
             {
-                searchDateFrom = dateFilterFrom;
+                searchAF = currentAF;
             }
-            if (searchDateTo != null)
+            if (searchAT != null)
             {
                 pageIndex = 1;
             }
             else
             {
-                searchDateTo = dateFilterTo;
+                searchAT = currentAT;
+            }
+            if (searchMF != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchMF = currentMF;
+            }
+            if (searchMT != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchMT = currentMT;
             }
 
-            DateFilterAño = searchDateFrom;
-            DateFilterMes = searchDateTo;
+            CurrentAF = searchAF;
+            CurrentAT = searchAT;
+            CurrentMF = searchMF;
+            CurrentMT = searchMT;
 
             IQueryable<Comparativo> comparativosIQ = from c in _context.Comparativo where (c.Egresos != 0 || c.Ingresos != 0) select c; //where (c.Egresos != 0 || c.Ingresos != 0) group c by c.Año 
 
             //veo si el buscador esta vacio para poder realizar la búsqueda
 
-            if (!String.IsNullOrEmpty(searchDateFrom))
+            if (!String.IsNullOrEmpty(searchAF))
             {
                 //comparativosIQ = comparativosIQ.Where(c => c.Año > Convert.ToDateTime(searchDateFrom));
-                comparativosIQ = comparativosIQ.Where(c => c.Año >= int.Parse(searchDateFrom));
+                comparativosIQ = comparativosIQ.Where(c => c.Año >= int.Parse(searchAF));
 
             }
 
-            if (!String.IsNullOrEmpty(searchDateTo))
+            if (!String.IsNullOrEmpty(searchAT))
             {
-                comparativosIQ = comparativosIQ.Where(c => c.Mes <= int.Parse(searchDateTo));
+                comparativosIQ = comparativosIQ.Where(c => c.Año <= int.Parse(searchAT));
+            }
+
+            if (!String.IsNullOrEmpty(searchMF))
+            {
+                //comparativosIQ = comparativosIQ.Where(c => c.Año > Convert.ToDateTime(searchDateFrom));
+                comparativosIQ = comparativosIQ.Where(c => c.Mes >= int.Parse(searchMF));
+
+            }
+
+            if (!String.IsNullOrEmpty(searchMT))
+            {
+                comparativosIQ = comparativosIQ.Where(c => c.Mes <= int.Parse(searchMT));
             }
 
             ////analizo los casos para el ordenamiento
