@@ -127,8 +127,7 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
             return Page();
         }
 
-        public async Task<JsonResult> OnGetInvoiceChartData(string searchAF, string searchAT, string currentAF, string currentAT,
-                              string searchMF, string searchMT, string currentMF, string currentMT)
+        public async Task<JsonResult> OnGetInvoiceChartData(string searchAF, string searchAT, string searchMF, string searchMT)
         {
 
             IQueryable<Comparativo> comparativosIQ = from c in _context.Comparativo where (c.Egresos != 0 || c.Ingresos != 0) select c;
