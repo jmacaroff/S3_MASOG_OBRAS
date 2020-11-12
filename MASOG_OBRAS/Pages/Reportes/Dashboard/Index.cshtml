@@ -3,17 +3,18 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 <section class="content">
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6 col-6">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>@Model.TotalVentas</h3>
+                        <h3> @string.Format("{0:C2}", @Model.TotalVentas)</h3> 
 
-                        <p>Ingresos</p>
+                        <p>Ingresos del ultimo mes</p>
                     </div>
                     <div class="icon">
                         <i class="ion-arrow-graph-up-right"></i>
@@ -22,12 +23,12 @@
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6 col-6">
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>@Model.TotalCompra</h3>
-                        <p>Egresos</p>
+                        <h3>@string.Format("{0:C2}", @Model.TotalCompra)</h3>
+                        <p>Egresos del ultimo mes</p>
                     </div>
                     <div class="icon">
                         <i class="ion-arrow-graph-down-right"></i>
@@ -36,31 +37,31 @@
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6 col-6">
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>Top</h3>
-                        <p>Ranking Productos</p>
+                        <h3>Top Productos</h3>
+                        <p>Los productos que más hemos vendido</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-social-buffer-outline"></i>
                     </div>
-                    <a href="#" class="small-box-footer">+Info <i class="fas fa-arrow-circle-right"></i> </a>
+                    <a asp-page="/Reportes/RankingProductos/Index" class="small-box-footer">+Info <i class="fas fa-arrow-circle-right"></i> </a>
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6 col-6">
                 <!-- small box -->
-                <div class="small-box bg-success">
+                <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>@Model.TotalProyecto</h3>
-                        <p>Nuevos Proyectos</p>
+                        <h3>Nuestro trabajos: @Model.TotalProyecto</h3>
+                        <p>Proyectos Totales Realizados</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-hammer"></i>
                     </div>
-                    <a href="#" class="small-box-footer"> +Info  <i class="fas fa-arrow-circle-right"></i> </a>
+                    <a asp-page="/Clientes/Proyectos/Index" class="small-box-footer"> +Info  <i class="fas fa-arrow-circle-right"></i> </a>
                 </div>
             </div>
             <!-- ./col -->
@@ -73,36 +74,45 @@
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
                             <h3 class="card-title">Ingresos vs Egresos</h3>
-                            <a href="javascript:void(0);">Ver Reporte</a>
+                            <a asp-page="/Reportes/IngresosVsEgresos/Index">Ver Reporte</a>
                         </div>
                     </div>
                     <div class="card-body">
-                        @*<div class="d-flex">
-                            <p class="d-flex flex-column">
+                        <div class="d-flex">
+                            @*<p class="d-flex flex-column">
                                 <span class="text-bold text-lg">820</span>
                                 <span>Operaciones</span>
-                            </p>
+                            </p>*@
                             <p class="ml-auto d-flex flex-column text-right">
-                                <span class="text-success">
-                                    <i class="fas fa-arrow-up"></i> 12.5%
-                                </span>
-                                <span class="text-muted">Ingresos ultima semana</span>
+                                @if (Model.BalanceUltimoMes > 0)
+                                {
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-up"></i>@string.Format("{0:C2}", @Model.BalanceUltimoMes)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">
+                                        <i class="fas fa-arrow-down"></i>@string.Format("{0:C2}", @Model.BalanceUltimoMes)
+                                    </span>
+                                }
+                                <span class="text-muted">Balance Ultimo Mes</span>
                             </p>
-                        </div>*@
+                        </div>
                         <!-- /.d-flex -->
 
                         <div class="position-relative mb-4">
-                            <canvas id="ingresosegresos-chart" height="300"></canvas>
+                            <canvas id="ingresosegresos-chart" height="500"></canvas>
                             <!-- <canvas id="visitors-chart" height="200"></canvas> -->
                         </div>
 
                         <div class="d-flex flex-row justify-content-end">
                             <span class="mr-2">
-                                <i class="fas fa-square text-primary"></i> Ingresos
+                                <i class="fas fa-square" style="color:#009933"></i> Ingresos
                             </span>
 
                             <span>
-                                <i class="fas fa-square text-gray"></i> Egresos
+                                <i class="fas fa-square" style="color:#e60000"></i> Egresos
                             </span>
                         </div>
                     </div>
@@ -121,7 +131,8 @@
 
     var ticksStyle = {
         fontColor: '#495057',
-        fontStyle: 'bold'
+        fontStyle: 'bold',
+        fontSize: 15,
     }
 
     var mode = 'index'
@@ -143,25 +154,35 @@
             data: {
                 labels: myMonthList,
                 datasets: [{
-                    //label: 'Ingresos',
+                    label: 'Ingresos',
                     type: 'line',
                     data: myAmountEntry,
                     backgroundColor: 'transparent',
-                    borderColor: '#007bff',
+                    // color azul
+                    /*borderColor: '#007bff',
                     pointBorderColor: '#007bff',
-                    pointBackgroundColor: '#007bff',
-                    fill: false
-                    // pointHoverBackgroundColor: '#007bff',
-                    // pointHoverBorderColor    : '#007bff'
+                    pointBackgroundColor: '#007bff',*/
+                    // color verde
+                    borderColor: '#009933',
+                    pointBorderColor: '#009933',
+                    pointBackgroundColor: '#009933',
+                    fill: false,
+                    //pointHoverBackgroundColor: '#007bff',
+                    //pointHoverBorderColor    : '#007bff'
                 },
                 {
-                    label: 'Egreso',
+                    label: 'Egresos',
                     type: 'line',
                     data: myAmountEgress,
                     backgroundColor: 'tansparent',
-                    borderColor: '#ced4da',
+                    // color gris
+                    /* borderColor: '#ced4da',
                     pointBorderColor: '#ced4da',
-                    pointBackgroundColor: '#ced4da',
+                    pointBackgroundColor: '#ced4da', */
+                    // color rojo
+                    borderColor: '#e60000',
+                    pointBorderColor: '#e60000',
+                    pointBackgroundColor: '#e60000', 
                     fill: false
                     // pointHoverBackgroundColor: '#ced4da',
                     // pointHoverBorderColor    : '#ced4da'
@@ -171,14 +192,26 @@
                 maintainAspectRatio: false,
                 tooltips: {
                     mode: mode,
-                    intersect: intersect
+                    intersect: intersect,
+                    callbacks: {
+                        label: function (t, d) {
+                            var xLabel = d.datasets[t.datasetIndex].label;
+                            var yLabel = t.yLabel.toLocaleString("es-AR", { style: "currency", currency: "ARS" });
+                            return xLabel + ': ' + yLabel;
+                        }
+                    }
                 },
                 hover: {
                     mode: mode,
                     intersect: intersect
                 },
                 legend: {
-                    display: false
+                    display: true,
+                    labels: {
+                        fontColor: '#495057',
+                        fontStyle: 'bold',
+                        fontSize: 15,
+                    }
                 },
                 scales: {
                     yAxes: [{
@@ -191,6 +224,9 @@
                         },
                         ticks: $.extend({
                             beginAtZero: true,
+                            callback: function (value, index, values) {
+                                return value.toLocaleString("es-AR", { style: "currency", currency: "ARS" });
+                            }
                         }, ticksStyle)
                     }],
                     xAxes: [{

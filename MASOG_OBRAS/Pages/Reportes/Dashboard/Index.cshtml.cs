@@ -19,19 +19,35 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
         {
             _context = context;
         }
-
+        [BindProperty]
+        Comparativo Comparativos { get; set; }
         //Variables
+        [BindProperty]
         List<Comparativo> ComparativosList { get; set; }
-        public int TotalVentas { get; set; }
-        public int TotalCompra { get; set; }
+        [BindProperty]
+        public double TotalVentas { get; set; }
+        [BindProperty]
+        public double TotalCompra { get; set; }
+        [BindProperty]
+        public double BalanceUltimoMes { get; set; }
+        [BindProperty]
         public int TotalProyecto { get; set; }
+        [BindProperty]
         public RecibosDet RecibosDet { get; set; }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            TotalVentas = _context.RecibosDet.Select(r => r.FacturaVentaNumero).Distinct().Count();
-            TotalCompra = _context.OrdenesPagoDet.Select(o => o.FacturaCompraNumero).Distinct().Count();
-            TotalProyecto = _context.Proyectos.Distinct().Count();
+            // TotalVentas = _context.RecibosDet.Select(r => r.FacturaVentaNumero).Distinct().Count();
+            // TotalVentas = _context.RecibosDet.Select(r => r.Total).Sum(); => esto tira el total de toda la tabla
+            // TotalCompra = _context.OrdenesPagoDet.Select(o => o.FacturaCompraNumero).Distinct().Count();
+
+            // Usando Comparativos y Obteniendo los ultimos datos del mes
+            Comparativos = await _context.Comparativo.OrderByDescending(c => c.Mes).ThenBy(c => c.Año).Where(c => c.Ingresos != 0 || c.Egresos != 0).FirstOrDefaultAsync();
+            TotalVentas = Comparativos.Ingresos;
+            TotalCompra = Comparativos.Egresos;
+            BalanceUltimoMes = TotalVentas - TotalCompra;
+
+            TotalProyecto = await _context.Proyectos.Distinct().CountAsync();
             return Page();
         }
 

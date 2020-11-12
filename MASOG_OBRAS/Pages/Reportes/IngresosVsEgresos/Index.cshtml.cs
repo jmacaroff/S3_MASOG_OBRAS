@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using OfficeOpenXml;
 using System.Linq;
 using System.Threading.Tasks;
 using EFDataAccessLibrary.Models.Ventas;
@@ -98,6 +100,27 @@ namespace MASOG_OBRAS.Pages.Reportes.IngresosVsEgresos
             // Se agrega Include(c => c.Proveedor) para que recupere los datos del proveedor asociado a la orden
 
             Comparativo = await PaginatedList<Comparativo>.CreateAsync(comparativosIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+        }
+
+        public async Task<IActionResult> OnPostExportExcelAsync()
+        {
+
+            var myBUs = await _context.Comparativo.Where(c => c.Ingresos != 0 || c.Egresos != 0).ToListAsync();
+            // above code loads the data using LINQ with EF (query of table), you can substitute this with any data source.
+            var stream = new MemoryStream();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(myBUs, true);
+                package.Save();
+            }
+            stream.Position = 0;
+
+            string excelName = $"MasogObras-{DateTime.Now.ToString("dd MMMM yyyy")}.xlsx";
+            // above I define the name of the file using the current datetime.
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName); // this will be the actual export.
         }
     }
 }
