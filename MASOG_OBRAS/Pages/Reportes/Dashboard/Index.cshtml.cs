@@ -36,6 +36,12 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
         [BindProperty]
         public double BalancePeriodo { get; set; }
         [BindProperty]
+        public string TotalIngresosS { get; set; }
+        [BindProperty]
+        public string TotalEgresosS { get; set; }
+        [BindProperty]
+        public string BalancePeriodoS { get; set; }
+        [BindProperty]
         public int TotalProyecto { get; set; }
         [BindProperty]
         public RecibosDet RecibosDet { get; set; }
@@ -99,6 +105,22 @@ namespace MASOG_OBRAS.Pages.Reportes.Dashboard
             TotalIngresos = await comparativosIQ.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos)).FirstOrDefaultAsync();
             TotalEgresos = await comparativosIQ.GroupBy(o => "1").Select(c => c.Sum(i => i.Egresos)).FirstOrDefaultAsync();
             BalancePeriodo = await comparativosIQ.GroupBy(o => "1").Select(c => c.Sum(i => i.Ingresos - i.Egresos)).FirstOrDefaultAsync();
+
+            if (TotalIngresos >= 1000000)
+                TotalIngresosS = (TotalIngresos / 1000000D).ToString("0.##") + "M";
+            else if (TotalIngresos >= 1000)
+                TotalIngresosS = (TotalIngresos / 1000D).ToString("0.##") + "K";
+
+            if (TotalEgresos >= 1000000)
+                TotalEgresosS = (TotalEgresos / 1000000D).ToString("0.##") + "M";
+            else if (TotalEgresos >= 1000)
+                TotalEgresosS = (TotalEgresos / 1000D).ToString("0.##") + "K";
+
+            if (BalancePeriodo >= 1000000)
+                BalancePeriodoS = (BalancePeriodo / 1000000D).ToString("0.##") + "M";
+            else if (BalancePeriodo >= 1000)
+                BalancePeriodoS = (BalancePeriodo / 1000D).ToString("0.##") + "K";
+
 
 
             TotalProyecto = await _context.Proyectos.Distinct().CountAsync();
